@@ -13,8 +13,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
-const functions = require('firebase-functions');
-
 var db = firebase.firestore();
   
 class App extends Component {
@@ -35,7 +33,7 @@ var allCities = () => {citiesRef.get()
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>
+          <p>]
             Edit <code>src/App.js</code> and save to reload.
           </p>
           <script>{allCities()}</script>
