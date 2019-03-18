@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "eslint-plugin-react-hooks": "^1.5.1",
     "firebase": "^5.8.6",
     "firebase-functions": "^2.2.0",
     "http2": "^3.3.7",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-router": "^4.4.0",
+    "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.8"
   },
   "scripts": {
