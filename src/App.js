@@ -55,7 +55,10 @@ class SignIn extends Component {
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             console.log(user.firstName);
-
+            console.log(user.lastName);
+            console.log(user.email);
+            console.log(user.password);
+            console.log(user.userType);
               console.log(user);
           } else {
             // No user is signed in.
@@ -145,11 +148,26 @@ class SignUp extends Component {
   }
 
   onSignUp() {
-    const { email, password } = this.state;
+    const { 
+      firstName, 
+      lastName, 
+      studentID, 
+      userType, 
+      email, 
+      password 
+    } = this.state;
+    
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       var user = firebase.auth().currentUser;
-      user.firstName = 'John'
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.userType = userType;
+      
+      if(userType==='student') {
+        user.studentID = studentID;
+      }
+
       console.log('Signed Up');
     })
     .catch(function(error) {
@@ -196,18 +214,26 @@ class SignUp extends Component {
 
   onClickStudent() {
     this.setState({
-      userType: 'Student'
+      userType: 'student'
     });
   }
 
   onClickInstructor() {
     this.setState({
-      userType: 'Instructor'
+      userType: 'instructor'
     });
   }
 
   render() {
-    const { firstName, lastName, email, password } = this.state;
+    const { 
+      firstName, 
+      lastName, 
+      studentID, 
+      userType, 
+      email, 
+      password 
+    } = this.state;
+
     return(
       <div>
             {/* {
@@ -216,9 +242,9 @@ class SignUp extends Component {
               ) : (null)
             } */}
             <p>Sign Up</p>
-            <button onClick={this.onSignUp}>Sign Up</button>
-            <button onClick={this.onSignUp}>Sign Up</button>
-
+            <button onClick={this.onClickStudent}>Student</button>
+            <button onClick={this.onClickInstructor}>Instructor</button>
+            <br />
             <input
               type="text"
               placeholder="First Name"
@@ -231,13 +257,14 @@ class SignUp extends Component {
               value={lastName}
               onChange={this.onChangeLastName}
             /><br />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={this.onChangeLastName}
-              style={{if}}
-            /><br />
+            <div style={(userType==='instructor') ? {display: 'none'} : {display: 'inline'}}>
+              <input
+                type="text"
+                placeholder="Student ID"
+                value={studentID}
+                onChange={this.onChangeStudentID}
+              /><br />
+            </div>
             <input
               type="email"
               placeholder="Email"
