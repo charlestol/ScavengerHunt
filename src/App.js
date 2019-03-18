@@ -6,7 +6,9 @@ import React, { Component, Fragment } from "react";
 //   Redirect,
 //   withRouter
 // } from "react-router-dom";
-import firebase from 'firebase';
+import firebase, { firestore } from 'firebase';
+require('./config/config');
+const db = firebase.firestore();
 
 export default class App extends Component {
   constructor(props) {
@@ -52,18 +54,14 @@ class SignIn extends Component {
     const {email, password} = this.state;
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(() => {
-        firebase.auth().onAuthStateChanged(function(user) {
+        var user = firebase.auth().currentUser;
+
           if (user) {
-            console.log(user.firstName);
-            console.log(user.lastName);
-            console.log(user.email);
-            console.log(user.password);
-            console.log(user.userType);
+            console.log(user.displayName);
               console.log(user);
           } else {
             // No user is signed in.
           }
-        });
         
         this.props.onAuth();
       })
@@ -160,13 +158,38 @@ class SignUp extends Component {
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       var user = firebase.auth().currentUser;
-      user.firstName = firstName;
-      user.lastName = lastName;
-      user.userType = userType;
+      user.updateProfile({
+        displayName: firstName,
+      }).then(function() {
+        // Update successful.
+      }).catch(function(error) {
+        // An error happened.
+      });
       
-      if(userType==='student') {
-        user.studentID = studentID;
-      }
+      // if(userType==='student') {
+      //   user.studentID = studentID;
+      // }
+
+      // Add a new document in collection 
+      var fullName = firstName+' '+lastName;
+      db.collection("users").doc("userType").collection(userType).doc(fullName).set(
+        (userType==='student') ? {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          studentID: studentID
+        } : {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+        }
+      )
+      .then(function() {
+        console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });
 
       console.log('Signed Up');
     })
