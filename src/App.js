@@ -1,41 +1,76 @@
-import React, { Component, Fragment } from "react";
-// import {
-//   BrowserRouter as Router,
-//   Route,
-//   Link,
-//   Redirect,
-//   withRouter
-// } from "react-router-dom";
-import firebase, { firestore } from 'firebase';
+import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+import firebase from 'firebase';
 require('./config/config');
 const db = firebase.firestore();
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { auth: false };
-    this.onAuth = this.onAuth.bind(this);
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged(
+        (user) => {
+            this.forceUpdate();
+            console.log("onAuthStateChanged: " + !!user);
+        }
+    );
   }
-
-  onAuth() {
-    this.setState({
-      auth: true
-    });
-  }
-
-  render() {
-    console.log(this.state.auth);
-    return( 
-      <Fragment>
-        <SignIn onAuth={this.onAuth} />
-        <SignUp onAuth={this.onAuth} />
-      </Fragment>
+  render() {      
+    return(
+      <Router>
+        <div>
+          <Route exact path='/' component={Loading} />
+          <Route path='/signin' component={SignIn} />
+          <Route path='/signup' component={SignUp} />
+          <Route path='/dashboard' component={Dashboard} />
+        </div>
+      </Router> 
     );
   }
 }
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+    this.onSignOut = this.onSignOut.bind(this);
+  }
 
+  onSignOut() {
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
+  }
+
+  render() {
+
+    var user = firebase.auth().currentUser;
+    if(!user) {
+      return <Redirect to='/signin'/>
+    }
+
+    return(
+      <div>
+        Hello
+        <button onClick={this.onSignOut}>Sign Out</button>
+      </div>
+    );
+  }
+}
+
+class Loading extends Component {
+  render() {
+    var user = firebase.auth().currentUser;
+    if(!user) {
+      return <Redirect to='/signin'/>
+    }
+    return <Redirect to='/dashboard'/>
+  }
 }
 
 class SignIn extends Component {
@@ -53,18 +88,6 @@ class SignIn extends Component {
   onSignIn() {
     const {email, password} = this.state;
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(() => {
-        var user = firebase.auth().currentUser;
-
-          if (user) {
-            console.log(user.displayName);
-              console.log(user);
-          } else {
-            // No user is signed in.
-          }
-        
-        this.props.onAuth();
-      })
       .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -91,10 +114,18 @@ class SignIn extends Component {
   }
 
   render() {
+
     const {
       email,
-      password
-    } = this.state;
+      password,
+    } = this.state;    
+
+    var user = firebase.auth().currentUser;
+    console.log(user)
+    if(user) {
+      return <Redirect to='/dashboard'/>
+    }
+
     return(
       <div>
          {/* {
@@ -118,6 +149,8 @@ class SignIn extends Component {
             />
             <br />
             <button onClick={this.onSignIn}>Sign In</button>
+            <br />
+            <p>Don't have an account? Sign Up <Link to='/signup'>here</Link></p>
       </div>
     );
   }
@@ -132,7 +165,7 @@ class SignUp extends Component {
       firstName: '',
       lastName: '',
       userType: 'student',
-      studentID: ''
+      studentID: '',
     }
 
     this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -152,14 +185,15 @@ class SignUp extends Component {
       studentID, 
       userType, 
       email, 
-      password 
-    } = this.state;
-    
+      password, 
+      } = this.state;
+
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       var user = firebase.auth().currentUser;
       user.updateProfile({
         displayName: firstName,
+
       }).then(function() {
         // Update successful.
       }).catch(function(error) {
@@ -198,7 +232,7 @@ class SignUp extends Component {
       var errorCode = error.code;
       var errorMessage = error.message;
       // [START_EXCLUDE]
-      if (errorCode == 'auth/weak-password') {
+      if (errorCode ==='auth/weak-password') {
         alert('The password is too weak.');
       } else {
         alert(errorMessage);
@@ -254,8 +288,15 @@ class SignUp extends Component {
       studentID, 
       userType, 
       email, 
-      password 
+      password,
     } = this.state;
+
+
+    var user = firebase.auth().currentUser;
+
+    if(user) {
+      return <Redirect to='/dashboard'/>
+    }
 
     return(
       <div>
@@ -301,6 +342,8 @@ class SignUp extends Component {
               onChange={this.onChangePassword}
             /><br />
             <button onClick={this.onSignUp}>Sign Up</button>
+            <br />
+            <p>Already have an account? Sign in <Link to='/'>here</Link></p>
           </div>
     );
   }
