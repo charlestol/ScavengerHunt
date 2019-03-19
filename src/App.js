@@ -25,51 +25,128 @@ export default class App extends Component {
           <Route exact path='/' component={Loading} />
           <Route path='/signin' component={SignIn} />
           <Route path='/signup' component={SignUp} />
-          <Route path='/dashboard' component={Dashboard} />
+          <Route path='/student' component={Student} />
+          <Route path='/instructor' component={Instructor} />
         </div>
       </Router> 
     );
   }
 }
 
-class Dashboard extends Component {
+
+
+class Student extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      signedOut: false
+    }
     this.onSignOut = this.onSignOut.bind(this);
   }
 
   onSignOut() {
     firebase.auth().signOut().then(function() {
       // Sign-out successful.
+      this.setState({signOut: true});
     }).catch(function(error) {
       // An error happened.
     });
   }
 
   render() {
-
-    var user = firebase.auth().currentUser;
-    if(!user) {
+    const {signedOut} = this.state;
+    if(signedOut) {
       return <Redirect to='/signin'/>
     }
 
     return(
       <div>
-        Hello
-        <button onClick={this.onSignOut}>Sign Out</button>
+         <div>
+          <button onClick={this.onSignOut}>Sign Out</button>
+        </div>
+        student
+      </div>
+    );
+  }
+}
+
+class Instructor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      signedOut: false
+    }
+    this.onSignOut = this.onSignOut.bind(this);
+  }
+
+  onSignOut() {
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+      this.setState({signOut: true});    
+    }).catch(function(error) {
+      // An error happened.
+    });
+  }
+
+  render() {
+    const {signedOut} = this.state;
+    if(signedOut) {
+      return <Redirect to='/signin'/>
+    }
+
+    return(
+      <div>
+         <div>
+          <button onClick={this.onSignOut}>Sign Out</button>
+        </div>
+        instructor
       </div>
     );
   }
 }
 
 class Loading extends Component {
+  constructor(props) {
+    super(props); 
+
+    this.state = {
+      userType: ''
+    }
+
+    this.handleUserRole = this.handleUserRole.bind(this);
+  }
+
+  handleUserRole() {
+    var user = firebase.auth().currentUser;
+    var email, userType;
+    if (user != null) {
+      email = user.email;
+    
+      var userRef = db.collection("users").doc(email);
+  
+      userRef.get().then(function(doc) {
+          if (doc.exists) {
+              userType = doc.data().userType;
+              // console.log("UT: ",userType);
+              this.setState({ userType: userType });
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+    }
+  }
+
   render() {
+    // this.handleUserRole();
+    const {userType} = this.state;
     var user = firebase.auth().currentUser;
     if(!user) {
       return <Redirect to='/signin'/>
     }
-    return <Redirect to='/dashboard'/>
+    return <Redirect to={(userType==='student') ? '/student' : '/instructor'}/>
   }
 }
 
@@ -79,6 +156,8 @@ class SignIn extends Component {
     this.state = {
       email: '',
       password: '',
+      signedIn: false,
+      userType: ''
     }
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
@@ -87,8 +166,31 @@ class SignIn extends Component {
 
   onSignIn() {
     const {email, password} = this.state;
+    var self = this;
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .catch(function(error) {
+    .then(() => {
+      var user = firebase.auth().currentUser;
+
+      if(user) {
+        var userRef = db.collection("users").doc(user.email);
+        userRef.get().then(function(doc) {
+            if (doc.exists) {
+                self.setState({ 
+                  userType : doc.data().userType, 
+                  signedIn: true 
+                });
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+                self.setState({
+                  signedIn: false
+                });
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+      }
+    }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -114,16 +216,16 @@ class SignIn extends Component {
   }
 
   render() {
-
     const {
       email,
       password,
+      userType,
+      signedIn
     } = this.state;    
 
-    var user = firebase.auth().currentUser;
-    console.log(user)
-    if(user) {
-      return <Redirect to='/dashboard'/>
+    
+    if(signedIn) {
+      return <Redirect to={'/'+userType} />
     }
 
     return(
@@ -193,7 +295,6 @@ class SignUp extends Component {
       var user = firebase.auth().currentUser;
       user.updateProfile({
         displayName: firstName,
-
       }).then(function() {
         // Update successful.
       }).catch(function(error) {
@@ -206,16 +307,20 @@ class SignUp extends Component {
 
       // Add a new document in collection 
       var fullName = firstName+' '+lastName;
-      db.collection("users").doc("userType").collection(userType).doc(fullName).set(
+      db.collection("users").doc(user.email).set(
         (userType==='student') ? {
           firstName: firstName,
           lastName: lastName,
           email: email,
-          studentID: studentID
+          studentID: studentID,
+          uid: user.uid,
+          userType: userType
         } : {
           firstName: firstName,
           lastName: lastName,
           email: email,
+          uid: user.uid,
+          userType: userType
         }
       )
       .then(function() {
@@ -295,7 +400,7 @@ class SignUp extends Component {
     var user = firebase.auth().currentUser;
 
     if(user) {
-      return <Redirect to='/dashboard'/>
+      return <Redirect to={(userType==='student') ? '/student' : '/instructor'}/>
     }
 
     return(
