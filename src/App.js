@@ -104,21 +104,19 @@ class Instructor extends Component {
     );
   }
 }
-
+// FIX LATER
 class Loading extends Component {
   constructor(props) {
     super(props); 
 
     this.state = {
-      userType: ''
+      userType: '',
+      signedIn: false
     }
-
-    this.handleUserRole = this.handleUserRole.bind(this);
   }
-
-  handleUserRole() {
+  componentDidMount() {
     var user = firebase.auth().currentUser;
-    var email, userType;
+    var email, self = this;
     if (user != null) {
       email = user.email;
     
@@ -126,12 +124,17 @@ class Loading extends Component {
   
       userRef.get().then(function(doc) {
           if (doc.exists) {
-              userType = doc.data().userType;
+            self.setState({
+              userType : doc.data().userType,
+              signedIn: true
+          })  
               // console.log("UT: ",userType);
-              this.setState({ userType: userType });
           } else {
               // doc.data() will be undefined in this case
               console.log("No such document!");
+              self.setState({
+                signedIn: false
+              });
           }
       }).catch(function(error) {
           console.log("Error getting document:", error);
@@ -140,13 +143,18 @@ class Loading extends Component {
   }
 
   render() {
-    // this.handleUserRole();
-    const {userType} = this.state;
+    const {userType, signedIn} = this.state;
     var user = firebase.auth().currentUser;
+    if(user) {
+      return <Redirect to={'/'+userType} />
+    }
     if(!user) {
       return <Redirect to='/signin'/>
     }
-    return <Redirect to={(userType==='student') ? '/student' : '/instructor'}/>
+   
+    return (
+      <div>Welcome</div>
+    );
   }
 }
 
