@@ -284,7 +284,7 @@ class Loading extends Component {
     return <div>Welcome</div>;
   }
 }
-
+ 
 class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -300,7 +300,7 @@ class SignIn extends Component {
     this.onSignIn = this.onSignIn.bind(this);
   }
 
-  
+
 
   onSignIn() {
     const {email, password} = this.state;
