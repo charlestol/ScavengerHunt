@@ -10,14 +10,6 @@ require('./config/config');
 const db = firebase.firestore();
 
 export default class App extends Component {
-  componentWillMount() {
-    firebase.auth().onAuthStateChanged(
-        (user) => {
-            this.forceUpdate();
-            console.log("onAuthStateChanged: " + !!user);
-        }
-    );
-  }
   render() {      
     return(
       <Router>
@@ -32,7 +24,6 @@ export default class App extends Component {
     );
   }
 }
-
 
 
 class Student extends Component {
@@ -100,61 +91,197 @@ class Instructor extends Component {
           <button onClick={this.onSignOut}>Sign Out</button>
         </div>
         instructor
+        <br />
+        {/* <CreateScavengerHunt />
+        <ListScavengerHunts /> */}
       </div>
     );
   }
 }
-// FIX LATER
+
+// class ListScavengerHunts extends Component {
+//   render() {
+//     var user = firebase.auth().currentUser;
+//     var email = user.email;    
+    
+//     var list = [];
+//     function listEvents() {
+//       db.collection("scavengerHunts").where("instructorEmail", "==", email)
+//         .onSnapshot(function(querySnapshot) {
+//           var events = [];
+//           querySnapshot.forEach(function(doc) {
+//               events.push(doc.data().eventName);
+//           });
+//           list = events;
+//       });
+//     }
+//     listEvents();
+//     console.log(list);
+//     return (
+//       <div></div>
+//     );
+//   }
+// }
+
+// class CreateScavengerHunt extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       eventName: '',
+//       accessCode: '',
+//       instructions: ''
+//     }
+//     this.onChangeEventName = this.onChangeEventName.bind(this);
+//     this.onChangeAccessCode = this.onChangeAccessCode.bind(this);
+//     this.onChangeInstructions = this.onChangeInstructions.bind(this);
+//     this.onCreate = this.onCreate.bind(this);
+//     this.onSubmit = this.onSubmit.bind(this);
+//   }
+
+//   onSubmit(e) {
+//     e.preventDefault();
+//   }
+
+//   onChangeEventName(event) {
+//     this.setState({
+//       eventName: event.target.value
+//     });
+//   }
+
+//   onChangeAccessCode(event) {
+//     this.setState({
+//       accessCode: event.target.value
+//     });
+//   }
+
+//   onChangeInstructions(event) {
+//     this.setState({
+//       instructions: event.target.value
+//     });
+//   }
+
+//   onCreate() {
+//     const {eventName, accessCode, instructions} = this.state
+
+//     var user = firebase.auth().currentUser;
+//     var name = user.displayName;
+//     var email = user.email;
+    
+//     var eventData = {
+//       eventName: eventName,
+//       instructorName: name,
+//       instructorEmail: email,
+//       accessCode: accessCode,
+//       instructions: instructions
+//     };
+
+//     console.log(eventData)
+
+//     db.collection("scavengerHunts").doc(accessCode).set(eventData).then(() => {
+//         console.log("Document successfully written!");
+//     })
+//     .catch(function(error) {
+//       console.error("Error writing document: ", error);
+//     });
+//   }
+
+//   render() {
+//     const { eventName, accessCode, instructions } = this.state;
+//     return(
+//       <div>
+//         <form onSubmit={this.onSubmit}>
+//           <input
+//             type="text"
+//             placeholder="Event Name"
+//             value={eventName}
+//             onChange={this.onChangeEventName}
+//           /><br />
+//           <input
+//             type="text"
+//             placeholder="Access Code"
+//             value={accessCode}
+//             onChange={this.onChangeAccessCode}
+//           /><br />
+//           <input
+//             type="text"
+//             placeholder="Instuctions"
+//             value={instructions}
+//             onChange={this.onChangeInstructions}
+//           /><br />
+//           <button type='submit' onClick={this.onCreate}>create</button>
+//         </form>
+//       </div>
+//     );
+//   }
+// }
+
+function CheckUserState() {
+  
+}
+
 class Loading extends Component {
   constructor(props) {
     super(props); 
 
     this.state = {
       userType: '',
-      signedIn: false
+      signedIn: false,
+      checkedForUser: false
     }
   }
   componentDidMount() {
-    var user = firebase.auth().currentUser;
-    var email, self = this;
-    if (user != null) {
-      email = user.email;
-    
-      var userRef = db.collection("users").doc(email);
-  
-      userRef.get().then(function(doc) {
-          if (doc.exists) {
-            self.setState({
-              userType : doc.data().userType,
-              signedIn: true
-          })  
-              // console.log("UT: ",userType);
-          } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
+    var self = this;
+    firebase.auth().onAuthStateChanged(
+        (user) => {
+          // this.forceUpdate();
+          
+          console.log("onAuthStateChanged: " + !!user);
+          if(!this.state.checkedForUser) {
+            if(user) {
+              var email = user.email;
+              var userRef = db.collection("users").doc(email);
+          
+              userRef.get().then(function(doc) {
+                  if (doc.exists) {
+                    self.setState({
+                      userType : doc.data().userType,
+                      signedIn: true,
+                      checkedForUser: true
+                  })  
+                      // console.log("UT: ",userType);
+                  } else {
+                      // doc.data() will be undefined in this case
+                      console.log("No such document!");
+                      self.setState({
+                        signedIn: false,
+                        checkedForUser: true
+                      });
+                  }
+              }).catch(function(error) {
+                  console.log("Error getting document:", error);
+              });        
+            } else {
               self.setState({
-                signedIn: false
+                signedIn: false,
+                checkedForUser: true
               });
+            }
           }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
-      });
-    }
+        }
+    );
   }
 
   render() {
-    const {userType, signedIn} = this.state;
-    var user = firebase.auth().currentUser;
-    if(user) {
-      return <Redirect to={'/'+userType} />
+    const {userType, signedIn, checkedForUser} = this.state;
+
+    if(checkedForUser) {
+      if(signedIn) {
+        return <Redirect to={'/'+userType} />
+      } else {
+        return <Redirect to='/signin'/>
+      }
     }
-    if(!user) {
-      return <Redirect to='/signin'/>
-    }
-   
-    return (
-      <div>Welcome</div>
-    );
+    return <div>Welcome</div>;
   }
 }
 
@@ -165,12 +292,15 @@ class SignIn extends Component {
       email: '',
       password: '',
       signedIn: false,
-      userType: ''
+      userType: '',
+      checkedForUser: false,
     }
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onSignIn = this.onSignIn.bind(this);
   }
+
+  
 
   onSignIn() {
     const {email, password} = this.state;
@@ -231,7 +361,6 @@ class SignIn extends Component {
       signedIn
     } = this.state;    
 
-    
     if(signedIn) {
       return <Redirect to={'/'+userType} />
     }
@@ -314,7 +443,6 @@ class SignUp extends Component {
       // }
 
       // Add a new document in collection 
-      var fullName = firstName+' '+lastName;
       db.collection("users").doc(user.email).set(
         (userType==='student') ? {
           firstName: firstName,
@@ -408,7 +536,7 @@ class SignUp extends Component {
     var user = firebase.auth().currentUser;
 
     if(user) {
-      return <Redirect to={(userType==='student') ? '/student' : '/instructor'}/>
+      return <Redirect to={'/'+userType} />
     }
 
     return(
