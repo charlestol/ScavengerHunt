@@ -11,7 +11,7 @@ require('../../config/config');
 const db = firebase.firestore();
 
 
-class Student extends Component {
+class Dashboard extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -31,10 +31,18 @@ class Student extends Component {
     }
   
     render() {
-      const {signedOut} = this.state;
-      if(signedOut) {
-        return <Redirect to='/signin'/>
-      }
+        
+      let isAuth = false;
+      firebase.auth().onAuthStateChanged(
+          (user) => {
+              console.log("onAuthStateChanged: " + !!user);
+              isAuth = !!user;
+          }
+      )
+      if(!isAuth) {
+          return <Redirect to='/dashboard' />
+      }  
+      
   
       return(
         <div>
@@ -46,4 +54,4 @@ class Student extends Component {
       );
     }
   }
-  export default Student;
+  export default Dashboard;

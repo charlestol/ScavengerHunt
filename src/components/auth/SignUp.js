@@ -6,7 +6,6 @@ import {
   Redirect
 } from "react-router-dom";
 import firebase from 'firebase';
-import { createStore, withStore } from "@spyna/react-store";
 
 require('../../config/config');
 const db = firebase.firestore();
@@ -19,9 +18,7 @@ class SignUp extends Component {
         password: '',
         firstName: '',
         lastName: '',
-        userType: this.props.userType,
-        studentID: '',
-        userSignedIn: this.props.userSignedIn
+        studentID: ''
       }
   
       this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -34,7 +31,7 @@ class SignUp extends Component {
       this.onSignUp = this.onSignUp.bind(this);
     }
     componentDidMount() {
-        console.log('signup')
+        console.log('SIGNUP')
     }
     onSignUp() {
       const { 
@@ -148,14 +145,20 @@ class SignUp extends Component {
         studentID, 
         userType, 
         email, 
-        password,
-        userSignedIn
+        password
       } = this.state;
     
-      if(userSignedIn) {
-        return <Redirect to={'/'+userType} />
-      }
-  
+      let isAuth = false;
+      firebase.auth().onAuthStateChanged(
+          (user) => {
+              console.log("onAuthStateChanged: " + !!user);
+              isAuth = !!user;
+          }
+      )
+      if(isAuth) {
+          return <Redirect to='/dashboard' />
+      }  
+      
       return(
         <div>
               {/* {
@@ -207,4 +210,4 @@ class SignUp extends Component {
     }
   }
 
-  export default withStore(SignUp);
+  export default SignUp;

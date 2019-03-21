@@ -6,112 +6,86 @@ import {
   Redirect
 } from "react-router-dom";
 import firebase from 'firebase';
-import { createStore, withStore } from "@spyna/react-store";
 
 import Loading from './components/auth/Loading';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
-import Student from './components/dashboard/Student';
-import Instructor from './components/dashboard/Instructor';
+import Dashboard from './components/dashboard/Dashboard';
 
 require('./config/config');
 const db = firebase.firestore();
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      checkedForUser: false,
-      userSignedIn: false,
-      userType: ''
-    }
-  }
-  componentDidMount() {
-    let self = this;
-    firebase.auth().onAuthStateChanged(
-      (user) => {
-        console.log("onAuthStateChanged: " + !!user);
-        if(!!user) {
-
-          var email = user.email;
-          var userRef = db.collection("users").doc(email);
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     checkedForUser: false,
+  //     userType: ''
+  //   }
+  // }
+  // componentDidMount() {
+  //   console.log('UT ',this.state.userType);
+  //   let self = this;
+  //   firebase.auth().onAuthStateChanged(
+  //     (user) => {
+  //       console.log("onAuthStateChanged: " + !!user);
+  //       if(!!user) {
+  //         var email = user.email;
+  //         var userRef = db.collection("users").doc(email);
       
-          userRef.get().then(function(doc) {
-              if (doc.exists) {
-                self.setState({
-                  checkedForUser: true,
-                  userSignedIn: true,
-                  userType: doc.data().userType
-                });
-                console.log(self.state.userType)
-                  // console.log("UT: ",userType);
-              } else {
-                  // doc.data() will be undefined in this case
-                  console.log("No such document!");
+  //         userRef.get().then(function(doc) {
+  //             if (doc.exists) {
+  //                 self.setState({
+  //                 checkedForUser: true,
+  //                 userType: doc.data().userType
+  //               });
+  //               console.log(self.state.userType)
+  //                 // console.log("UT: ",userType);
+  //             } else {
+  //                 // doc.data() will be undefined in this case
+  //                 console.log("No such document!");
 
-                  self.setState({
-                    checkedForUser: true,
-                    userSignedIn: false,
-                    userType: ''
-                  });
-              }
-          }).catch(function(error) {
-              console.log("Error getting document:", error);
-          });        
-        } else {
-          self.setState({
-            checkedForUser: true,
-            userSignedIn: false
-          });
-          console.log('no user')
-        }
-      }
-    );
-  }
+  //                 self.setState({
+  //                   checkedForUser: true,
+  //                   userType: ''
+  //                 });
+  //                 console.log('no user')
+  //             }
+  //         }).catch(function(error) {
+  //             console.log("Error getting document:", error);
+  //         });        
+  //       } else {
+  //         self.setState({
+  //           checkedForUser: true,
+  //           userType: ''
+  //         });
+  //         console.log('no user')
+  //       }
+  //     }
+  //   );
+  // }
 
   render() {      
-    const {checkedForUser, userType, userSignedIn} = this.state;
+    // const {userType, checkedForUser} = this.state;
 
-    if(!checkedForUser) {
-      return <div>Welcome</div>
-    }
+    // if(!checkedForUser) {
+    //   return <div>Welcome</div>
+    // }
 
     return(
       <Router>
         <div>
-          <Route
-            exact path='/'
-            render={(props) => <Loading {...props} userSignedIn={userSignedIn} userType={userType} />}
-          />
-          <Route 
-            path='/signin' 
-            render={(props) => <SignIn {...props} userSignedIn={userSignedIn} userType={userType} />}
-          />
-          <Route 
-            path='/signup' 
-            render={(props) => <SignUp {...props} userSignedIn={userSignedIn} userType={userType} />}
-          />
-          <Route 
-            path='/student' 
-            render={(props) => <Student {...props} userSignedIn={userSignedIn} userType={userType} />}
-          />
-          <Route
-            path='/instructor' 
-            render={(props) => <Instructor {...props} userSignedIn={userSignedIn} userType={userType} />}
-          />
+          <Route exact path='/' component={Loading} />
+          <Route path='/signin' component={SignIn} />
+          <Route path='/signup' component={SignUp} />
+          <Route path='/dashboard' component={Dashboard} />
         </div>
       </Router> 
     );
   }
 }
 
-const initStates = {
-  userType: '',
-  userSignedIn: false,
-  checkedForUser: false
-};
-
-export default createStore(App, initStates);
+export default App;
 
 
 

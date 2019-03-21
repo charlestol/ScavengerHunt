@@ -6,7 +6,6 @@ import {
   Redirect
 } from "react-router-dom";
 import firebase from 'firebase';
-import { createStore, withStore } from "@spyna/react-store";
 
 require('../../config/config');
 const db = firebase.firestore();
@@ -17,8 +16,7 @@ class SignIn extends Component {
       this.state = {
         email: '',
         password: '',
-        userSignedIn: this.props.userSignedIn,
-        userType: this.props.userType,
+        // userType: this.props.userType,
       }
       this.onChangeEmail = this.onChangeEmail.bind(this);
       this.onChangePassword = this.onChangePassword.bind(this);
@@ -26,36 +24,13 @@ class SignIn extends Component {
     }
   
     componentDidMount() {
-        console.log('signin')
+        console.log('SIGNIN')
     }
 
     onSignIn() {
       const {email, password} = this.state;
-      var self = this;
       firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(() => {
-        var user = firebase.auth().currentUser;
-  
-        if(user) {
-          var userRef = db.collection("users").doc(user.email);
-          userRef.get().then(function(doc) {
-              if (doc.exists) {
-                  self.setState({ 
-                    userType : doc.data().userType, 
-                    userSignedIn: true 
-                  });
-              } else {
-                  // doc.data() will be undefined in this case
-                  console.log("No such document!");
-                  self.setState({
-                    userSignedIn: false
-                  });
-              }
-          }).catch(function(error) {
-              console.log("Error getting document:", error);
-          });
-        }
-      }).catch(function(error) {
+      .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -84,16 +59,18 @@ class SignIn extends Component {
       const {
         email,
         password,
-        userSignedIn,
-        userType
       } = this.state;    
   
-      console.log('SignIn: ', userSignedIn)
-
-      if(userSignedIn) {
-        return <Redirect to={'/'+userType} />
-      }
-  
+      let isAuth = false;
+      firebase.auth().onAuthStateChanged(
+          (user) => {
+              console.log("onAuthStateChanged: " + !!user);
+              isAuth = !!user;
+          }
+      )
+      if(isAuth) {
+          return <Redirect to='/dashboard' />
+      }  
       return(
         <div>
            {/* {
@@ -124,4 +101,4 @@ class SignIn extends Component {
     }
   }
 
-  export default withStore(SignIn);
+  export default SignIn;

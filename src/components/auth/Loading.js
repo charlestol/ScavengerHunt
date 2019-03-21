@@ -18,20 +18,30 @@ class Loading extends Component {
   
       this.state = {
         userType: this.props.userType,
-        userSignedIn: this.props.isAuthed
+
       }
     }
   
-    render() {
-      const {userSignedIn, userType} = this.state;
-
-         if(userSignedIn) {
-           return <Redirect to={'/'+userType} />
-         } else {
-           return <Redirect to='/signin'/>
-         }
-             
+    componentDidMount() {
+        console.log('LOADING')
     }
-  }
-   
-  export default withStore(Loading);
+
+    render() {
+        const { userType } = this.state;
+        let isAuth = false;
+        firebase.auth().onAuthStateChanged(
+            (user) => {
+                console.log("onAuthStateChanged: " + !!user);
+                isAuth = !!user;
+            }
+        )
+        if(isAuth) {
+            console.log('USER SIGNED IN: ', isAuth)
+            return <Redirect to={'/'+userType} />
+        }  
+        return <Redirect to='/signin'/>
+        
+    }
+}
+
+export default Loading;
