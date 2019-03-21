@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@spyna/react-store": "^1.2.0",
     "eslint-plugin-react-hooks": "^1.5.1",
     "firebase": "^5.8.6",
     "firebase-functions": "^2.2.0",
