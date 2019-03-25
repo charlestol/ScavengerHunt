@@ -19,7 +19,6 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.firestore();
-    this.db.settings({ timestampsInSnapshots: true });
   }
 
   // *** Auth API ***
@@ -42,7 +41,7 @@ class Firebase {
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
-        this.user(authUser.uid)
+        this.user(authUser.email)
           .get()
           .then(snapshot => {
             const dbUser = snapshot.data();
@@ -70,7 +69,7 @@ class Firebase {
 
   // *** User API ***
 
-  user = uid => this.db.doc(`users/${uid}`);
+  user = email => this.db.doc(`users/${email}`);
 
   users = () => this.db.collection('users');
 

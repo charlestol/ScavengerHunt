@@ -13,7 +13,9 @@ const SignUpPage = () => (
 );
 
 const INITIAL_STATE = {
-  username: '',
+  firstName: '',
+  lastName: '',
+  studentID: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -39,7 +41,7 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne, isAdmin } = this.state;
+    const { firstName, lastName, studentID, email, passwordOne, isAdmin } = this.state;
     const roles = [];
 
     if (isAdmin) {
@@ -49,15 +51,22 @@ class SignUpFormBase extends Component {
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        // Create a user in your Firebase realtime database
-        return this.props.firebase.user(authUser.user.uid).set(
-          {
-            username,
+        // Create a user in your Firestore database
+        return this.props.firebase.user(authUser.user.email).set(
+          (isAdmin) ? {
+            firstName,
+            lastName,
             email,
-            roles,
+            roles
+          } : {
+            firstName,
+            lastName,
+            email,
+            studentID,
+            roles
           },
           { merge: true },
-        );
+        )
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
@@ -78,13 +87,18 @@ class SignUpFormBase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  onChangeCheckbox = event => {
-    this.setState({ [event.target.name]: event.target.checked });
-  };
+  onClickStudent = () => {
+    this.setState({isAdmin: false})
+  }
+  onClickInstructor = () => {
+    this.setState({isAdmin: true})
+  }
 
   render() {
     const {
-      username,
+      firstName,
+      lastName,
+      studentID,
       email,
       passwordOne,
       passwordTwo,
@@ -92,60 +106,81 @@ class SignUpFormBase extends Component {
       error,
     } = this.state;
 
-    const isInvalid =
+     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      username === '';
+      firstName === '' ||
+      lastName === '';
 
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <label>
-          Admin:
-          <input
-            name="isAdmin"
-            type="checkbox"
-            checked={isAdmin}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
-        <button disabled={isInvalid} type="submit">
-          Sign Up
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
-    );
+      return (
+        <div>
+          <button onClick={this.onClickStudent}>Student</button>
+          <button onClick={this.onClickInstructor}>Instructor</button>
+          <form onSubmit={this.onSubmit}>
+            <input
+              name="email"
+              value={email}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Email Address"
+            />
+            <br />
+            <input
+              name="firstName"
+              value={firstName}
+              onChange={this.onChange}
+              type="text"
+              placeholder="First Name"
+            />
+            <br />
+            <input
+              name="lastName"
+              value={lastName}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Last Name"
+            />
+            <br />          
+            {
+              !isAdmin &&
+              <div>
+                <input
+                  name="studentID"
+                  value={studentID}
+                  onChange={this.onChange}
+                  type="text"
+                  placeholder="Student ID"
+                />
+                <br />
+              </div>
+            }
+            <input
+              name="passwordOne"
+              value={passwordOne}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Password"
+            />
+            <br />
+            <input
+              name="passwordTwo"
+              value={passwordTwo}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Confirm Password"
+            />
+            <br />
+            <button disabled={isInvalid} type="submit">
+              Sign Up
+            </button>
+            <br />
+            {error && <p>{error.message}</p>}
+          </form>
+        </div>
+      );
+    }
   }
-}
 
 const SignUpLink = () => (
   <p>
