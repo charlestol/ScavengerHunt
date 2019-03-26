@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   passwordTwo: '',
   isAdmin: false,
   error: null,
-};
+}
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
 

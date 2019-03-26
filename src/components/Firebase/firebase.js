@@ -3,12 +3,12 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 const config = {
-    apiKey: "AIzaSyBtzXu-hUxCFMqrZ6PNloxHOquM_CwGmXg",
-    authDomain: "auth-2a99d.firebaseapp.com",
-    databaseURL: "https://auth-2a99d.firebaseio.com",
-    projectId: "auth-2a99d",
-    storageBucket: "",
-    messagingSenderId: "191064083995"
+  apiKey: "AIzaSyB_BOnrLIbOsgFf2U84pOXYJagwGPltLaM",
+  authDomain: "cziscavengerhunt.firebaseapp.com",
+  databaseURL: "https://cziscavengerhunt.firebaseio.com",
+  projectId: "cziscavengerhunt",
+  storageBucket: "cziscavengerhunt.appspot.com",
+  messagingSenderId: "812384034022"
 };
 
 class Firebase {
@@ -18,6 +18,7 @@ class Firebase {
     this.fieldValue = app.firestore.FieldValue;
 
     this.auth = app.auth();
+
     this.db = app.firestore();
   }
 
@@ -67,12 +68,17 @@ class Firebase {
       }
     });
 
-  // *** User API ***
+  // *** User API ***;
 
   user = email => this.db.doc(`users/${email}`);
 
   users = () => this.db.collection('users');
 
+  // *** Scavenger Hunt API ***
+
+  scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
+
+  scavengerHunts = () => this.db.collection('scavengerHunts');
 }
 
 export default Firebase;
