@@ -72,11 +72,17 @@ class Firebase {
 
   user = email => this.db.doc(`users/${email}`);
 
+  userHistory = email => this.user(email).collection('history');
+
   users = () => this.db.collection('users');
 
   // *** Scavenger Hunt API ***
 
   scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
+
+  scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
+
+  scavengerHuntSubmissions = accessCode => this.scavengerHunt(accessCode).collection('submissions');
 
   scavengerHunts = () => this.db.collection('scavengerHunts');
 }
