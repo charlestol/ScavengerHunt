@@ -37,21 +37,16 @@ class CreateEventFormBase extends Component {
             instructions
         } = this.state;        
        
-        // var eventData = {
-        //     name,
-        //     accessCode,
-        //     // instructorName: USER.firstName + ' ' + USER.lastName,
-        //     // instructorEmail: USER.email,
-        //     isActive,
-        //     instructions
-        // };
+        var eventData = {
+            name,
+            accessCode,
+            instructorName: authUser.firstName + ' ' + authUser.lastName,
+            instructorEmail: authUser.email,
+            isActive,
+            instructions
+        };
 
-        this.props.firebase.scavengerHunt(accessCode).set({
-                name: name,
-                accessCode: accessCode,
-                isActive: isActive,
-                instructions: instructions
-            })
+        this.props.firebase.scavengerHunt(accessCode).set(eventData)
             .then(() => {
                 console.log("Document successfully written!");
                 this.setState({ ...INITIAL_STATE });
