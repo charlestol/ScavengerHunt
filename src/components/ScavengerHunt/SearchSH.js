@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
+import JoinScavengerHunt from './JoinSH';
+
 // ADDING START DATE AND END DATE LATER
 
 const INITIAL_STATE = {
@@ -28,7 +30,7 @@ class SearchScavengerHunt extends Component {
         this.props.firebase.scavengerHunt(accessCode).get()
             .then(doc => {
                 if (doc.exists) {
-                    console.log("Document data:", doc.data());
+                    // console.log("Document data:", doc.data());
                     this.setState({ 
                         scavengerHunt: doc.data(),
                         loading: false,
@@ -94,6 +96,7 @@ class SearchScavengerHunt extends Component {
                                 {scavengerHunt.instructions}
                             </div>
                             <br />
+                            <JoinScavengerHunt accessCode={accessCode} />
                         </div>
                     }
                     {error && <p>{error}</p>}
