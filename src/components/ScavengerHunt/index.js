@@ -1,3 +1,4 @@
 import CreateScavengerHunt from './CreateSH';
+import ListScavengerHunts from './ListSH';
 
-export { CreateScavengerHunt };
+export { CreateScavengerHunt, ListScavengerHunts };
