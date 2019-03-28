@@ -83,7 +83,7 @@ class Firebase {
 
   scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
 
-  // joinScavengerHunt = (accessCode, studentID) => this.scavengerHuntMembers(accessCode).;
+  joinScavengerHunt = (accessCode, studentID) => this.scavengerHuntMembers(accessCode).doc(studentID);
 
   scavengerHuntSubmissions = accessCode => this.scavengerHunt(accessCode).collection('submissions');
 
