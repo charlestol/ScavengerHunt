@@ -109,7 +109,7 @@ class CreateEventFormBase extends Component {
                     <button disabled={isInvalid} type="submit">
                         Create
                     </button>
-                    {error && <p>{error.message}</p>}
+                    {error && <p>{error}</p>}
                 </form>
                 )}
             </AuthUserContext.Consumer>
