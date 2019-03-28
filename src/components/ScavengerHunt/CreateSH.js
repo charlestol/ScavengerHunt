@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
-// import * as ROLES from '../../constants/roles';
-// import { compose } from 'recompose';
-
-// const CreateEventPage = () => (
-//     <div>
-//         <h1>Create Scavenger Hunt Event</h1>
-//         <CreateEventFormBase />
-//     </div>
-// );
-
 // ADDING START DATE AND END DATE LATER
 
 const INITIAL_STATE = {
@@ -119,7 +109,7 @@ class CreateEventFormBase extends Component {
                     <button disabled={isInvalid} type="submit">
                         Create
                     </button>
-                    {error && <p>{error.message}</p>}
+                    {error && <p>{error}</p>}
                 </form>
                 )}
             </AuthUserContext.Consumer>
@@ -127,12 +117,5 @@ class CreateEventFormBase extends Component {
     }
 }
 
-// const condition = authUser =>
-//   authUser && authUser.roles.includes(ROLES.ADMIN);
-
-
 export default withFirebase(CreateEventFormBase)
 
-// export default CreateEventPage;
-
-// export { CreateEventForm }
