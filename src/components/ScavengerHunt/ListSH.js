@@ -40,22 +40,22 @@ class ListScavengerHunts extends Component {
     const { scavengerHunts, loading } = this.state;
 
     return (
-                <div>
-                    <h2>scavengerHunts</h2>
-                    {loading && <div>Loading ...</div>}
-                    <ul>
-                    {scavengerHunts.map(scavengerHunt => (
-                        <li key={scavengerHunt.accessCode}>
-                        <span>
-                            <strong>Event Name:</strong> {scavengerHunt.name}
-                        </span>
-                        <span>
-                            <strong>Access Code:</strong> {scavengerHunt.accessCode}
-                        </span>
-                        </li>
-                    ))}
-                    </ul>
-                </div>
+      <div>
+        <h2>scavengerHunts</h2>
+        {loading && <div>Loading ...</div>}
+        <ul>
+        {scavengerHunts.map(scavengerHunt => (
+            <li key={scavengerHunt.accessCode}>
+            <span>
+                <strong>Event Name:</strong> {scavengerHunt.name}
+            </span>
+            <span>
+                <strong>Access Code:</strong> {scavengerHunt.accessCode}
+            </span>
+            </li>
+        ))}
+        </ul>
+      </div>
     );
   }
 }
