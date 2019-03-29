@@ -19,8 +19,8 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
-  isAdmin: false,
-  error: null,
+  role: ROLES.STUDENT,
+  error: null
 }
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
@@ -41,29 +41,29 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { firstName, lastName, studentID, email, passwordOne, isAdmin } = this.state;
-    const roles = [];
+    const { firstName, lastName, studentID, email, passwordOne, role } = this.state;
+    // const roles = [];
 
-    if (isAdmin) {
-      roles.push(ROLES.ADMIN);
-    }
+    // if (isAdmin) {
+    //   roles.push(ROLES.ADMIN);
+    // }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         // Create a user in your Firestore database
         return this.props.firebase.user(authUser.user.email).set(
-          (isAdmin) ? {
+          (role === ROLES.INSTRUCTOR) ? {
             firstName,
             lastName,
             email,
-            roles
+            role
           } : {
             firstName,
             lastName,
             email,
             studentID,
-            roles
+            role
           },
           { merge: true },
         )
@@ -79,7 +79,6 @@ class SignUpFormBase extends Component {
 
         this.setState({ error });
       });
-
     event.preventDefault();
   };
 
@@ -88,10 +87,10 @@ class SignUpFormBase extends Component {
   };
 
   onClickStudent = () => {
-    this.setState({isAdmin: false})
+    this.setState({role: ROLES.STUDENT})
   }
   onClickInstructor = () => {
-    this.setState({isAdmin: true})
+    this.setState({role: ROLES.INSTRUCTOR})
   }
 
   render() {
@@ -102,7 +101,7 @@ class SignUpFormBase extends Component {
       email,
       passwordOne,
       passwordTwo,
-      isAdmin,
+      role,
       error,
     } = this.state;
 
@@ -112,6 +111,8 @@ class SignUpFormBase extends Component {
       email === '' ||
       firstName === '' ||
       lastName === '';
+
+    console.log(role);
 
       return (
         <div>
@@ -143,7 +144,7 @@ class SignUpFormBase extends Component {
             />
             <br />          
             {
-              !isAdmin &&
+              role===ROLES.STUDENT &&
               <div>
                 <input
                   name="studentID"

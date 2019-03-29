@@ -80,7 +80,6 @@ class Firebase {
 
   scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
 
-
   scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
 
   joinScavengerHunt = (accessCode, studentID) => this.scavengerHuntMembers(accessCode).doc(studentID);
