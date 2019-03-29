@@ -7,6 +7,7 @@ import { PasswordForgetLink } from '../PasswordForget';
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import { withAuthorization } from '../Session';
 
 const SignInPage = () => (
   <div>
@@ -81,9 +82,12 @@ class SignInFormBase extends Component {
   }
 }
 
+// const condition = authUser => !authUser;
+
 const SignInForm = compose(
   withRouter,
   withFirebase,
+  // withAuthorization(condition)
 )(SignInFormBase);
 
 export default SignInPage;

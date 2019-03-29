@@ -30,7 +30,7 @@ class CreateEventFormBase extends Component {
         var eventData = {
             name,
             accessCode,
-            instructorName: authUser.firstName + ' ' + authUser.lastName,
+            instructorName: `${authUser.firstName} ${authUser.lastName}`, // This is a template literal, same as firstName + ' ' + lastName 
             instructorEmail: authUser.email,
             isActive,
             instructions

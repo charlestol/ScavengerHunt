@@ -4,6 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
+import { compose } from 'recompose';
+import { withAuthorization } from '../Session';
 
 const SignUpPage = () => (
   <div>
@@ -194,7 +196,14 @@ const SignUpLink = () => (
   </p>
 );
 
-const SignUpForm = withRouter(withFirebase(SignUpFormBase));
+// const condition = authUser => !authUser;
+
+const SignUpForm = compose( 
+  withRouter,
+  // withAuthorization(condition),
+  withFirebase
+)(SignUpFormBase);
+
 
 export default SignUpPage;
 
