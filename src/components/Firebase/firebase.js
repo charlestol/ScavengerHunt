@@ -47,11 +47,6 @@ class Firebase {
           .then(snapshot => {
             const dbUser = snapshot.data();
 
-            // default empty roles
-            if (!dbUser.roles) {
-              dbUser.roles = [];
-            }
-
             // merge auth and db user
             authUser = {
               uid: authUser.uid,
@@ -79,7 +74,6 @@ class Firebase {
   // *** Scavenger Hunt API ***
 
   scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
-
 
   scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
 

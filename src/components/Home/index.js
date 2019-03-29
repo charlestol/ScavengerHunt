@@ -2,6 +2,7 @@ import React from 'react';
 
 import { withAuthorization } from '../Session';
 import { SearchScavengerHunt } from '../ScavengerHunt';
+import * as ROLES from '../../constants/roles';
 
 const HomePage = () => (
   <div>
@@ -11,6 +12,7 @@ const HomePage = () => (
   </div>
 );
 
-const condition = authUser => !!authUser;
+const condition = authUser =>
+  authUser && authUser.role===ROLES.STUDENT;
 
 export default withAuthorization(condition)(HomePage);
