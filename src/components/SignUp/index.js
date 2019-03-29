@@ -69,8 +69,13 @@ class SignUpFormBase extends Component {
         )
       })
       .then(() => {
+        const userRole = role;
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        if(userRole===ROLES.STUDENT) {
+          this.props.history.push(ROUTES.HOME);
+        } else {
+          this.props.history.push(ROUTES.ADMIN);
+        }
       })
       .catch(error => {
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {

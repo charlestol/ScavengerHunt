@@ -16,6 +16,6 @@ const AdminPage = () => (
 );
 
 const condition = authUser =>
-  authUser && authUser.roles.includes(ROLES.ADMIN);
+  authUser && authUser.role===ROLES.INSTRUCTOR;
 
 export default withAuthorization(condition)(AdminPage);
