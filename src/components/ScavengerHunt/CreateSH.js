@@ -5,7 +5,6 @@ import { AuthUserContext } from '../Session';
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
-// ADDING START DATE AND END DATE LATER
 
 const INITIAL_STATE = {
     name: '',
@@ -74,7 +73,6 @@ class CreateEventFormBase extends Component {
         const {
             name,
             accessCode,
-            closed,
             dateStart,
             dateEnd,
             instructions,
@@ -108,14 +106,6 @@ class CreateEventFormBase extends Component {
                         placeholder="Access Code"
                     />
                     <br />
-                    <input
-                        name="instructions"
-                        value={instructions}
-                        onChange={this.onChange}
-                        type="instructions"
-                        placeholder="Type event instructions here"
-                    />
-                    <br />
                     <DatePicker
                         selected={dateStart}
                         onChange={this.onStartDateSelect}
@@ -136,6 +126,14 @@ class CreateEventFormBase extends Component {
                         dateFormat="MMMM d, yyyy h:mm aa"
                         timeCaption="Time"
                         placeholderText="Click to set End time"
+                    />
+                    <br />
+                    <input
+                        name="instructions"
+                        value={instructions}
+                        onChange={this.onChange}
+                        type="instructions"
+                        placeholder="Type event instructions here"
                     />
                     <br />
                     <button disabled={isInvalid} type="submit">
