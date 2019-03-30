@@ -185,6 +185,7 @@ class SignUpFormBase extends Component {
             <br />
             {error && <p>{error.message}</p>}
           </form>
+          <SignInLink />
         </div>
       );
     }
@@ -196,12 +197,15 @@ const SignUpLink = () => (
   </p>
 );
 
-// const condition = authUser => !authUser;
+const SignInLink = () => (
+  <p>
+    Already have an account? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+  </p>
+);
 
 const SignUpForm = compose( 
   withRouter,
-  // withAuthorization(condition),
-  withFirebase
+  withFirebase,
 )(SignUpFormBase);
 
 
