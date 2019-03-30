@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
-import { AuthUserContext } from '../Session';
 import JoinScavengerHunt from './JoinSH';
 
 // ADDING START DATE AND END DATE LATER
@@ -9,6 +8,7 @@ import JoinScavengerHunt from './JoinSH';
 const INITIAL_STATE = {
     accessCode: '',
     scavengerHunt: null,
+    closed: false,
     loading: false,
     error: null
 }
@@ -31,18 +31,32 @@ class SearchScavengerHunt extends Component {
             .then(doc => {
                 if (doc.exists) {
                     // console.log("Document data:", doc.data());
-                    this.setState({ 
-                        scavengerHunt: doc.data(),
-                        loading: false,
-                        error: null
-                    })
+                    const sh = doc.data();
+                    const closed = sh.closed;
+
+                    if(!closed) {
+                        this.setState({ 
+                            scavengerHunt: sh,
+                            closed: false,
+                            loading: false,
+                            error: null
+                        })
+                    } else {
+                        this.setState({ 
+                            scavengerHunt: null,
+                            closed: true,
+                            loading: false,
+                            error: null
+                        })
+                    }
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!", ERROR_DOES_NOT_EXIST);
                     this.setState({ 
                         error: ERROR_DOES_NOT_EXIST,
                         loading: false,
-                        scavengerHunt: null
+                        scavengerHunt: null,
+                        closed: false
                     })
                 }
             }).catch(error => {
@@ -65,6 +79,7 @@ class SearchScavengerHunt extends Component {
         const {
             accessCode,
             loading,
+            closed,
             scavengerHunt,
             error
         } = this.state;
@@ -72,8 +87,6 @@ class SearchScavengerHunt extends Component {
         const isInvalid = accessCode === '';
 
         return (
-            <AuthUserContext.Consumer>
-                {authUser => (
                 <form onSubmit={this.onSearch}>
                     <input
                         name="accessCode"
@@ -86,7 +99,7 @@ class SearchScavengerHunt extends Component {
                         Search
                     </button>
                     {loading && <div>Loading ...</div>}   
-                    {scavengerHunt && 
+                    {scavengerHunt && !closed &&
                         <div>
                             <div>
                                 {scavengerHunt.name}
@@ -101,8 +114,6 @@ class SearchScavengerHunt extends Component {
                     }
                     {error && <p>{error}</p>}
                 </form>
-                )}
-            </AuthUserContext.Consumer>
         );
     }
 }
