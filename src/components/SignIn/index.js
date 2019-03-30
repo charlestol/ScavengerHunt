@@ -82,12 +82,12 @@ class SignInFormBase extends Component {
   }
 }
 
-// const condition = authUser => !authUser;
+const condition = authUser => !authUser;
 
 const SignInForm = compose(
   withRouter,
   withFirebase,
-  // withAuthorization(condition)
+  withAuthorization(condition)
 )(SignInFormBase);
 
 export default SignInPage;
