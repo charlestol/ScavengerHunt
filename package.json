@@ -10,7 +10,7 @@
     "firestore": "^1.1.6",
     "http2": "^3.3.7",
     "react": "^16.8.4",
-    "react-datepicker": "^2.2.0",
+    "react-datepicker": "^2.3.0",
     "react-dom": "^16.8.4",
     "react-router": "^4.4.0",
     "react-router-dom": "^4.4.0",

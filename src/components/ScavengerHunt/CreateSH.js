@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 // ADDING START DATE AND END DATE LATER
 
 const INITIAL_STATE = {
