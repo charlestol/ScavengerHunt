@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
-// ADDING START DATE AND END DATE LATER
+import DatePicker from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
 
 const INITIAL_STATE = {
     name: '',
     accessCode: '',
-    isActive: false,
+    closed: false,
+    dateStart: null,
+    dateEnd: null,
     instructions: '',
     error: null
 }
@@ -23,17 +27,21 @@ class CreateEventFormBase extends Component {
         const {
             name,
             accessCode,
-            isActive,
-            instructions
+            closed,
+            dateStart, 
+            dateEnd,
+            instructions,
         } = this.state;        
-       
+        
         var eventData = {
             name,
             accessCode,
-            instructorName: `${authUser.firstName} ${authUser.lastName}`, // This is a template literal, same as firstName + ' ' + lastName 
-            instructorEmail: authUser.email,
-            isActive,
-            instructions
+            email: authUser.email,
+            instructor: `${authUser.firstName} ${authUser.lastName}`, // This is a template literal, same as firstName + ' ' + lastName 
+            dateStart: this.props.firebase.time.fromDate(new Date(`${dateStart}`)),
+            dateEnd: this.props.firebase.time.fromDate(new Date(`${dateEnd}`)),
+            closed,
+            instructions,
         };
 
         this.props.firebase.scavengerHunt(accessCode).set(eventData)
@@ -47,21 +55,26 @@ class CreateEventFormBase extends Component {
             });
 
         event.preventDefault();
-      };
-    
-      onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-      };
-    
-      onChangeCheckbox = event => {
-        this.setState({ [event.target.name]: event.target.checked });
-      };    
+    };
+
+    onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+    };
+
+    onStartDateSelect = (date) => {
+        this.setState({ dateStart: date})
+    }
+
+    onEndDateSelect = (date) => {
+        this.setState({ dateEnd: date})
+    }  
 
     render() {
         const {
             name,
             accessCode,
-            isActive,
+            dateStart,
+            dateEnd,
             instructions,
             error
         } = this.state;
@@ -69,7 +82,9 @@ class CreateEventFormBase extends Component {
         const isInvalid = 
             name === '' ||
             accessCode === '' ||
-            instructions === '';
+            instructions === '' ||
+            dateStart === null ||
+            dateEnd === null;
 
         return (
             <AuthUserContext.Consumer>
@@ -82,6 +97,7 @@ class CreateEventFormBase extends Component {
                         type="text"
                         placeholder="Event Name"
                     />
+                    <br />
                     <input
                         name="accessCode"
                         value={accessCode}
@@ -89,16 +105,29 @@ class CreateEventFormBase extends Component {
                         type="text"
                         placeholder="Access Code"
                     />
-
-                    <label>
-                        Active:
-                        <input
-                            name="isActive"
-                            type="checkbox"
-                            checked={isActive}
-                            onChange={this.onChangeCheckbox}
-                        />
-                    </label>
+                    <br />
+                    <DatePicker
+                        selected={dateStart}
+                        onChange={this.onStartDateSelect}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={60}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="Time"
+                        placeholderText="Click to set Start time"
+                    />
+                    <br />
+                    <DatePicker
+                        selected={dateEnd}
+                        onChange={this.onEndDateSelect}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={60}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="Time"
+                        placeholderText="Click to set End time"
+                    />
+                    <br />
                     <input
                         name="instructions"
                         value={instructions}
@@ -106,9 +135,11 @@ class CreateEventFormBase extends Component {
                         type="instructions"
                         placeholder="Type event instructions here"
                     />
+                    <br />
                     <button disabled={isInvalid} type="submit">
                         Create
                     </button>
+                    <br />
                     {error && <p>{error}</p>}
                 </form>
                 )}

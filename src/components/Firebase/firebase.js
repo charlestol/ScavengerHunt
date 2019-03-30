@@ -17,6 +17,8 @@ class Firebase {
 
     this.fieldValue = app.firestore.FieldValue;
 
+    this.time = app.firestore.Timestamp;
+
     this.auth = app.auth();
 
     this.db = app.firestore();
@@ -62,6 +64,8 @@ class Firebase {
         fallback();
       }
     });
+
+  time = () => this.time;
 
   // *** User API ***;
 
