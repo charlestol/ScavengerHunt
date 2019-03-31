@@ -20,9 +20,14 @@ class JoinScavengerHunt extends Component {
     }
 
     onJoin = (user) => {
+        const userData = {
+            email: user.email,
+            name: `${user.firstName} ${user.lastName}`,
+            studentID: user.studentID,
+        }
         console.log(user)
         this.setState({ loading: true })        
-        this.props.firebase.joinScavengerHunt(this.props.accessCode, user.uid).set(user)
+        this.props.firebase.joinScavengerHunt(this.props.accessCode, user.email).set(userData)
             .then(() => {
                 console.log("User Successfully joined!");
                 this.setState({ 
@@ -47,9 +52,11 @@ class JoinScavengerHunt extends Component {
             <AuthUserContext.Consumer>
                 {authUser => (
                     <div>
+                        {authUser && 
                         <button onClick={() => this.onJoin(authUser)}>
                             Join
                         </button>
+                        }
                         {message && <div>{message}</div>}
                     </div>
                 )}

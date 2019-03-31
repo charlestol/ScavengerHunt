@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
+
 import JoinScavengerHunt from './JoinSH';
 
 // ADDING START DATE AND END DATE LATER
@@ -13,7 +14,7 @@ const INITIAL_STATE = {
     error: null
 }
 
-const ERROR_DOES_NOT_EXIST = "Invalid access code entered. Either it was mis-typed or it does not exist. Contact your instructor for verification."
+const ERROR_DOES_NOT_EXIST = "Invalid access code entered. Either the event has ended, it was mis-typed or it does not exist. Contact your instructor for verification."
 
 class SearchScavengerHunt extends Component {
     constructor(props) {

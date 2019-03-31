@@ -65,7 +65,6 @@ class Firebase {
       }
     });
 
-  time = () => this.time;
 
   // *** User API ***;
 
@@ -81,11 +80,13 @@ class Firebase {
 
   scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
 
-  joinScavengerHunt = (accessCode, studentID) => this.scavengerHuntMembers(accessCode).doc(studentID);
+  joinScavengerHunt = (accessCode, email) => this.scavengerHuntMembers(accessCode).doc(email);
 
   scavengerHuntSubmissions = accessCode => this.scavengerHunt(accessCode).collection('submissions');
 
   scavengerHunts = () => this.db.collection('scavengerHunts');
+
+  time = () => this.time;
 }
 
 export default Firebase;
