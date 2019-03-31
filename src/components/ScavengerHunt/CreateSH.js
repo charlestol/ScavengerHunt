@@ -10,6 +10,7 @@ const INITIAL_STATE = {
     name: '',
     accessCode: '',
     closed: false,
+    submissionType: '',
     dateStart: null,
     dateEnd: null,
     instructions: '',
@@ -27,6 +28,7 @@ class CreateEventFormBase extends Component {
         const {
             name,
             accessCode,
+            submissionType,
             closed,
             dateStart, 
             dateEnd,
@@ -36,6 +38,7 @@ class CreateEventFormBase extends Component {
         var eventData = {
             name,
             accessCode,
+            submissionType,
             email: authUser.email,
             instructor: `${authUser.firstName} ${authUser.lastName}`, // This is a template literal, same as firstName + ' ' + lastName 
             dateStart: this.props.firebase.time.fromDate(new Date(`${dateStart}`)),
@@ -73,6 +76,7 @@ class CreateEventFormBase extends Component {
         const {
             name,
             accessCode,
+            submissionType,
             dateStart,
             dateEnd,
             instructions,
@@ -82,6 +86,7 @@ class CreateEventFormBase extends Component {
         const isInvalid = 
             name === '' ||
             accessCode === '' ||
+            submissionType === '' ||
             instructions === '' ||
             dateStart === null ||
             dateEnd === null;
@@ -136,6 +141,28 @@ class CreateEventFormBase extends Component {
                         placeholder="Type event instructions here"
                     />
                     <br />
+                    <div>
+                        <label>
+                            <input
+                                name="submissionType"
+                                value="Image"
+                                checked={submissionType === "Image"}
+                                onChange={this.onChange}
+                                type="radio"
+                            />
+                            Image
+                        </label>
+                        <label>
+                            <input
+                                name="submissionType"
+                                value="Text"
+                                checked={submissionType === "Text"}
+                                onChange={this.onChange}
+                                type="radio"
+                            />
+                            Text
+                        </label>
+                    </div>
                     <button disabled={isInvalid} type="submit">
                         Create
                     </button>
