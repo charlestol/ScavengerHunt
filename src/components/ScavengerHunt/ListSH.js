@@ -17,7 +17,7 @@ class ListScavengerHunts extends Component {
     this.setState({ loading: true });
 
     this.unsubscribe = this.props.firebase
-      .scavengerHunts().where("instructorEmail", "==", this.props.email)
+      .scavengerHunts().where("email", "==", this.props.email)
       .onSnapshot(snapshot => {
         let scavengerHunts = [];
 
@@ -41,17 +41,14 @@ class ListScavengerHunts extends Component {
 
     return (
       <div>
-        <h2>scavengerHunts</h2>
+        <h2>Scavenger Hunt Events</h2>
         {loading && <div>Loading ...</div>}
         <ul>
         {scavengerHunts.map(scavengerHunt => (
             <li key={scavengerHunt.accessCode}>
-            <span>
-                <strong>Event Name:</strong> {scavengerHunt.name}
-            </span>
-            <span>
-                <strong>Access Code:</strong> {scavengerHunt.accessCode}
-            </span>
+              <span>
+                  <strong>{scavengerHunt.name}</strong> 
+              </span>
             </li>
         ))}
         </ul>

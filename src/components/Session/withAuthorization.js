@@ -12,7 +12,6 @@ const withAuthorization = condition => Component => {
     componentDidMount() {
       this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
-          console.log(authUser);
           if (authUser.role === ROLES.STUDENT) {
             this.props.history.push(ROUTES.HOME);
           }

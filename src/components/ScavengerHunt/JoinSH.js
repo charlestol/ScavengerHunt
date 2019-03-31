@@ -22,7 +22,7 @@ class JoinScavengerHunt extends Component {
     onJoin = (user) => {
         console.log(user)
         this.setState({ loading: true })        
-        this.props.firebase.joinScavengerHunt(this.props.accessCode, user.uid).set(user)
+        this.props.firebase.joinScavengerHunt(this.props.accessCode, user.studentID).set(user)
             .then(() => {
                 console.log("User Successfully joined!");
                 this.setState({ 
