@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
+
 import JoinScavengerHunt from './JoinSH';
 
 // ADDING START DATE AND END DATE LATER

@@ -5,7 +5,7 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import { compose } from 'recompose';
-import { withAuthorization } from '../Session';
+// import { withAuthorization } from '../Session';
 
 const SignUpPage = () => (
   <div>
@@ -54,7 +54,7 @@ class SignUpFormBase extends Component {
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         // Create a user in your Firestore database
-        return this.props.firebase.user(authUser.user.email).set(
+        this.props.firebase.user(authUser.user.email).set(
           (role === ROLES.INSTRUCTOR) ? {
             firstName,
             lastName,
