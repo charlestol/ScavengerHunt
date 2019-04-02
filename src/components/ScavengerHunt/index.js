@@ -1,5 +1,5 @@
-import CreateScavengerHunt from './CreateSH';
-import ListScavengerHunts from './ListSH';
-import SearchScavengerHunt from './SearchSH';
-import HistoryScavengerHunt from './historySH';
+import CreateScavengerHunt from './create';
+import ListScavengerHunts from './list';
+import SearchScavengerHunt from './search';
+import HistoryScavengerHunt from './history';
 export { HistoryScavengerHunt, CreateScavengerHunt, ListScavengerHunts, SearchScavengerHunt };
