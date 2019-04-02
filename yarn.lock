@@ -7290,7 +7290,7 @@ prompts@^0.1.9:
     kleur "^2.0.1"
     sisteransi "^0.1.1"
 
-prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -7457,10 +7457,10 @@ react-app-polyfill@^0.2.2:
     raf "3.4.1"
     whatwg-fetch "3.0.0"
 
-react-datepicker@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-2.2.0.tgz#140f56845ecc25b8dbc8962091958da86148254d"
-  integrity sha512-JXXyytODTQojN2i2rbS/1MWnQkSlXiSDzOiGbQCC/vVuyo/1yPgj+2UP+wHXYjKobPirWMG3zfxZdZa4y2wTKg==
+react-datepicker@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-2.3.0.tgz#c3c5822c8081aa34a252c08929c52bfd34576491"
+  integrity sha512-sgauGBTUlVrne5oHuYeLhBtKy2YOuEbPo/rXRTuxP/dRJNkHpXQ+ZfRmiJDX30mh/+EGRW5ORLVGhD1YgLbEiA==
   dependencies:
     classnames "^2.2.5"
     date-fns "^2.0.0-alpha.23"

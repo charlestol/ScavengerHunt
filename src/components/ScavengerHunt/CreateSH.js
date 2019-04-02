@@ -2,22 +2,17 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
-// import * as ROLES from '../../constants/roles';
-// import { compose } from 'recompose';
-
-// const CreateEventPage = () => (
-//     <div>
-//         <h1>Create Scavenger Hunt Event</h1>
-//         <CreateEventFormBase />
-//     </div>
-// );
-
-// ADDING START DATE AND END DATE LATER
+import DatePicker from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
 
 const INITIAL_STATE = {
     name: '',
     accessCode: '',
-    isActive: false,
+    closed: false,
+    submissionType: '',
+    dateStart: null,
+    dateEnd: null,
     instructions: '',
     error: null
 }
@@ -33,25 +28,26 @@ class CreateEventFormBase extends Component {
         const {
             name,
             accessCode,
-            isActive,
-            instructions
+            submissionType,
+            closed,
+            dateStart, 
+            dateEnd,
+            instructions,
         } = this.state;        
-       
-        // var eventData = {
-        //     name,
-        //     accessCode,
-        //     // instructorName: USER.firstName + ' ' + USER.lastName,
-        //     // instructorEmail: USER.email,
-        //     isActive,
-        //     instructions
-        // };
+        
+        var eventData = {
+            name,
+            accessCode,
+            submissionType,
+            email: authUser.email,
+            instructor: `${authUser.firstName} ${authUser.lastName}`, // This is a template literal, same as firstName + ' ' + lastName 
+            dateStart: this.props.firebase.time.fromDate(new Date(`${dateStart}`)),
+            dateEnd: this.props.firebase.time.fromDate(new Date(`${dateEnd}`)),
+            closed,
+            instructions,
+        };
 
-        this.props.firebase.scavengerHunt(accessCode).set({
-                name: name,
-                accessCode: accessCode,
-                isActive: isActive,
-                instructions: instructions
-            })
+        this.props.firebase.scavengerHunt(accessCode).set(eventData)
             .then(() => {
                 console.log("Document successfully written!");
                 this.setState({ ...INITIAL_STATE });
@@ -62,21 +58,27 @@ class CreateEventFormBase extends Component {
             });
 
         event.preventDefault();
-      };
-    
-      onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-      };
-    
-      onChangeCheckbox = event => {
-        this.setState({ [event.target.name]: event.target.checked });
-      };    
+    };
+
+    onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+    };
+
+    onStartDateSelect = (date) => {
+        this.setState({ dateStart: date})
+    }
+
+    onEndDateSelect = (date) => {
+        this.setState({ dateEnd: date})
+    }  
 
     render() {
         const {
             name,
             accessCode,
-            isActive,
+            submissionType,
+            dateStart,
+            dateEnd,
             instructions,
             error
         } = this.state;
@@ -84,7 +86,10 @@ class CreateEventFormBase extends Component {
         const isInvalid = 
             name === '' ||
             accessCode === '' ||
-            instructions === '';
+            submissionType === '' ||
+            instructions === '' ||
+            dateStart === null ||
+            dateEnd === null;
 
         return (
             <AuthUserContext.Consumer>
@@ -97,6 +102,7 @@ class CreateEventFormBase extends Component {
                         type="text"
                         placeholder="Event Name"
                     />
+                    <br />
                     <input
                         name="accessCode"
                         value={accessCode}
@@ -104,16 +110,29 @@ class CreateEventFormBase extends Component {
                         type="text"
                         placeholder="Access Code"
                     />
-
-                    <label>
-                        Active:
-                        <input
-                            name="isActive"
-                            type="checkbox"
-                            checked={isActive}
-                            onChange={this.onChangeCheckbox}
-                        />
-                    </label>
+                    <br />
+                    <DatePicker
+                        selected={dateStart}
+                        onChange={this.onStartDateSelect}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={60}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="Time"
+                        placeholderText="Click to set Start time"
+                    />
+                    <br />
+                    <DatePicker
+                        selected={dateEnd}
+                        onChange={this.onEndDateSelect}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={60}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="Time"
+                        placeholderText="Click to set End time"
+                    />
+                    <br />
                     <input
                         name="instructions"
                         value={instructions}
@@ -121,10 +140,34 @@ class CreateEventFormBase extends Component {
                         type="instructions"
                         placeholder="Type event instructions here"
                     />
+                    <br />
+                    <div>
+                        <label>
+                            <input
+                                name="submissionType"
+                                value="Image"
+                                checked={submissionType === "Image"}
+                                onChange={this.onChange}
+                                type="radio"
+                            />
+                            Image
+                        </label>
+                        <label>
+                            <input
+                                name="submissionType"
+                                value="Text"
+                                checked={submissionType === "Text"}
+                                onChange={this.onChange}
+                                type="radio"
+                            />
+                            Text
+                        </label>
+                    </div>
                     <button disabled={isInvalid} type="submit">
                         Create
                     </button>
-                    {error && <p>{error.message}</p>}
+                    <br />
+                    {error && <p>{error}</p>}
                 </form>
                 )}
             </AuthUserContext.Consumer>
@@ -132,12 +175,5 @@ class CreateEventFormBase extends Component {
     }
 }
 
-// const condition = authUser =>
-//   authUser && authUser.roles.includes(ROLES.ADMIN);
-
-
 export default withFirebase(CreateEventFormBase)
 
-// export default CreateEventPage;
-
-// export { CreateEventForm }

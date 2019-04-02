@@ -4,6 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
+import { compose } from 'recompose';
+// import { withAuthorization } from '../Session';
 
 const SignUpPage = () => (
   <div>
@@ -19,8 +21,8 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
-  isAdmin: false,
-  error: null,
+  role: ROLES.STUDENT,
+  error: null
 }
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
@@ -41,36 +43,41 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { firstName, lastName, studentID, email, passwordOne, isAdmin } = this.state;
-    const roles = [];
+    const { firstName, lastName, studentID, email, passwordOne, role } = this.state;
+    // const roles = [];
 
-    if (isAdmin) {
-      roles.push(ROLES.ADMIN);
-    }
+    // if (isAdmin) {
+    //   roles.push(ROLES.ADMIN);
+    // }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         // Create a user in your Firestore database
-        return this.props.firebase.user(authUser.user.email).set(
-          (isAdmin) ? {
+        this.props.firebase.user(authUser.user.email).set(
+          (role === ROLES.INSTRUCTOR) ? {
             firstName,
             lastName,
             email,
-            roles
+            role
           } : {
             firstName,
             lastName,
             email,
             studentID,
-            roles
+            role
           },
           { merge: true },
         )
       })
       .then(() => {
+        const userRole = role;
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        if(userRole===ROLES.STUDENT) {
+          this.props.history.push(ROUTES.HOME);
+        } else {
+          this.props.history.push(ROUTES.ADMIN);
+        }
       })
       .catch(error => {
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
@@ -79,7 +86,6 @@ class SignUpFormBase extends Component {
 
         this.setState({ error });
       });
-
     event.preventDefault();
   };
 
@@ -88,10 +94,10 @@ class SignUpFormBase extends Component {
   };
 
   onClickStudent = () => {
-    this.setState({isAdmin: false})
+    this.setState({role: ROLES.STUDENT})
   }
   onClickInstructor = () => {
-    this.setState({isAdmin: true})
+    this.setState({role: ROLES.INSTRUCTOR})
   }
 
   render() {
@@ -102,7 +108,7 @@ class SignUpFormBase extends Component {
       email,
       passwordOne,
       passwordTwo,
-      isAdmin,
+      role,
       error,
     } = this.state;
 
@@ -112,6 +118,8 @@ class SignUpFormBase extends Component {
       email === '' ||
       firstName === '' ||
       lastName === '';
+
+    console.log(role);
 
       return (
         <div>
@@ -143,7 +151,7 @@ class SignUpFormBase extends Component {
             />
             <br />          
             {
-              !isAdmin &&
+              role===ROLES.STUDENT &&
               <div>
                 <input
                   name="studentID"
@@ -177,6 +185,7 @@ class SignUpFormBase extends Component {
             <br />
             {error && <p>{error.message}</p>}
           </form>
+          <SignInLink />
         </div>
       );
     }
@@ -188,7 +197,17 @@ const SignUpLink = () => (
   </p>
 );
 
-const SignUpForm = withRouter(withFirebase(SignUpFormBase));
+const SignInLink = () => (
+  <p>
+    Already have an account? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+  </p>
+);
+
+const SignUpForm = compose( 
+  withRouter,
+  withFirebase,
+)(SignUpFormBase);
+
 
 export default SignUpPage;
 

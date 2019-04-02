@@ -1,16 +1,21 @@
 import React from 'react';
 
-import { withAuthorization } from '../Session';
+import { AuthUserContext, withAuthorization } from '../Session';
 import * as ROLES from '../../constants/roles';
-import { CreateScavengerHunt } from '../ScavengerHunt';
+import { CreateScavengerHunt, ListScavengerHunts } from '../ScavengerHunt';
 
 const AdminPage = () => (
+  <AuthUserContext.Consumer>
+    {authUser => (
       <div>
         <CreateScavengerHunt />
+        <ListScavengerHunts email={authUser.email} />
       </div>
+    )}
+  </AuthUserContext.Consumer>
 );
 
 const condition = authUser =>
-  authUser && authUser.roles.includes(ROLES.ADMIN);
+  authUser && authUser.role===ROLES.INSTRUCTOR;
 
 export default withAuthorization(condition)(AdminPage);

@@ -17,6 +17,8 @@ class Firebase {
 
     this.fieldValue = app.firestore.FieldValue;
 
+    this.time = app.firestore.Timestamp;
+
     this.auth = app.auth();
 
     this.db = app.firestore();
@@ -47,11 +49,6 @@ class Firebase {
           .then(snapshot => {
             const dbUser = snapshot.data();
 
-            // default empty roles
-            if (!dbUser.roles) {
-              dbUser.roles = [];
-            }
-
             // merge auth and db user
             authUser = {
               uid: authUser.uid,
@@ -68,9 +65,12 @@ class Firebase {
       }
     });
 
+
   // *** User API ***;
 
   user = email => this.db.doc(`users/${email}`);
+
+  userHistory = email => this.user(email).collection('history');
 
   users = () => this.db.collection('users');
 
@@ -78,7 +78,15 @@ class Firebase {
 
   scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
 
+  scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
+
+  joinScavengerHunt = (accessCode, email) => this.scavengerHuntMembers(accessCode).doc(email);
+
+  scavengerHuntSubmissions = accessCode => this.scavengerHunt(accessCode).collection('submissions');
+
   scavengerHunts = () => this.db.collection('scavengerHunts');
+
+  time = () => this.time;
 }
 
 export default Firebase;
