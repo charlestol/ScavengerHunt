@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 // import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
+import ScavengerHuntEvent from './eventItem';
 
 class ListScavengerHunts extends Component {
   constructor(props) {
@@ -45,11 +46,9 @@ class ListScavengerHunts extends Component {
         {loading && <div>Loading ...</div>}
         <ul>
         {scavengerHunts.map(scavengerHunt => (
-            <li key={scavengerHunt.accessCode}>
-              <span>
-                  <strong>{scavengerHunt.name}</strong> 
-              </span>
-            </li>
+            <div key={scavengerHunt.accessCode}>
+              <ScavengerHuntEvent sh={scavengerHunt} />
+            </div>
         ))}
         </ul>
       </div>
