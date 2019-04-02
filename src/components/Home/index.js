@@ -1,15 +1,20 @@
 import React from 'react';
 
-import { withAuthorization } from '../Session';
-import { SearchScavengerHunt } from '../ScavengerHunt';
+import { AuthUserContext, withAuthorization } from '../Session';
+import { SearchScavengerHunt, HistoryScavengerHunt } from '../ScavengerHunt';
 import * as ROLES from '../../constants/roles';
 
 const HomePage = () => (
-  <div>
-    <h1>Home Page</h1>
-    <p>The Home Page is accessible by every signed in user.</p>
-    <SearchScavengerHunt />
-  </div>
+  <AuthUserContext.Consumer>
+    {authUser => (
+      <div>
+        <h1>Home Page</h1>
+        <p>The Home Page is accessible by every signed in user.</p>
+        <SearchScavengerHunt />
+        <HistoryScavengerHunt email={authUser.email} />
+      </div>
+    )}
+  </AuthUserContext.Consumer>
 );
 
 const condition = authUser =>

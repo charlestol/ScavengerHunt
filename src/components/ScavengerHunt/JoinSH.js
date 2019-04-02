@@ -20,20 +20,25 @@ class JoinScavengerHunt extends Component {
     }
 
     onJoin = (user) => {
+      let self = this;
         const userData = {
             email: user.email,
             name: `${user.firstName} ${user.lastName}`,
             studentID: user.studentID,
         }
         console.log(user)
-        this.setState({ loading: true })        
-        this.props.firebase.joinScavengerHunt(this.props.accessCode, user.email).set(userData)
+        this.setState({ loading: true })
+        this.props.firebase.joinScavengerHunt(this.props.scavengerHunt.accessCode, user.email).set(userData)
             .then(() => {
+
+              self.props.firebase.addToUserHistory(user.email, this.props.scavengerHunt.accessCode).set(self.props.scavengerHunt)
+              .then(() => {
                 console.log("User Successfully joined!");
-                this.setState({ 
-                    loading: false, 
+                self.setState({
+                    loading: false,
                     message: SUCCESS_MSG
                 });
+              })
             })
             .catch(function(error) {
                 console.error("Error writing document: ", error);
@@ -52,7 +57,7 @@ class JoinScavengerHunt extends Component {
             <AuthUserContext.Consumer>
                 {authUser => (
                     <div>
-                        {authUser && 
+                        {authUser &&
                         <button onClick={() => this.onJoin(authUser)}>
                             Join
                         </button>
@@ -66,4 +71,3 @@ class JoinScavengerHunt extends Component {
 }
 
 export default withFirebase(JoinScavengerHunt)
-

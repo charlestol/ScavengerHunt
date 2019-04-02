@@ -27,7 +27,7 @@ class SearchScavengerHunt extends Component {
         this.setState({ loading: true });
 
        const { accessCode } = this.state
-       
+
         this.props.firebase.scavengerHunt(accessCode).get()
             .then(doc => {
                 if (doc.exists) {
@@ -36,14 +36,14 @@ class SearchScavengerHunt extends Component {
                     const closed = sh.closed;
 
                     if(!closed) {
-                        this.setState({ 
+                        this.setState({
                             scavengerHunt: sh,
                             closed: false,
                             loading: false,
                             error: null
                         })
                     } else {
-                        this.setState({ 
+                        this.setState({
                             scavengerHunt: null,
                             closed: true,
                             loading: false,
@@ -53,7 +53,7 @@ class SearchScavengerHunt extends Component {
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!", ERROR_DOES_NOT_EXIST);
-                    this.setState({ 
+                    this.setState({
                         error: ERROR_DOES_NOT_EXIST,
                         loading: false,
                         scavengerHunt: null,
@@ -61,7 +61,7 @@ class SearchScavengerHunt extends Component {
                     })
                 }
             }).catch(error => {
-                this.setState({ 
+                this.setState({
                     error: error,
                     loading: false,
                     scavengerHunt: null
@@ -71,7 +71,7 @@ class SearchScavengerHunt extends Component {
 
         event.preventDefault();
       };
-    
+
       onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
       };
@@ -99,7 +99,7 @@ class SearchScavengerHunt extends Component {
                     <button disabled={isInvalid} type="submit">
                         Search
                     </button>
-                    {loading && <div>Loading ...</div>}   
+                    {loading && <div>Loading ...</div>}
                     {scavengerHunt && !closed &&
                         <div>
                             <div>
@@ -110,7 +110,7 @@ class SearchScavengerHunt extends Component {
                                 {scavengerHunt.instructions}
                             </div>
                             <br />
-                            <JoinScavengerHunt accessCode={accessCode} />
+                            <JoinScavengerHunt scavengerHunt={scavengerHunt} />
                         </div>
                     }
                     {error && <p>{error}</p>}
@@ -120,4 +120,3 @@ class SearchScavengerHunt extends Component {
 }
 
 export default withFirebase(SearchScavengerHunt)
-

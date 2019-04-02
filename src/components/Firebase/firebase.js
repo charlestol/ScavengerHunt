@@ -72,6 +72,8 @@ class Firebase {
 
   userHistory = email => this.user(email).collection('history');
 
+  addToUserHistory = (email, accessCode) => this.user(email).collection('history').doc(accessCode);
+
   users = () => this.db.collection('users');
 
   // *** Scavenger Hunt API ***
