@@ -73,6 +73,7 @@ class CreateEventFormBase extends Component {
     }  
 
     render() {
+        console.log('CREATE')
         const {
             name,
             accessCode,
