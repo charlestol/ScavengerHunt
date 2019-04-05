@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
-import EventList from './eventList';
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";

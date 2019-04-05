@@ -19,10 +19,7 @@ const AdminPage = ({match}) => (
             </div>
           }
         />
-        <Route 
-          exact path={`${match.path}/:topicId`} 
-          render={(props) => <EventItem {...props} match={match} />}
-        />
+        <Route exact path={`${match.path}/:topicId`} component={EventItem} />
       </div>
     )}
   </AuthUserContext.Consumer>

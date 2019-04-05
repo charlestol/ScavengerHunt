@@ -1,15 +1,16 @@
 import React from 'react';
 
-import { AuthUserContext } from '../Session';
+let EventItem = props => {
+  const sh = props.location.state.sh;
 
-let EventItem = (props) => (
-  <AuthUserContext.Consumer>
-    {authUser => (
-      <div>
-        yes
-      </div>
-    )}
-  </AuthUserContext.Consumer>
-);
-
+  return (
+    <div>
+      {sh.name}
+      <br />
+      {sh.accessCode}
+      <br />
+      {sh.description}
+    </div>
+  )
+}
 export default EventItem;
