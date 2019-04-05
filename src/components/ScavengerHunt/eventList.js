@@ -44,9 +44,10 @@ class EventList extends Component {
         {loading && <div>Loading ...</div>}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <Link 
-                to={`${this.props.match.url}/${scavengerHunt.name}`} 
-              >
+              <Link to={{
+                pathname: `${this.props.match.url}/${scavengerHunt.name}`,
+                state: { sh: scavengerHunt }
+              }}>
                 {scavengerHunt.name}
               </Link>
             </div>
