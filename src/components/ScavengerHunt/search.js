@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 
-import JoinScavengerHunt from './JoinSH';
+import JoinScavengerHunt from './join';
 
 // ADDING START DATE AND END DATE LATER
 

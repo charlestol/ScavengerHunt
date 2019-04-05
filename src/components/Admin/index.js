@@ -2,14 +2,27 @@ import React from 'react';
 
 import { AuthUserContext, withAuthorization } from '../Session';
 import * as ROLES from '../../constants/roles';
-import { CreateScavengerHunt, ListScavengerHunts } from '../ScavengerHunt';
+import { CreateScavengerHunt, EventList } from '../ScavengerHunt';
+import { Route } from 'react-router-dom';
+import EventItem from '../ScavengerHunt/eventItem';
 
-const AdminPage = () => (
+const AdminPage = ({match}) => (
   <AuthUserContext.Consumer>
     {authUser => (
       <div>
-        <CreateScavengerHunt />
-        <ListScavengerHunts email={authUser.email} />
+        <Route
+          exact path={match.path}
+          render={() => 
+            <div>
+              <CreateScavengerHunt />
+              <EventList email={authUser.email} match={match} />
+            </div>
+          }
+        />
+        <Route 
+          exact path={`${match.path}/:topicId`} 
+          render={(props) => <EventItem {...props} match={match} />}
+        />
       </div>
     )}
   </AuthUserContext.Consumer>
