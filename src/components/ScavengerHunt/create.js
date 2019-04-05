@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
+import EventList from './eventList';
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,14 +11,13 @@ const INITIAL_STATE = {
     name: '',
     accessCode: '',
     closed: false,
-    submissionType: '',
     dateStart: null,
     dateEnd: null,
-    instructions: '',
+    description: '',
     error: null
 }
 
-class CreateEventFormBase extends Component {
+class CreateEvent extends Component {
     constructor(props) {
         super(props);
 
@@ -28,23 +28,21 @@ class CreateEventFormBase extends Component {
         const {
             name,
             accessCode,
-            submissionType,
             closed,
             dateStart, 
             dateEnd,
-            instructions,
+            description,
         } = this.state;        
         
         var eventData = {
             name,
             accessCode,
-            submissionType,
             email: authUser.email,
             instructor: `${authUser.firstName} ${authUser.lastName}`, // This is a template literal, same as firstName + ' ' + lastName 
             dateStart: this.props.firebase.time.fromDate(new Date(`${dateStart}`)),
             dateEnd: this.props.firebase.time.fromDate(new Date(`${dateEnd}`)),
             closed,
-            instructions,
+            description,
         };
 
         this.props.firebase.scavengerHunt(accessCode).set(eventData)
@@ -73,108 +71,107 @@ class CreateEventFormBase extends Component {
     }  
 
     render() {
-        console.log('CREATE')
         const {
             name,
             accessCode,
-            submissionType,
             dateStart,
             dateEnd,
-            instructions,
+            description,
             error
         } = this.state;
 
         const isInvalid = 
             name === '' ||
             accessCode === '' ||
-            submissionType === '' ||
-            instructions === '' ||
+            description === '' ||
             dateStart === null ||
             dateEnd === null;
 
         return (
             <AuthUserContext.Consumer>
                 {authUser => (
-                <form onSubmit={event => this.onCreateEvent(event, authUser)}>
-                    <input
-                        name="name"
-                        value={name}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Event Name"
-                    />
-                    <br />
-                    <input
-                        name="accessCode"
-                        value={accessCode}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Access Code"
-                    />
-                    <br />
-                    <DatePicker
-                        selected={dateStart}
-                        onChange={this.onStartDateSelect}
-                        showTimeSelect
-                        timeFormat="HH:mm"
-                        timeIntervals={60}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        timeCaption="Time"
-                        placeholderText="Click to set Start time"
-                    />
-                    <br />
-                    <DatePicker
-                        selected={dateEnd}
-                        onChange={this.onEndDateSelect}
-                        showTimeSelect
-                        timeFormat="HH:mm"
-                        timeIntervals={60}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        timeCaption="Time"
-                        placeholderText="Click to set End time"
-                    />
-                    <br />
-                    <input
-                        name="instructions"
-                        value={instructions}
-                        onChange={this.onChange}
-                        type="instructions"
-                        placeholder="Type event instructions here"
-                    />
-                    <br />
                     <div>
-                        <label>
+                        <form onSubmit={event => this.onCreateEvent(event, authUser)}>
                             <input
-                                name="submissionType"
-                                value="Image"
-                                checked={submissionType === "Image"}
+                                name="name"
+                                value={name}
                                 onChange={this.onChange}
-                                type="radio"
+                                type="text"
+                                placeholder="Event Name"
                             />
-                            Image
-                        </label>
-                        <label>
+                            <br />
                             <input
-                                name="submissionType"
-                                value="Text"
-                                checked={submissionType === "Text"}
+                                name="accessCode"
+                                value={accessCode}
                                 onChange={this.onChange}
-                                type="radio"
+                                type="text"
+                                placeholder="Access Code"
                             />
-                            Text
-                        </label>
+                            <br />
+                            <DatePicker
+                                selected={dateStart}
+                                onChange={this.onStartDateSelect}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={60}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                timeCaption="Time"
+                                placeholderText="Click to set Start time"
+                            />
+                            <br />
+                            <DatePicker
+                                selected={dateEnd}
+                                onChange={this.onEndDateSelect}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={60}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                timeCaption="Time"
+                                placeholderText="Click to set End time"
+                            />
+                            <br />
+                            <input
+                                name="description"
+                                value={description}
+                                onChange={this.onChange}
+                                type="description"
+                                placeholder="Type event description here"
+                            />
+                            <br />
+                            {/* <div>
+                                <label>
+                                    <input
+                                        name="submissionType"
+                                        value="Image"
+                                        checked={submissionType === "Image"}
+                                        onChange={this.onChange}
+                                        type="radio"
+                                    />
+                                    Image
+                                </label>
+                                <label>
+                                    <input
+                                        name="submissionType"
+                                        value="Text"
+                                        checked={submissionType === "Text"}
+                                        onChange={this.onChange}
+                                        type="radio"
+                                    />
+                                    Text
+                                </label>
+                            </div> */}
+                            <button disabled={isInvalid} type="submit">
+                                Create
+                            </button>
+                            <br />
+                            {error && <p>{error}</p>}
+                        </form>
                     </div>
-                    <button disabled={isInvalid} type="submit">
-                        Create
-                    </button>
-                    <br />
-                    {error && <p>{error}</p>}
-                </form>
                 )}
             </AuthUserContext.Consumer>
         );
     }
 }
 
-export default withFirebase(CreateEventFormBase)
+export default withFirebase(CreateEvent)
 

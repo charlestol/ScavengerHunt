@@ -6,7 +6,7 @@ let EventItem = (props) => (
   <AuthUserContext.Consumer>
     {authUser => (
       <div>
-        <h2>{props.sh.name}</h2>
+        yes
       </div>
     )}
   </AuthUserContext.Consumer>

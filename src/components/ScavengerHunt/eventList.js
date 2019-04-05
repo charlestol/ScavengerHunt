@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
-// import { AuthUserContext } from '../Session';
+import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
-import ScavengerHuntEvent from './eventItem';
 
-class ListScavengerHunts extends Component {
+class EventList extends Component {
   constructor(props) {
     super(props);
 
@@ -39,21 +38,22 @@ class ListScavengerHunts extends Component {
 
   render() {
     const { scavengerHunts, loading } = this.state;
-
     return (
       <div>
         <h2>Scavenger Hunt Events</h2>
         {loading && <div>Loading ...</div>}
-        <ul>
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <ScavengerHuntEvent sh={scavengerHunt} />
+              <Link 
+                to={`${this.props.match.url}/${scavengerHunt.name}`} 
+              >
+                {scavengerHunt.name}
+              </Link>
             </div>
         ))}
-        </ul>
       </div>
     );
   }
 }
 
-export default withFirebase(ListScavengerHunts);
+export default withFirebase(EventList);

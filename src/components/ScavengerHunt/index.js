@@ -1,5 +1,7 @@
 import CreateScavengerHunt from './create';
-import ListScavengerHunts from './list';
 import SearchScavengerHunt from './search';
 import HistoryScavengerHunt from './history';
-export { HistoryScavengerHunt, CreateScavengerHunt, ListScavengerHunts, SearchScavengerHunt};
+import EventList from './eventList';
+import EventItem from './eventItem';
+
+export { HistoryScavengerHunt, CreateScavengerHunt, SearchScavengerHunt, EventList, EventItem };
