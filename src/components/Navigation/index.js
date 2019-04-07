@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import SignOutButton from '../SignOut';
+import {SignOut} from '../Authentication';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
@@ -27,7 +27,7 @@ const NavigationAuthStudent = () => (
       <Link to={ROUTES.ACCOUNT}>Account</Link>
     </li>
     <li>
-      <SignOutButton />
+      <SignOut />
     </li>
   </ul>
 );
@@ -41,7 +41,7 @@ const NavigationAuthInstructor = () => (
       <Link to={ROUTES.ADMIN}>Admin</Link>
     </li>
     <li>
-      <SignOutButton />
+      <SignOut />
     </li>
   </ul>
 );

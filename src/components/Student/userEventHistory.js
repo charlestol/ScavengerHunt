@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 // import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
+import { Link, withRouter } from 'react-router-dom';
 
 class ScavengerHuntHistory extends Component {
   constructor(props) {
@@ -38,23 +39,22 @@ class ScavengerHuntHistory extends Component {
 
   render() {
     const { scavengerHunts, loading } = this.state;
+    const URL = this.props.match.url;
 
     return (
       <div>
         <h2>Scavenger Hunt Events</h2>
         {loading && <div>Loading ...</div>}
-        <ul>
         {scavengerHunts.map(scavengerHunt => (
-            <li key={scavengerHunt.accessCode}>
-              <span>
+            <div key={scavengerHunt.accessCode}>
+              <Link to={`${URL}/${scavengerHunt.accessCode}`}>
                   <strong>{scavengerHunt.name}</strong>
-              </span>
-            </li>
+              </Link>
+            </div>
         ))}
-        </ul>
       </div>
     );
   }
 }
 
-export default withFirebase(ScavengerHuntHistory);
+export default withRouter(withFirebase(ScavengerHuntHistory));

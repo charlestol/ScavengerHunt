@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
-import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 class EventList extends Component {
   constructor(props) {
@@ -16,9 +15,9 @@ class EventList extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-
+    let user = this.props.user;
     this.unsubscribe = this.props.firebase
-      .scavengerHunts().where("email", "==", this.props.email)
+      .scavengerHunts().where("email", "==", user.email)
       .onSnapshot(snapshot => {
         let scavengerHunts = [];
 

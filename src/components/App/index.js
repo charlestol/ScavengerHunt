@@ -2,14 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Navigation from '../Navigation';
-import LandingPage from '../Landing';
-import SignUpPage from '../authentication/SignUp';
-import SignInPage from '../authentication/SignIn';
-import PasswordForgetPage from '../authentication/PasswordForget';
-import HomePage from '../dashboards/Home';
-import AccountPage from '../authentication/Account';
-import AdminPage from '../dashboards/Admin';
-import {EventItem, TaskItem} from '../ScavengerHunt'
+import Landing from '../Landing';
+import {SignUp, SignIn, PasswordForget, Account} from '../Authentication';
+import {Student} from '../Student';
+import {EventItem, TaskItem, Instructor} from '../Instructor'
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
@@ -18,17 +14,19 @@ const App = () => (
     <div>
       <Navigation />
       <hr />
-      <Route exact path={ROUTES.LANDING} component={LandingPage} />
-      <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+      <Route exact path={ROUTES.LANDING} component={Landing} />
+      <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
+      <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
       <Route
         exact
         path={ROUTES.PASSWORD_FORGET}
-        component={PasswordForgetPage}
+        component={PasswordForget}
       />
-      <Route exact path={ROUTES.HOME} component={HomePage} />
-      <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-      <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+      <Route exact path={ROUTES.HOME} component={Student} />
+      {/* <Route exact path={`${ROUTES.HOME}/:eventId`} component={EventItem} />
+      <Route exact path={`${ROUTES.HOME}/:eventId/:taskId`} component={TaskItem} /> */}
+      <Route exact path={ROUTES.ACCOUNT} component={Account} />
+      <Route exact path={ROUTES.ADMIN} component={Instructor} />
       <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={EventItem} />
       <Route exact path={`${ROUTES.ADMIN}/:eventId/:taskId`} component={TaskItem} />
     </div>
