@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
-import SignUpPage from '../SignUp';
-import SignInPage from '../SignIn';
-import PasswordForgetPage from '../PasswordForget';
-import HomePage from '../Home';
-import AccountPage from '../Account';
-import AdminPage from '../Admin';
+import SignUpPage from '../authentication/SignUp';
+import SignInPage from '../authentication/SignIn';
+import PasswordForgetPage from '../authentication/PasswordForget';
+import HomePage from '../dashboards/Home';
+import AccountPage from '../authentication/Account';
+import AdminPage from '../dashboards/Admin';
 import {EventItem, TaskItem} from '../ScavengerHunt'
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
