@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 
-import JoinScavengerHunt from './join';
+import JoinEvent from './joinEvent';
 
 // ADDING START DATE AND END DATE LATER
 
@@ -110,7 +110,7 @@ class SearchScavengerHunt extends Component {
                                 {scavengerHunt.instructions}
                             </div>
                             <br />
-                            <JoinScavengerHunt scavengerHunt={scavengerHunt} />
+                            <JoinEvent scavengerHunt={scavengerHunt} />
                         </div>
                     }
                     {error && <p>{error}</p>}

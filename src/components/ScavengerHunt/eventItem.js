@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import CreateTask from './createTask';
+import ListTasks from './taskList';
 
 class EventItem extends Component {
   state = { 
@@ -33,14 +34,14 @@ class EventItem extends Component {
 
   render() {
     const { loading, sh } = this.state;
-    console.log("ac",sh.accessCode)
     return (
       <div>
         {loading && <div>Loading ...</div>}
         {sh.accessCode && 
           <div>
             {sh.name}
-            <CreateTask accessCode={sh.accessCode} />
+            <CreateTask />
+            <ListTasks />
           </div>
         }
       </div>

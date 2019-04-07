@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
-import ListTasks from './taskList';
-
+import { withRouter } from 'react-router-dom';
 const INITIAL_STATE = {
     name: '',
     instructions: '',
@@ -30,7 +29,7 @@ class CreateTask extends Component {
             entryType,
         };
 
-        const accessCode = this.props.accessCode;
+        const accessCode = this.props.match.params.eventId;
 
         this.props.firebase.scavengerHuntTask(accessCode,name).set(taskData)
             .then(() => {
@@ -108,12 +107,11 @@ class CreateTask extends Component {
                             </button>
                             <br />
                             {error && <p>{error}</p>}
-                            <ListTasks accessCode={this.props.accessCode} />
                         </form>
                     </div>
         );
     }
 }
 
-export default withFirebase(CreateTask)
+export default withRouter(withFirebase(CreateTask));
 

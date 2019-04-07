@@ -2,14 +2,14 @@ import React from 'react';
 
 import { AuthUserContext, withAuthorization } from '../Session';
 import * as ROLES from '../../constants/roles';
-import { CreateScavengerHunt, EventList } from '../ScavengerHunt';
+import { CreateEvent, EventList } from '../ScavengerHunt';
 
 const AdminPage = ({match}) => (
   <AuthUserContext.Consumer>
     {authUser => (
       <div>
-        <CreateScavengerHunt />
-        <EventList email={authUser.email} match={match} />
+        <CreateEvent />
+        <EventList email={authUser.email} />
       </div>
     )}
   </AuthUserContext.Consumer>

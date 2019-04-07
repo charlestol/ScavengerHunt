@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AuthUserContext, withAuthorization } from '../Session';
-import { SearchScavengerHunt, HistoryScavengerHunt } from '../ScavengerHunt';
+import { SearchEvent, EventHistory } from '../ScavengerHunt';
 import * as ROLES from '../../constants/roles';
 
 const HomePage = () => (
@@ -10,8 +10,8 @@ const HomePage = () => (
       <div>
         <h1>Home Page</h1>
         <p>The Home Page is accessible by every signed in user.</p>
-        <SearchScavengerHunt />
-        <HistoryScavengerHunt email={authUser.email} />
+        <SearchEvent />
+        <EventHistory email={authUser.email} />
       </div>
     )}
   </AuthUserContext.Consumer>

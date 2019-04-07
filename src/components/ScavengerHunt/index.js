@@ -1,7 +1,8 @@
-import CreateScavengerHunt from './createEvent';
-import SearchScavengerHunt from './search';
-import HistoryScavengerHunt from './history';
+import CreateEvent from './createEvent';
+import SearchEvent from './searchEvent';
+import EventHistory from './userEventHistory';
 import EventList from './eventList';
 import EventItem from './eventItem';
+import TaskItem from './taskItem';
 
-export { HistoryScavengerHunt, CreateScavengerHunt, SearchScavengerHunt, EventList, EventItem };
+export { EventHistory, CreateEvent, SearchEvent, EventList, EventItem, TaskItem };

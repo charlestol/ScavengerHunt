@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
+import { withRouter } from 'react-router-dom';
 
 class EventList extends Component {
   constructor(props) {
@@ -14,8 +15,9 @@ class EventList extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
+    let ac = this.props.match.params.eventId;
 
-    this.props.firebase.scavengerHuntTasks(this.props.accessCode)
+    this.props.firebase.scavengerHuntTasks(ac)
     .onSnapshot(querySnapshot => {
         let tasks = [];
         querySnapshot.forEach(doc => {
@@ -29,10 +31,6 @@ class EventList extends Component {
         });
       });
   }
-
-//   componentWillUnmount() {
-//     this.unsubscribe();
-//   }
 
   render() {
     const { tasks, loading } = this.state;
@@ -52,4 +50,4 @@ class EventList extends Component {
   }
 }
 
-export default withFirebase(EventList);
+export default withRouter(withFirebase(EventList));

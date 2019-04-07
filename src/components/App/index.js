@@ -9,7 +9,7 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
-import {EventItem} from '../ScavengerHunt'
+import {EventItem, TaskItem} from '../ScavengerHunt'
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
@@ -30,6 +30,7 @@ const App = () => (
       <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route exact path={ROUTES.ADMIN} component={AdminPage} />
       <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={EventItem} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/:taskId`} component={TaskItem} />
     </div>
   </Router>
 );

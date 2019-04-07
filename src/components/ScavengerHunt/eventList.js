@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
+import { withRouter } from 'react-router-dom';
 
 class EventList extends Component {
   constructor(props) {
@@ -39,13 +40,14 @@ class EventList extends Component {
 
   render() {
     const { scavengerHunts, loading } = this.state;
+    const URL = this.props.match.url;
     return (
       <div>
         <h2>Scavenger Hunt Events</h2>
         {loading && <div>Loading ...</div>}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <Link to={`${this.props.match.url}/${scavengerHunt.accessCode}`}>
+              <Link to={`${URL}/${scavengerHunt.accessCode}`}>
                 {scavengerHunt.name}
               </Link>
             </div>
@@ -55,4 +57,4 @@ class EventList extends Component {
   }
 }
 
-export default withFirebase(EventList);
+export default withRouter(withFirebase(EventList));
