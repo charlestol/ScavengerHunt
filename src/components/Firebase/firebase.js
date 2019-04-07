@@ -86,7 +86,14 @@ class Firebase {
 
   scavengerHuntSubmissions = accessCode => this.scavengerHunt(accessCode).collection('submissions');
 
+  scavengerHuntTasks = accessCode => this.scavengerHunt(accessCode).collection('tasks');
+
+  scavengerHuntTask = (accessCode, name) => this.scavengerHunt(accessCode).collection('tasks').doc(name);
+
+
   scavengerHunts = () => this.db.collection('scavengerHunts');
+
+
 
   time = () => this.time;
 }

@@ -79,6 +79,8 @@ class CreateEvent extends Component {
             error
         } = this.state;
 
+        console.log(dateStart)
+
         const isInvalid = 
             name === '' ||
             accessCode === '' ||

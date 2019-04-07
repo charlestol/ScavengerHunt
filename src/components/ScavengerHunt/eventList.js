@@ -22,7 +22,8 @@ class EventList extends Component {
         let scavengerHunts = [];
 
         snapshot.forEach(doc => {
-          scavengerHunts.push({ ...doc.data() })
+          let data = doc.data();
+          scavengerHunts.push(data);
         });
 
         this.setState({
@@ -44,10 +45,7 @@ class EventList extends Component {
         {loading && <div>Loading ...</div>}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <Link to={{
-                pathname: `${this.props.match.url}/${scavengerHunt.name}`,
-                state: { sh: scavengerHunt }
-              }}>
+              <Link to={`${this.props.match.url}/${scavengerHunt.accessCode}`}>
                 {scavengerHunt.name}
               </Link>
             </div>
