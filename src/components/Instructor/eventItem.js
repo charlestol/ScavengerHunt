@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import CreateTask from './createTask';
 import ListTasks from './taskList';
+import EventMembers from './eventMembers';
 
 class EventItem extends Component {
   state = { 
@@ -42,6 +43,7 @@ class EventItem extends Component {
             {sh.name}
             <CreateTask />
             <ListTasks />
+            <EventMembers />
           </div>
         }
       </div>
