@@ -9,7 +9,6 @@ class TaskItem extends Component {
     componentDidMount() {
         let name = this.props.match.params.taskId;
         let ac = this.props.match.params.eventId;
-        console.log(name, ac)
         this.setState({
             loading: true
         });
@@ -27,9 +26,6 @@ class TaskItem extends Component {
 
     render() {
         const {task} = this.state;
-        let name = this.props.match.params.taskId;
-        let ac = this.props.match.params.eventId;
-        console.log(name, ac)
         return (
             <div>
                 {task.name}
