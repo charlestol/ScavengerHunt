@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
+import { withRouter } from 'react-router-dom';
 
 class EventList extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ class EventList extends Component {
         let scavengerHunts = [];
 
         snapshot.forEach(doc => {
-          scavengerHunts.push({ ...doc.data() })
+          let data = doc.data();
+          scavengerHunts.push(data);
         });
 
         this.setState({
@@ -38,16 +40,14 @@ class EventList extends Component {
 
   render() {
     const { scavengerHunts, loading } = this.state;
+    const URL = this.props.match.url;
     return (
       <div>
         <h2>Scavenger Hunt Events</h2>
         {loading && <div>Loading ...</div>}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <Link to={{
-                pathname: `${this.props.match.url}/${scavengerHunt.name}`,
-                state: { sh: scavengerHunt }
-              }}>
+              <Link to={`${URL}/${scavengerHunt.accessCode}`}>
                 {scavengerHunt.name}
               </Link>
             </div>
@@ -57,4 +57,4 @@ class EventList extends Component {
   }
 }
 
-export default withFirebase(EventList);
+export default withRouter(withFirebase(EventList));
