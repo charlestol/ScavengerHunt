@@ -29,23 +29,23 @@ class JoinScavengerHunt extends Component {
         console.log(user)
         this.setState({ loading: true })
         this.props.firebase.joinScavengerHunt(this.props.scavengerHunt.accessCode, user.email).set(userData)
-            .then(() => {
+        .then(() => {
 
-              self.props.firebase.addToUserHistory(user.email, this.props.scavengerHunt.accessCode).set(self.props.scavengerHunt)
-              .then(() => {
-                console.log("User Successfully joined!");
-                self.setState({
-                    loading: false,
-                    message: SUCCESS_MSG
-                });
-              })
-            })
-            .catch(function(error) {
-                console.error("Error writing document: ", error);
-                this.setState({
-                    error
-                })
+            self.props.firebase.addToUserHistory(user.email, this.props.scavengerHunt.accessCode).set(self.props.scavengerHunt)
+            .then(() => {
+            console.log("User Successfully joined!");
+            self.setState({
+                loading: false,
+                message: SUCCESS_MSG
             });
+            })
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+            this.setState({
+                error
+            })
+        });
     }
 
     render() {

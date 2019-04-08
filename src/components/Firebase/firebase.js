@@ -77,6 +77,7 @@ class Firebase {
   users = () => this.db.collection('users');
 
   // *** Scavenger Hunt API ***
+  scavengerHunts = () => this.db.collection('scavengerHunts');
 
   scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
 
@@ -91,7 +92,6 @@ class Firebase {
   scavengerHuntTask = (accessCode, name) => this.scavengerHunt(accessCode).collection('tasks').doc(name);
 
 
-  scavengerHunts = () => this.db.collection('scavengerHunts');
 
 
 
