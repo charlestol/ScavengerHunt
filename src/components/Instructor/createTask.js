@@ -27,6 +27,7 @@ class CreateTask extends Component {
             name,
             instructions,
             entryType,
+            hasSubmission: false
         };
 
         const accessCode = this.props.match.params.eventId;
