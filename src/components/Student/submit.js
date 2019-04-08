@@ -9,6 +9,7 @@ const ERROR_MSG = "Error, try submitting again.";
 // const ERROR_MSG = "This scavenger hunt event is closed. Contact the instructor for more information."
 
 class Submit extends Component {
+    // Initial state
    state = { 
        message: null, 
        textEntry: '', 
@@ -19,16 +20,21 @@ class Submit extends Component {
     }
 
     onSubmitText = (user) => {
+        // array destructuring so state exists in this function
         const { textEntry } = this.state;
+        // grabbing the access code from the route
         let accessCode = this.props.match.params.eventId;
+        // getting the task information from the task parent
         let task = this.props.task.name;
+
+        // Data to be saved to the database
         const submitData = {
             email: user.email,
             name: `${user.firstName} ${user.lastName}`,
             studentID: user.studentID,
             textEntry,
         }
-
+        // save data in a task's submission collection
         this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
         .then(() => {
             console.log("Submission Successful!");
@@ -46,35 +52,41 @@ class Submit extends Component {
     }
 
     onSubmitImage = (user) => {
+        // array destructuring so state exists in this function
         const { image } = this.state;
+        // grabbing the access code from the route
         let accessCode = this.props.match.params.eventId;
+        // getting the task information from the task parent
         let task = this.props.task.name;
 
+        // prepare image to be store to this storage path
         const uploadTask = this.props.firebase.store.ref(`${accessCode}/${task}/${image.name}`).put(image);
+        // perform image upload
         uploadTask.on('state_changed', 
         snapshot => {
-            // progress func
+            // progress function
             const progress = Math.round(( snapshot.bytesTransferred / snapshot.totalBytes ) * 100)
             this.setState({ progress })
         }, 
         error => {
-            // error func
+            // error function
             console.log(error);
         }, 
         () => {
-            // complete func
+            // complete function
+            // get the URL of where the image is stored, will be used for viewing when doing <img src={url} />
             this.props.firebase.store.ref(`${accessCode}/${task}`).child(image.name).getDownloadURL()
             .then(imageURL => {
                 console.log(imageURL)
                 this.setState({ imageURL })
-
+                // Data to be saved to the database
                 const submitData = {
                     email: user.email,
                     name: `${user.firstName} ${user.lastName}`,
                     studentID: user.studentID,
                     imageURL,
                 }
-        
+                // save data in a task's submission collection
                 this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
                 .then(() => {
                     console.log("Submission Successful!");
@@ -130,6 +142,15 @@ class Submit extends Component {
                                 <button disabled={noText} onClick={() => this.onSubmitText(authUser)}>
                                     Submit
                                 </button>
+                                <br />
+                                {message && <div>{message}</div>}
+                                <br />
+                                {submitted && 
+                                    <div>
+                                        <h5>Submitted Text: </h5>
+                                        <p>{textEntry}</p>
+                                    </div>    
+                                }
                             </div>
                         }
                         {this.props.task.entryType==="image" &&
@@ -144,11 +165,12 @@ class Submit extends Component {
                                     Submit
                                 </button>
                                 <br />
+                                {message && <div>{message}</div>}
+                                <br />
                                 {/* Preview the image that was just uploaded */}
                                 {submitted && <img src={imageURL} alt="Uploaded Images" height="300" width="400" />}
                             </div>
                         }
-                        {message && <div>{message}</div>}
                     </div>
                 )}
             </AuthUserContext.Consumer>
