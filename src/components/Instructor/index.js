@@ -1,4 +1,4 @@
-import EventItem from './eventItem';
-import TaskItem from './taskItem';
-import Instructor from './dashboard';
-export { EventItem, TaskItem, Instructor};
+import InstructorEventItem from './eventItem';
+import InstructorTaskItem from './taskItem';
+import InstructorDash from './dashboard';
+export { InstructorEventItem, InstructorTaskItem, InstructorDash};

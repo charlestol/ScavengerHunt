@@ -47,8 +47,8 @@ class ScavengerHuntHistory extends Component {
         {loading && <div>Loading ...</div>}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <Link to={`${URL}/${scavengerHunt.accessCode}`}>
-                  <strong>{scavengerHunt.name}</strong>
+               <Link to={`${URL}/${scavengerHunt.accessCode}`}>
+                {scavengerHunt.name}
               </Link>
             </div>
         ))}

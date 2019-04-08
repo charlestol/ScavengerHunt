@@ -33,9 +33,9 @@ class ActiveEvents extends Component {
       });
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+  // componentWillUnmount() {
+  //   this.unsubscribe();
+  // }
 
   render() {
     const { activeEvents, loading } = this.state;
