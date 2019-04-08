@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const config = {
   apiKey: "AIzaSyB_BOnrLIbOsgFf2U84pOXYJagwGPltLaM",
@@ -22,6 +23,8 @@ class Firebase {
     this.auth = app.auth();
 
     this.db = app.firestore();
+
+    this.store = app.storage();
   }
 
   // *** Auth API ***
@@ -91,6 +94,8 @@ class Firebase {
   scavengerHuntSubmission = (accessCode, name, email) => this.scavengerHuntTask(accessCode, name).collection('submissions').doc(email);
 
   time = () => this.time;
+
+  store = () => this.store;
 }
 
 export default Firebase;
