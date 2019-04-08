@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const config = {
   apiKey: "AIzaSyB_BOnrLIbOsgFf2U84pOXYJagwGPltLaM",
@@ -22,6 +23,8 @@ class Firebase {
     this.auth = app.auth();
 
     this.db = app.firestore();
+
+    this.store = app.storage();
   }
 
   // *** Auth API ***
@@ -77,25 +80,22 @@ class Firebase {
   users = () => this.db.collection('users');
 
   // *** Scavenger Hunt API ***
-
+  scavengerHunts = () => this.db.collection('scavengerHunts');
   scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
 
   scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
 
   joinScavengerHunt = (accessCode, email) => this.scavengerHuntMembers(accessCode).doc(email);
 
-  scavengerHuntSubmissions = accessCode => this.scavengerHunt(accessCode).collection('submissions');
-
   scavengerHuntTasks = accessCode => this.scavengerHunt(accessCode).collection('tasks');
-
   scavengerHuntTask = (accessCode, name) => this.scavengerHunt(accessCode).collection('tasks').doc(name);
 
-
-  scavengerHunts = () => this.db.collection('scavengerHunts');
-
-
+  scavengerHuntSubmissions = (accessCode, name) => this.scavengerHuntTask(accessCode, name).collection('submissions');
+  scavengerHuntSubmission = (accessCode, name, email) => this.scavengerHuntTask(accessCode, name).collection('submissions').doc(email);
 
   time = () => this.time;
+
+  store = () => this.store;
 }
 
 export default Firebase;

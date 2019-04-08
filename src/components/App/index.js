@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Landing from '../Landing';
 import {SignUp, SignIn, PasswordForget, Account} from '../Authentication';
-import {Student} from '../Student';
-import {EventItem, TaskItem, Instructor} from '../Instructor'
+import {StudentEventItem, StudentTaskItem, StudentDash} from '../Student';
+import {InstructorEventItem, InstructorTaskItem, InstructorDash} from '../Instructor'
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
@@ -22,13 +22,13 @@ const App = () => (
         path={ROUTES.PASSWORD_FORGET}
         component={PasswordForget}
       />
-      <Route exact path={ROUTES.HOME} component={Student} />
-      {/* <Route exact path={`${ROUTES.HOME}/:eventId`} component={EventItem} />
-      <Route exact path={`${ROUTES.HOME}/:eventId/:taskId`} component={TaskItem} /> */}
+      <Route exact path={ROUTES.HOME} component={StudentDash} />
+      <Route exact path={`${ROUTES.HOME}/:eventId`} component={StudentEventItem} />
+      <Route exact path={`${ROUTES.HOME}/:eventId/:taskId`} component={StudentTaskItem} />
       <Route exact path={ROUTES.ACCOUNT} component={Account} />
-      <Route exact path={ROUTES.ADMIN} component={Instructor} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={EventItem} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/:taskId`} component={TaskItem} />
+      <Route exact path={ROUTES.ADMIN} component={InstructorDash} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={InstructorEventItem} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/:taskId`} component={InstructorTaskItem} />
     </div>
   </Router>
 );

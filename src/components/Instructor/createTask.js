@@ -27,6 +27,7 @@ class CreateTask extends Component {
             name,
             instructions,
             entryType,
+            hasSubmission: false
         };
 
         const accessCode = this.props.match.params.eventId;
@@ -84,8 +85,8 @@ class CreateTask extends Component {
                                 <label>
                                     <input
                                         name="entryType"
-                                        value="Image"
-                                        checked={entryType === "Image"}
+                                        value="image"
+                                        checked={entryType === "image"}
                                         onChange={this.onChange}
                                         type="radio"
                                     />
@@ -94,8 +95,8 @@ class CreateTask extends Component {
                                 <label>
                                     <input
                                         name="entryType"
-                                        value="Text"
-                                        checked={entryType === "Text"}
+                                        value="text"
+                                        checked={entryType === "text"}
                                         onChange={this.onChange}
                                         type="radio"
                                     />
