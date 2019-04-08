@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
+import Submit from './submit';
 
 class TaskItem extends Component {
     state = {
@@ -28,9 +29,13 @@ class TaskItem extends Component {
         const {task} = this.state;
         return (
             <div>
-                {task.name}
+                <h3>Task: {task.name}</h3>
                 <br />
-                {task.instructions}
+                <p>instructions: {task.instructions}</p>
+                <br />
+                <div>Submission Type: {task.entryType}</div>
+                <br />
+                <Submit task={task} />
             </div>
         );
     }

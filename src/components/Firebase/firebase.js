@@ -78,22 +78,17 @@ class Firebase {
 
   // *** Scavenger Hunt API ***
   scavengerHunts = () => this.db.collection('scavengerHunts');
-
   scavengerHunt = accessCode => this.db.doc(`scavengerHunts/${accessCode}`);
 
   scavengerHuntMembers = accessCode => this.scavengerHunt(accessCode).collection('members');
 
   joinScavengerHunt = (accessCode, email) => this.scavengerHuntMembers(accessCode).doc(email);
 
-  scavengerHuntSubmissions = accessCode => this.scavengerHunt(accessCode).collection('submissions');
-
   scavengerHuntTasks = accessCode => this.scavengerHunt(accessCode).collection('tasks');
-
   scavengerHuntTask = (accessCode, name) => this.scavengerHunt(accessCode).collection('tasks').doc(name);
 
-
-
-
+  scavengerHuntSubmissions = (accessCode, name) => this.scavengerHuntTask(accessCode, name).collection('submissions');
+  scavengerHuntSubmission = (accessCode, name, email) => this.scavengerHuntTask(accessCode, name).collection('submissions').doc(email);
 
   time = () => this.time;
 }
