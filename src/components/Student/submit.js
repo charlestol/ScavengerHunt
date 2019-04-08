@@ -9,12 +9,19 @@ const ERROR_MSG = "Error, try submitting again.";
 // const ERROR_MSG = "This scavenger hunt event is closed. Contact the instructor for more information."
 
 class Submit extends Component {
-   state = { message: null, textEntry: '', image: null, imageURL: '', progress: 0 }
+   state = { 
+       message: null, 
+       textEntry: '', 
+       image: null, 
+       imageURL: '', 
+       progress: 0, 
+       submitted: false 
+    }
 
     onSubmitText = (user) => {
-        const {textEntry} = this.state;
+        const { textEntry } = this.state;
         let accessCode = this.props.match.params.eventId;
-        let name = this.props.task.name;
+        let task = this.props.task.name;
         const submitData = {
             email: user.email,
             name: `${user.firstName} ${user.lastName}`,
@@ -22,11 +29,12 @@ class Submit extends Component {
             textEntry,
         }
 
-        this.props.firebase.scavengerHuntSubmission(accessCode, name, user.email).set(submitData)
+        this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
         .then(() => {
             console.log("Submission Successful!");
             this.setState({
-                message: SUCCESS_MSG
+                message: SUCCESS_MSG,
+                submitted: true
             });
             })
         .catch(function(error) {
@@ -38,17 +46,16 @@ class Submit extends Component {
     }
 
     onSubmitImage = (user) => {
-        const self = this;
         const { image } = this.state;
         let accessCode = this.props.match.params.eventId;
-        let name = this.props.task.name;
+        let task = this.props.task.name;
 
-        const uploadTask = this.props.firebase.store.ref(`images/${image.name}`).put(image);
+        const uploadTask = this.props.firebase.store.ref(`${accessCode}/${task}/${image.name}`).put(image);
         uploadTask.on('state_changed', 
         snapshot => {
             // progress func
             const progress = Math.round(( snapshot.bytesTransferred / snapshot.totalBytes ) * 100)
-            this.setState({progress})
+            this.setState({ progress })
         }, 
         error => {
             // error func
@@ -56,10 +63,10 @@ class Submit extends Component {
         }, 
         () => {
             // complete func
-            this.props.firebase.store.ref('images').child(image.name).getDownloadURL()
+            this.props.firebase.store.ref(`${accessCode}/${task}`).child(image.name).getDownloadURL()
             .then(imageURL => {
                 console.log(imageURL)
-                self.setState({ imageURL })
+                this.setState({ imageURL })
 
                 const submitData = {
                     email: user.email,
@@ -68,11 +75,12 @@ class Submit extends Component {
                     imageURL,
                 }
         
-                this.props.firebase.scavengerHuntSubmission(accessCode, name, user.email).set(submitData)
+                this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
                 .then(() => {
                     console.log("Submission Successful!");
                     this.setState({
-                        message: SUCCESS_MSG
+                        message: SUCCESS_MSG,
+                        submitted: true
                     });
                 })
                 .catch(function(error) {
@@ -99,7 +107,7 @@ class Submit extends Component {
 
     render() {
         const {
-            message, textEntry, image, progress, imageURL
+            message, textEntry, image, progress, imageURL, submitted
         } = this.state;
 
         const noImage = image === null;
@@ -137,7 +145,7 @@ class Submit extends Component {
                                 </button>
                                 <br />
                                 {/* Preview the image that was just uploaded */}
-                                <img src={imageURL} alt="Uploaded Images" height="300" width="400" />
+                                {submitted && <img src={imageURL} alt="Uploaded Images" height="300" width="400" />}
                             </div>
                         }
                         {message && <div>{message}</div>}
