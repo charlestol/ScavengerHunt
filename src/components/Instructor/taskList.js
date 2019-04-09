@@ -43,7 +43,7 @@ class EventList extends Component {
         {loading && <div>Loading ...</div>}
         {tasks.map(task => (
             <div key={task.name}>
-                <Link to={`${URL}/${task.name}`}>{task.name}</Link>
+                <Link to={`${URL}${task.name}`}>{task.name}</Link>
             </div>
         ))}
       </div>
