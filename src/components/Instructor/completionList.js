@@ -64,7 +64,7 @@ class CompletionList extends Component {
         {loading && <div>Loading ...</div>}
         {tasks.map(task => (
             <div key={task.name}>
-                <p>{task.name} {task.submitted ? <p>&#10004;</p> : <p>&#10007;</p> }</p>
+                <div>{task.name} {task.submitted ? <span>&#10004;</span> : <span>&#10008;</span> }</div>
             </div>
         ))}
       </div>
