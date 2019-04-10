@@ -15,7 +15,7 @@ class CompletionList extends Component {
     let ac = this.props.match.params.eventId;
     let email = this.props.match.params.memberId;
 
-    console.log(ac)
+    // console.log(ac)
 
     this.props.firebase.scavengerHuntSubmissions(ac, email)
     .onSnapshot(querySnapshot => {

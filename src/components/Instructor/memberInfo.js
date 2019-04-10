@@ -11,7 +11,7 @@ class MemberInfo extends Component {
         this.props.firebase.scavengerHuntMember(ac, email).get()
         .then(doc => {
             const memberInfo = doc.data();
-            console.log(memberInfo)
+            // console.log(memberInfo)
             this.setState({ memberInfo })
         })
     }
