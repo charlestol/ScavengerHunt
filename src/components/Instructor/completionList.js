@@ -56,7 +56,7 @@ class CompletionList extends Component {
   render() {
     const { tasks, loading } = this.state;
     console.log('list', tasks)
-    // const URL = this.props.match.url;
+    const URL = this.props.match.url;
 
     return (
       <div>
@@ -64,7 +64,20 @@ class CompletionList extends Component {
         {loading && <div>Loading ...</div>}
         {tasks.map(task => (
             <div key={task.name}>
-                <div>{task.name} {task.submitted ? <span>&#10004;</span> : <span>&#10008;</span> }</div>
+              {task.submitted ?
+                <div>
+                  <Link to={`${URL}${task.name}`}>{task.name}</Link>
+                  <span>&#10004;</span>
+                </div>
+                :
+                <div> 
+                  <div>{task.name}
+                    <span>
+                      &#10008;
+                    </span> 
+                  </div>
+                </div>
+              }
             </div>
         ))}
       </div>

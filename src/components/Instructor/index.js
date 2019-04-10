@@ -6,4 +6,5 @@ import InstructorDash from './dashboard';
 import MemberInfo from './memberInfo';
 import MemberList from './eventMembers';
 import CreateTask from './createTask';
-export { InstructorEventList, InstructorEventItem, InstructorTaskList, InstructorTaskItem, InstructorDash, MemberList, MemberInfo, CreateTask};
+import Submission from './submission';
+export { InstructorEventList, InstructorEventItem, InstructorTaskList, InstructorTaskItem, InstructorDash, MemberList, MemberInfo, CreateTask, Submission};
