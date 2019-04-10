@@ -5,7 +5,7 @@ import Navigation from '../Navigation';
 import Landing from '../Landing';
 import {SignUp, SignIn, PasswordForget, Account} from '../Authentication';
 import {StudentEventItem, StudentTaskItem, StudentDash} from '../Student';
-import {InstructorEventItem, InstructorTaskItem, InstructorDash} from '../Instructor'
+import { InstructorEventItem, InstructorTaskList, InstructorTaskItem, InstructorDash, MemberList, MemberInfo, CreateTask, Submission} from '../Instructor'
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
@@ -25,10 +25,17 @@ const App = () => (
       <Route exact path={ROUTES.HOME} component={StudentDash} />
       <Route exact path={`${ROUTES.HOME}/:eventId`} component={StudentEventItem} />
       <Route exact path={`${ROUTES.HOME}/:eventId/:taskId`} component={StudentTaskItem} />
+
       <Route exact path={ROUTES.ACCOUNT} component={Account} />
+
       <Route exact path={ROUTES.ADMIN} component={InstructorDash} />
       <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={InstructorEventItem} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/:taskId`} component={InstructorTaskItem} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/`} component={InstructorTaskList} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/:taskId`} component={InstructorTaskItem} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/members/`} component={MemberList} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId`} component={MemberInfo} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId/:taskId`} component={Submission} />
+      <Route exact path={`${ROUTES.ADMIN}/:eventId/create`} component={CreateTask} />
     </div>
   </Router>
 );

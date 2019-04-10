@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
-class eventMembers extends Component {
+class EventMembers extends Component {
   constructor(props) {
     super(props);
 
@@ -35,15 +35,15 @@ class eventMembers extends Component {
   render() {
     const { members, loading } = this.state;
     // console.log('list', tasks)
-
+    const URL = this.props.match.url;
+    console.log(URL)
     return (
       <div>
         <h2>Members</h2>
         {loading && <div>Loading ...</div>}
         {members.map(member => (
             <div key={member.email}>
-                {/* <Link to={`${URL}/${member.name}`}>{member.name}</Link> */}
-                {member.name}
+                <Link to={`${URL}${member.email}`}>{member.name}</Link>
             </div>
         ))}
       </div>
@@ -51,4 +51,4 @@ class eventMembers extends Component {
   }
 }
 
-export default withRouter(withFirebase(eventMembers));
+export default withRouter(withFirebase(EventMembers));

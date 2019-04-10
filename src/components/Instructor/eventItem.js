@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
-import CreateTask from './createTask';
-import ListTasks from './taskList';
-import EventMembers from './eventMembers';
+// import CreateTask from './createTask';
+// import ListTasks from './taskList';
+// import EventMembers from './eventMembers';
+import DashNav from './navigation'
 
 class EventItem extends Component {
   state = { 
@@ -41,9 +42,7 @@ class EventItem extends Component {
         {sh.accessCode && 
           <div>
             {sh.name}
-            <CreateTask />
-            <ListTasks />
-            <EventMembers />
+            <DashNav />
           </div>
         }
       </div>

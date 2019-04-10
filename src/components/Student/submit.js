@@ -33,6 +33,7 @@ class Submit extends Component {
             name: `${user.firstName} ${user.lastName}`,
             studentID: user.studentID,
             textEntry,
+            taskName: task,
         }
         // save data in a task's submission collection
         this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
@@ -85,6 +86,7 @@ class Submit extends Component {
                     name: `${user.firstName} ${user.lastName}`,
                     studentID: user.studentID,
                     imageURL,
+                    taskName: task,
                 }
                 // save data in a task's submission collection
                 this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
