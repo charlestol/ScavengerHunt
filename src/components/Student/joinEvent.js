@@ -28,7 +28,7 @@ class JoinScavengerHunt extends Component {
         }
         console.log(user)
         this.setState({ loading: true })
-        this.props.firebase.joinScavengerHunt(this.props.scavengerHunt.accessCode, user.email).set(userData)
+        this.props.firebase.scavengerHuntMember(this.props.scavengerHunt.accessCode, user.email).set(userData)
         .then(() => {
 
             self.props.firebase.addToUserHistory(user.email, this.props.scavengerHunt.accessCode).set(self.props.scavengerHunt)
