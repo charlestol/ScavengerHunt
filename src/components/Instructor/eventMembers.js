@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter, Link } from 'react-router-dom';
 
-class eventMembers extends Component {
+class EventMembers extends Component {
   constructor(props) {
     super(props);
 
@@ -51,4 +51,4 @@ class eventMembers extends Component {
   }
 }
 
-export default withRouter(withFirebase(eventMembers));
+export default withRouter(withFirebase(EventMembers));

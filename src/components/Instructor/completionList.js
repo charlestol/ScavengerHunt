@@ -4,13 +4,10 @@ import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
 
 class CompletionList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-      tasks: []
-    };
+  state = {
+    loading: false,
+    tasksCompleted: [],
+    tasksInProgess: [],
   }
 
   componentDidMount() {
@@ -20,64 +17,66 @@ class CompletionList extends Component {
 
     console.log(ac)
 
-    this.unsubscribe = this.props.firebase.scavengerHuntTasks(ac)
+    this.props.firebase.scavengerHuntSubmissions(ac, email)
     .onSnapshot(querySnapshot => {
+      let tasksCompleted = [];
+      let tasksInProgess = [];
+
+      querySnapshot.forEach(doc => {
+          let submission = doc.data();
+          tasksCompleted.push(submission.taskName);
+      });
+
+      this.props.firebase.scavengerHuntTasks(ac).get()
+      .then(querySnapshot => {
         let tasks = [];
         querySnapshot.forEach(doc => {
-            let task = doc.data();
-
-            this.props.firebase.scavengerHuntSubmission(ac, task.name, email).get()
-            .then(doc => {
-                
-                if(doc.exists) {
-                    task.submitted = true;
-                    tasks.push(task);
-                    this.setState({
-                        tasks,
-                        loading: false,
-                    });
-                } else {
-                    task.submitted = false;
-                    tasks.push(task);
-                    this.setState({
-                        tasks,
-                        loading: false,
-                    });
-                }
-            });
+          let task = doc.data();
+          tasks.push(task.name);
         });
+
+        // console.log("Subs: ",tasksCompleted);
+        // console.log("tasks: ",tasks);
+
+        tasks.forEach(task => {
+          if(!tasksCompleted.includes(task)) {
+            tasksInProgess.push(task);
+          }
+        });
+        
+        this.setState({ 
+          tasksCompleted,
+          tasksInProgess,
+          loading: false,
+        })
       });
+    });
   }
 
-  componentWillUnmount() {
-      this.unsubscribe();
-  }
+  // componentWillUnmount() {
+  //     this.unsubscribe();
+  // }
 
   render() {
-    const { tasks, loading } = this.state;
-    console.log('list', tasks)
+    const { tasksCompleted, tasksInProgess, loading } = this.state;
     const URL = this.props.match.url;
 
     return (
       <div>
         <h2>Tasks</h2>
         {loading && <div>Loading ...</div>}
-        {tasks.map(task => (
-            <div key={task.name}>
-              {task.submitted ?
-                <div>
-                  <Link to={`${URL}${task.name}`}>{task.name}</Link>
-                  <span>&#10004;</span>
-                </div>
-                :
-                <div> 
-                  <div>{task.name}
-                    <span>
-                      &#10008;
-                    </span> 
-                  </div>
-                </div>
-              }
+        <h3>Tasks Completed</h3>
+        {tasksCompleted.map(task => (
+            <div key={task}>
+              <Link to={`${URL}/${task}`}>
+                {task}
+              </Link>
+            </div>
+        ))}
+        <h3>Tasks In-Progress</h3>
+        {tasksInProgess.map(task => (
+            <div key={task}>
+                {task}
             </div>
         ))}
       </div>
