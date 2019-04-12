@@ -25,6 +25,7 @@ class JoinScavengerHunt extends Component {
             email: user.email,
             name: `${user.firstName} ${user.lastName}`,
             studentID: user.studentID,
+            graded: false,
         }
         console.log(user)
         this.setState({ loading: true })

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AuthUserContext, withAuthorization } from '../Session';
 import * as ROLES from '../../constants/roles';
-import CreateEvent from './createEvent';
+import CreateEvent from './eventCreate';
 import EventList from './eventList';
 
 const AdminPage = () => (

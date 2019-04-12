@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import CompletionList from './completionList';
+import MemTaskList from './memberTaskList';
 
 class MemberInfo extends Component {
     state = { memberInfo: null }
@@ -23,7 +23,7 @@ class MemberInfo extends Component {
                 <div>
                     <h4>{memberInfo.name}</h4>
                     <h5>{memberInfo.email}</h5>
-                    <CompletionList />
+                    <MemTaskList />
                 </div>
                 }
             </div>

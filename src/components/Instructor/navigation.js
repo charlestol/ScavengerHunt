@@ -13,9 +13,6 @@ const DashboardNav = props => {
             <li>
                 <Link to={`${ROUTES.ADMIN}/${accessCode}/tasks/`}>Tasks</Link>
             </li>
-            <li>
-                <Link to={`${ROUTES.ADMIN}/${accessCode}/create`}>Create Task</Link>
-            </li>
         </ul>
     );
 }

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
+import GiveScore from './scoreTask';
 
 class Submission extends Component {
-    state = { type: '', submission: '' }
+    state = { type: '', submission: '', score: '-', comment: null }
 
     componentDidMount() {
         let ac = this.props.match.params.eventId;
@@ -25,12 +26,21 @@ class Submission extends Component {
                 submission = submitData.imageURL;
             } 
            
-            // console.log('sub',submission)
-            this.setState({
-                type,
-                submission,
-            });
-
+            if(submitData.hasOwnProperty('result')) {
+                let score = submitData.result.score;
+                let comment = submitData.result.feedback;
+                this.setState({
+                    type,
+                    submission,
+                    score, 
+                    comment,
+                });
+            } else {
+                this.setState({
+                    type,
+                    submission,
+                });
+            }
         });
     }
     //   componentWillUnmount() {
@@ -38,10 +48,16 @@ class Submission extends Component {
     //   }
 
     render() {
-        const { type, submission} = this.state;
+        const { type, submission, score, comment} = this.state;
+
+        let ac = this.props.match.params.eventId;
+        let email = this.props.match.params.memberId;
+        let task = this.props.match.params.taskId;
 
         return ( 
             <div>
+                <h3>Submission Review</h3>
+                <div>Score: {score}/1</div>
                 {type==='image' && 
                     <div>
                         <img src={submission} alt='submission' />
@@ -52,6 +68,7 @@ class Submission extends Component {
                         <p>{submission}</p>
                     </div>
                 }
+                <GiveScore ac={ac} email={email} task={task} />
             </div>
         )
     }

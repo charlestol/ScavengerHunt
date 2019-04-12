@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
+import TaskCreate from './taskCreate';
 
 class EventList extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class EventList extends Component {
     return (
       <div>
         <h2>Tasks</h2>
+        <TaskCreate />
         {loading && <div>Loading ...</div>}
         {tasks.map(task => (
             <div key={task.name}>
