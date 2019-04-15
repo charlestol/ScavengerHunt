@@ -14,26 +14,32 @@ class TaskResults extends Component {
 
         this.props.firebase.scavengerHuntMember(ac, email).get()
         .then(doc => {
-             let data = doc.data();
-            // console.log(data)
-             if(data.hasOwnProperty('result')) {
+             let eventData = doc.data();
+            // console.log(eventData)
+             if(eventData.hasOwnProperty('result')) {
                 this.props.firebase.scavengerHuntSubmission(ac, email, task).get()
                 .then(doc => {
-                     let data = doc.data();
-                    
-                     if(data.hasOwnProperty('result')) {
-                         let score = data.result.score;
-                         let feedback = data.result.feedback;
-                         this.setState({
-                             score, 
-                             feedback,
-                             loading: false
-                         });
-                     } else {
-                         this.setState({
-                             loading: false
-                         });
-                     }
+                    if(doc.exists) {
+                        let taskData = doc.data();
+                        console.log(taskData)
+                        if(taskData.hasOwnProperty('result')) {
+                            let score = taskData.result.score;
+                            let feedback = taskData.result.feedback;
+                            this.setState({
+                                score, 
+                                feedback,
+                                loading: false
+                            });
+                        } else {
+                            this.setState({
+                                loading: false
+                            });
+                        }
+                    } else {
+                        this.setState({
+                            loading: false
+                        });
+                    }
                  });
              } else {
                  this.setState({
