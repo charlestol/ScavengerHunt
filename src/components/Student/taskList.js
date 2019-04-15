@@ -9,41 +9,65 @@ class EventList extends Component {
 
     this.state = {
       loading: false,
-      tasks: []
+      tasks: [],
+      completed: []
     };
   }
 
   componentDidMount() {
     this.setState({ loading: true });
     let ac = this.props.match.params.eventId;
+    let email = this.props.email;
+    let tasks = [];
+    let completedTasks = {};
+    let completed = [];
 
-    this.props.firebase.scavengerHuntTasks(ac)
-    .onSnapshot(querySnapshot => {
-        let tasks = [];
+    this.props.firebase.scavengerHuntSubmissions(ac, email).get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        let data = doc.data();
+        completedTasks[data.taskName] = data;
+        completed.push(data.taskName);
+      })
+      console.log("comp ",completed)
+      this.props.firebase.scavengerHuntTasks(ac).get()
+      .then(querySnapshot => {
         querySnapshot.forEach(doc => {
             let data = doc.data();
-            tasks.push(data);
+            let taskName = data.name;
+            if(!completedTasks.hasOwnProperty(taskName)) {
+              tasks.push(taskName);
+            }
         });
+        console.log(tasks)
 
         this.setState({
           tasks,
+          completed,
           loading: false,
         });
       });
+    })
   }
 
   render() {
-    const { tasks, loading } = this.state;
+    const { tasks, completed, loading } = this.state;
     // console.log('list', tasks)
     const URL = this.props.match.url;
 
     return (
       <div>
-        <h2>Tasks</h2>
         {loading && <div>Loading ...</div>}
-        {tasks.map(task => (
-            <div key={task.name}>
-                <Link to={`${URL}/${task.name}`}>{task.name}</Link>
+        {tasks.length !== 0 && <h2>Tasks In-Progress</h2>}
+        {tasks.length !== 0 && tasks.map(task => (
+            <div key={task}>
+                <Link to={`${URL}/${task}`}>{task}</Link>
+            </div>
+        ))}
+        {completed.length !== 0 && <h2>Tasks Completed</h2>}
+        {completed.length !== 0 && completed.map(task => (
+            <div key={task}>
+                <Link to={`${URL}/${task}`}>{task}</Link>
             </div>
         ))}
       </div>
