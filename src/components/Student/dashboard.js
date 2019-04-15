@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { AuthUserContext, withAuthorization } from '../Session';
-import SearchEvent from './searchEvent';
-import ActiveEvents from './activeEvents';
-import EventHistory from './userEventHistory';
+import SearchEvent from './eventSearch';
+import ActiveEvents from './eventsActive';
+import EventHistory from './eventHistory';
 import * as ROLES from '../../constants/roles';
 
 const HomePage = () => (

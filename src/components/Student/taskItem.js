@@ -8,20 +8,18 @@ class TaskItem extends Component {
         task: {}
     }
     componentDidMount() {
-        let name = this.props.match.params.taskId;
+        let task = this.props.match.params.taskId;
         let ac = this.props.match.params.eventId;
         this.setState({
             loading: true
         });
     
-        this.props.firebase.scavengerHuntTask(ac, name).get()
+        this.props.firebase.scavengerHuntTask(ac, task).get()
         .then(doc => {
-            if(doc.exists) {
-                const data = doc.data();
-                this.setState({
-                    task: data
-                });
-            }
+            const data = doc.data();
+            this.setState({
+                task: data
+            });
         });
     }
 
@@ -30,7 +28,6 @@ class TaskItem extends Component {
         return (
             <div>
                 <h3>Task: {task.name}</h3>
-                <br />
                 <p>instructions: {task.instructions}</p>
                 <br />
                 <div>Submission Type: {task.entryType}</div>
