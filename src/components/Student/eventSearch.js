@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 
-import JoinEvent from './joinEvent';
+import JoinEvent from './eventJoin';
 
 // ADDING START DATE AND END DATE LATER
 

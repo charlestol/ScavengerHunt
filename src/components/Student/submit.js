@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
+import ViewSubmission from './viewSubmission';
 
 const SUCCESS_MSG = "Submitted!";
 const ERROR_MSG = "Error, try submitting again.";
@@ -173,6 +174,7 @@ class Submit extends Component {
                                 {submitted && <img src={imageURL} alt="Uploaded Images" height="300" width="400" />}
                             </div>
                         }
+                        <ViewSubmission email={authUser.email} />
                     </div>
                 )}
             </AuthUserContext.Consumer>
