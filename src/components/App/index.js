@@ -5,7 +5,7 @@ import Navigation from '../Navigation';
 import Landing from '../Landing';
 import {SignUp, SignIn, PasswordForget, Account} from '../Authentication';
 import {StudentEventItem, StudentTaskItem, StudentDash} from '../Student';
-import { InstructorEventItem, InstructorTaskList, InstructorTaskItem, InstructorDash, MemberList, MemberInfo, CreateTask, Submission} from '../Instructor'
+import { InstructorEventItem, InstructorTaskList, InstructorTaskItem, InstructorDash, MemberList, MemberInfo, Submission} from '../Instructor'
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
@@ -35,7 +35,6 @@ const App = () => (
       <Route exact path={`${ROUTES.ADMIN}/:eventId/members/`} component={MemberList} />
       <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId`} component={MemberInfo} />
       <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId/:taskId`} component={Submission} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/create`} component={CreateTask} />
     </div>
   </Router>
 );

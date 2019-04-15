@@ -97,6 +97,8 @@ class Firebase {
   time = () => this.time;
 
   store = () => this.store;
+
+  fieldValue = () => this.fieldValue;
 }
 
 export default Firebase;

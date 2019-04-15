@@ -1,0 +1,126 @@
+import React, { Component } from 'react';
+
+import { withFirebase } from '../Firebase';
+import { withRouter } from 'react-router-dom';
+const INITIAL_STATE = {
+    name: '',
+    instructions: '',
+    entryType: '',
+    error: null
+}
+
+class CreateTask extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { ...INITIAL_STATE };
+    }
+
+    onCreateTask = event => {
+        const {
+            name,
+            instructions,
+            entryType,
+        } = this.state;        
+        
+        let taskData = {
+            name,
+            instructions,
+            entryType,
+        };
+
+        const accessCode = this.props.match.params.eventId;
+
+        this.props.firebase.scavengerHuntTask(accessCode,name).set(taskData)
+            .then(() => {
+                this.props.firebase.scavengerHunt(accessCode).update({
+                    numOfTasks: this.props.firebase.fieldValue.increment(1)
+                })
+                .then(() => {
+                    console.log("Document successfully written!");
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error);
+                    this.setState({error})
+                });
+            })
+            .catch(error => {
+                console.error("Error writing document: ", error);
+                this.setState({error})
+            });
+
+        event.preventDefault();
+    };
+
+    onChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+    render() {
+        const {
+            name,
+            instructions,
+            entryType,
+            error
+        } = this.state;
+
+        const isInvalid = 
+            name === '' ||
+            instructions === '' ||
+            entryType === '';
+
+        return (
+            <div>
+                <form onSubmit={this.onCreateTask}>
+                    <input
+                        name="name"
+                        value={name}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Task Name"
+                    />
+                    <br />
+                    <input
+                        name="instructions"
+                        value={instructions}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Task Instructions"
+                    />
+                    <br />
+                    <div>
+                        <label>
+                            <input
+                                name="entryType"
+                                value="image"
+                                checked={entryType === "image"}
+                                onChange={this.onChange}
+                                type="radio"
+                            />
+                            Image
+                        </label>
+                        <label>
+                            <input
+                                name="entryType"
+                                value="text"
+                                checked={entryType === "text"}
+                                onChange={this.onChange}
+                                type="radio"
+                            />
+                            Text
+                        </label>
+                    </div>
+                    <button disabled={isInvalid} type="submit">
+                        Add Task
+                    </button>
+                    <br />
+                    {error && <p>{error}</p>}
+                </form>
+            </div>
+        );
+    }
+}
+
+export default withRouter(withFirebase(CreateTask));
+

@@ -17,7 +17,7 @@ class CompletionList extends Component {
 
     // console.log(ac)
 
-    this.props.firebase.scavengerHuntSubmissions(ac, email)
+    this.unsubscribe = this.props.firebase.scavengerHuntSubmissions(ac, email)
     .onSnapshot(querySnapshot => {
       let tasksCompleted = [];
       let tasksInProgess = [];
@@ -53,9 +53,9 @@ class CompletionList extends Component {
     });
   }
 
-  // componentWillUnmount() {
-  //     this.unsubscribe();
-  // }
+  componentWillUnmount() {
+      this.unsubscribe();
+  }
 
   render() {
     const { tasksCompleted, tasksInProgess, loading } = this.state;
@@ -63,7 +63,6 @@ class CompletionList extends Component {
 
     return (
       <div>
-        <h2>Tasks</h2>
         {loading && <div>Loading ...</div>}
         <h3>Tasks Completed</h3>
         {tasksCompleted.map(task => (
