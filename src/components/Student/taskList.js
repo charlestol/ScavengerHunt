@@ -29,7 +29,7 @@ class EventList extends Component {
         completedTasks[data.taskName] = data;
         completed.push(data.taskName);
       })
-      console.log("comp ",completed)
+      // console.log("comp ",completed)
       this.props.firebase.scavengerHuntTasks(ac).get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -39,7 +39,7 @@ class EventList extends Component {
               tasks.push(taskName);
             }
         });
-        console.log(tasks)
+        // console.log(tasks)
 
         this.setState({
           tasks,

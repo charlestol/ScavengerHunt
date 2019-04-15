@@ -44,7 +44,7 @@ class EventItem extends Component {
               <div>
                 {sh.name}
                 <EventResults email={authUser.email} />
-                <ListTasks />
+                <ListTasks email={authUser.email} />
               </div>
             }
           </div>

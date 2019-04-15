@@ -8,13 +8,11 @@ class EventResults extends Component {
     componentDidMount() {
         let ac = this.props.match.params.eventId;
         let email = this.props.email;
-
         this.setState({ loading: true })
 
        this.props.firebase.scavengerHuntMember(ac, email).get()
        .then(doc => {
             let data = doc.data();
-           console.log(data)
             if(data.hasOwnProperty('result')) {
                 let score = data.result.score;
                 let feedback = data.result.feedback;
