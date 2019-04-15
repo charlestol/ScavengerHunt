@@ -13,6 +13,7 @@ const INITIAL_STATE = {
     dateStart: null,
     dateEnd: null,
     description: '',
+    courses: '',
     error: null
 }
 
@@ -31,6 +32,7 @@ class CreateEvent extends Component {
             dateStart, 
             dateEnd,
             description,
+            courses,
         } = this.state;        
         
         var eventData = {
@@ -43,6 +45,7 @@ class CreateEvent extends Component {
             closed,
             description,
             numOfTasks: 0,
+            courses,
         };
 
         this.props.firebase.scavengerHunt(accessCode).set(eventData)
@@ -77,6 +80,7 @@ class CreateEvent extends Component {
             dateStart,
             dateEnd,
             description,
+            courses,
             error
         } = this.state;
 
@@ -84,6 +88,7 @@ class CreateEvent extends Component {
             name === '' ||
             accessCode === '' ||
             description === '' ||
+            courses === '' ||
             dateStart === null ||
             dateEnd === null;
 
@@ -138,28 +143,14 @@ class CreateEvent extends Component {
                                 placeholder="Type event description here"
                             />
                             <br />
-                            {/* <div>
-                                <label>
-                                    <input
-                                        name="submissionType"
-                                        value="Image"
-                                        checked={submissionType === "Image"}
-                                        onChange={this.onChange}
-                                        type="radio"
-                                    />
-                                    Image
-                                </label>
-                                <label>
-                                    <input
-                                        name="submissionType"
-                                        value="Text"
-                                        checked={submissionType === "Text"}
-                                        onChange={this.onChange}
-                                        type="radio"
-                                    />
-                                    Text
-                                </label>
-                            </div> */}
+                            <input
+                                name="courses"
+                                value={courses}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Enter course(s) participating"
+                            />
+                            <br />
                             <button disabled={isInvalid} type="submit">
                                 Create
                             </button>
