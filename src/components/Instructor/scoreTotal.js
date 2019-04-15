@@ -2,24 +2,16 @@ import React, {Component} from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 
-const INITIAL_STATE = {
-    score: '',
-    feedback: '',
-    loading: false
-}
-
-const SUCCESS_MSG = 'Student Reviewed Submitted!';
+const SUCCESS_MSG = 'Student Review Submitted!';
 const ERROR_MSG = 'Error submitting Review';
 
 class TotalScore extends Component {
-    state = { score: '', feedback: '', loading: '', numOfTasks: null, totalScore: null, submitMsg: null }
+    state = { feedback: '', loading: '', numOfTasks: null, totalScore: null, submitMsg: null }
 
     componentDidMount() {
         // const { score, feedback } = this.state;
         let self = this;
-        
-        this.setState({ loading: true });
-
+    
         let ac = this.props.ac;
         let email = this.props.email;
         let totalScore = 0;
@@ -68,44 +60,42 @@ class TotalScore extends Component {
             console.error("Error getting document: ", error);
             self.setState({ 
                 submitMsg: ERROR_MSG,
-                loading: false,
             })
         });
     }
 
     onSubmit = event => {
-        // const { score, feedback } = this.state;
-        // let self = this;
+        const { totalScore, numOfTasks, feedback } = this.state;
         
-        // this.setState({ loading: true })
-        // let ac = this.props.ac;
-        // let email = this.props.email;
-        // let task = this.props.task;
+        this.setState({ loading: true })
 
-        // let data = {
-        //     results: {
-        //         score,
-        //         feedback
-        //     }
-        // }
-        // this.props.firebase.scavengerHuntMember(ac, email).update(data)
-        // .then(() => {
-        //     self.setState({ 
-        //         submitMsg: SUCCESS_MSG,
-        //         ...INITIAL_STATE
-        //     })
-        //     console.log("Document successfully updated!");
-        // })
-        // .catch(error => {
-        //     // The document probably doesn't exist.
-        //     console.error("Error updating document: ", error);
-        //     self.setState({ 
-        //         submitMsg: ERROR_MSG,
-        //         loading: false,
-        //     })
-        // });
+        let ac = this.props.ac;
+        let email = this.props.email;
 
-        event.preventDefault();
+        let data = {
+            results: {
+                score: `${totalScore}/${numOfTasks}`,
+                feedback
+            }
+        }
+
+        this.props.firebase.scavengerHuntMember(ac, email).update(data)
+        .then(() => {
+            this.setState({ 
+                submitMsg: SUCCESS_MSG,
+                feedback: '',
+                loading: false
+            })
+            console.log("Document successfully updated!");
+        })
+        .catch(error => {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+            this.setState({ 
+                submitMsg: ERROR_MSG,
+                loading: false,
+            })
+        });
     }
 
     onChange = event => {
@@ -114,7 +104,6 @@ class TotalScore extends Component {
 
     render() {
         const {   
-            score,
             feedback,
             submitMsg,
             loading,
@@ -122,12 +111,24 @@ class TotalScore extends Component {
             numOfTasks
         } = this.state;
 
-        const isInvalid = score === '';
+        // const isInvalid = score === '';
 
         return (
             <div>
                 <h3>Total Score: {`${totalScore}/${numOfTasks}`}</h3>
-                {/* {loading && <div>Submitting...</div>} */}
+                <div>
+                    <h3>Overall Feedback</h3>
+                    <input
+                        type="text"
+                        name="feedback"
+                        value={feedback}
+                        onChange={this.onChange}
+                        placeholder="Type Feedback here"
+                    />
+                </div>
+                <button onClick={this.onSubmit}>Submit Result</button>
+                {loading && <div>Submitting...</div>}
+                {submitMsg && <div>{submitMsg}</div>}
             </div>
         );
     }

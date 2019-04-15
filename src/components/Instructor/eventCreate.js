@@ -134,7 +134,7 @@ class CreateEvent extends Component {
                                 name="description"
                                 value={description}
                                 onChange={this.onChange}
-                                type="description"
+                                type="text"
                                 placeholder="Type event description here"
                             />
                             <br />
