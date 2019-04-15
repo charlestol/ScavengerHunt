@@ -12,24 +12,35 @@ class TaskResults extends Component {
 
         this.setState({ loading: true })
 
-       this.props.firebase.scavengerHuntSubmission(ac, email, task).get()
-       .then(doc => {
-            let data = doc.data();
-           
-            if(data.hasOwnProperty('result')) {
-                let score = data.result.score;
-                let feedback = data.result.feedback;
-                this.setState({
-                    score, 
-                    feedback,
-                    loading: false
-                });
-            } else {
-                this.setState({
-                    loading: false
-                });
-            }
-        });
+        this.props.firebase.scavengerHuntMember(ac, email).get()
+        .then(doc => {
+             let data = doc.data();
+            // console.log(data)
+             if(data.hasOwnProperty('result')) {
+                this.props.firebase.scavengerHuntSubmission(ac, email, task).get()
+                .then(doc => {
+                     let data = doc.data();
+                    
+                     if(data.hasOwnProperty('result')) {
+                         let score = data.result.score;
+                         let feedback = data.result.feedback;
+                         this.setState({
+                             score, 
+                             feedback,
+                             loading: false
+                         });
+                     } else {
+                         this.setState({
+                             loading: false
+                         });
+                     }
+                 });
+             } else {
+                 this.setState({
+                     loading: false
+                 });
+             }
+         });
     }
     //   componentWillUnmount() {
     //       this.unsubscribe();
