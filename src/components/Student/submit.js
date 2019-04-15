@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
+import ViewSubmission from './viewSubmission';
 
 const SUCCESS_MSG = "Submitted!";
 const ERROR_MSG = "Error, try submitting again.";
@@ -33,9 +34,10 @@ class Submit extends Component {
             name: `${user.firstName} ${user.lastName}`,
             studentID: user.studentID,
             textEntry,
+            taskName: task,
         }
         // save data in a task's submission collection
-        this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
+        this.props.firebase.scavengerHuntSubmission(accessCode, user.email, task).set(submitData)
         .then(() => {
             console.log("Submission Successful!");
             this.setState({
@@ -85,9 +87,10 @@ class Submit extends Component {
                     name: `${user.firstName} ${user.lastName}`,
                     studentID: user.studentID,
                     imageURL,
+                    taskName: task,
                 }
                 // save data in a task's submission collection
-                this.props.firebase.scavengerHuntSubmission(accessCode, task, user.email).set(submitData)
+                this.props.firebase.scavengerHuntSubmission(accessCode, user.email, task).set(submitData)
                 .then(() => {
                     console.log("Submission Successful!");
                     this.setState({
@@ -171,6 +174,7 @@ class Submit extends Component {
                                 {submitted && <img src={imageURL} alt="Uploaded Images" height="300" width="400" />}
                             </div>
                         }
+                        <ViewSubmission email={authUser.email} />
                     </div>
                 )}
             </AuthUserContext.Consumer>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import ListTasks from './taskList';
+import EventResults from './eventResults';
 import { AuthUserContext } from '../Session';
 
 class EventItem extends Component {
@@ -36,17 +37,18 @@ class EventItem extends Component {
     const { loading, sh } = this.state;
     return (
       <AuthUserContext.Consumer>
-      {authUser => (
-        <div>
-          {loading && <div>Loading ...</div>}
-          {sh.accessCode && 
-            <div>
-              {sh.name}
-              <ListTasks email={authUser.email}/>
-            </div>
-          }
-        </div>
-      )}
+        {authUser => (  
+          <div>
+            {loading && <div>Loading ...</div>}
+            {sh.accessCode && 
+              <div>
+                {sh.name}
+                <EventResults email={authUser.email} />
+                <ListTasks />
+              </div>
+            }
+          </div>
+        )}
       </AuthUserContext.Consumer>
     )
   }
