@@ -10,35 +10,36 @@ class EventList extends Component {
     this.state = {
       loading: false,
       tasks: [],
-      completed: [],
+      completed: []
     };
   }
 
   componentDidMount() {
     this.setState({ loading: true });
     let ac = this.props.match.params.eventId;
-
     let email = this.props.email;
+    let tasks = [];
+    let completedTasks = {};
+    let completed = [];
 
-    this.props.firebase.scavengerHuntTasks(ac)
-    .onSnapshot(querySnapshot => {
-        let tasks = [];
-        let completed = [];
+    this.props.firebase.scavengerHuntSubmissions(ac, email).get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        let data = doc.data();
+        completedTasks[data.taskName] = data;
+        completed.push(data.taskName);
+      })
+      console.log("comp ",completed)
+      this.props.firebase.scavengerHuntTasks(ac).get()
+      .then(querySnapshot => {
         querySnapshot.forEach(doc => {
             let data = doc.data();
-            let task = doc.data().name;
-            console.log(data)
-
-           this.props.firebase.scavengerHuntSubmission(ac, email, task).get()
-           .then(doc => {
-             if(doc.exists) {
-               completed.push(data)
-             } else {
-               tasks.push(data)
-             }
-           })
+            let taskName = data.name;
+            if(!completedTasks.hasOwnProperty(taskName)) {
+              tasks.push(taskName);
+            }
         });
-
+        console.log(tasks)
 
         this.setState({
           tasks,
@@ -46,6 +47,7 @@ class EventList extends Component {
           loading: false,
         });
       });
+    })
   }
 
   render() {
@@ -56,16 +58,16 @@ class EventList extends Component {
     return (
       <div>
         {loading && <div>Loading ...</div>}
-        <h2>On-Going Tasks</h2>
-        {tasks.map(task => (
-            <div key={task.name}>
-                <Link to={`${URL}/${task.name}`}>{task.name}</Link>
+        {tasks.length !== 0 && <h2>Tasks In-Progress</h2>}
+        {tasks.length !== 0 && tasks.map(task => (
+            <div key={task}>
+                <Link to={`${URL}/${task}`}>{task}</Link>
             </div>
         ))}
-         <h2>Completed Tasks</h2>
-        {completed.map(task => (
-            <div key={task.name}>
-                <Link to={`${URL}/${task.name}`}>{task.name}</Link>
+        {completed.length !== 0 && <h2>Tasks Completed</h2>}
+        {completed.length !== 0 && completed.map(task => (
+            <div key={task}>
+                <Link to={`${URL}/${task}`}>{task}</Link>
             </div>
         ))}
       </div>
