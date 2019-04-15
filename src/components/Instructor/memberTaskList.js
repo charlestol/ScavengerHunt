@@ -63,7 +63,6 @@ class CompletionList extends Component {
 
     return (
       <div>
-        <h2>Tasks</h2>
         {loading && <div>Loading ...</div>}
         <h3>Tasks Completed</h3>
         {tasksCompleted.map(task => (

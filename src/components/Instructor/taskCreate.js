@@ -33,10 +33,19 @@ class CreateTask extends Component {
 
         this.props.firebase.scavengerHuntTask(accessCode,name).set(taskData)
             .then(() => {
-                console.log("Document successfully written!");
-                this.setState({ ...INITIAL_STATE });
+                this.props.firebase.scavengerHunt(accessCode).update({
+                    numOfTasks: this.props.firebase.fieldValue.increment(1)
+                })
+                .then(() => {
+                    console.log("Document successfully written!");
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error);
+                    this.setState({error})
+                });
             })
-            .catch(function(error) {
+            .catch(error => {
                 console.error("Error writing document: ", error);
                 this.setState({error})
             });

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import GiveScore from './scoreTask';
 
 class Submission extends Component {
-    state = { type: '', submission: '', score: '-', comment: null }
+    state = { type: '', submission: '', score: '-', feedback: null }
 
     componentDidMount() {
         let ac = this.props.match.params.eventId;
@@ -28,12 +28,12 @@ class Submission extends Component {
            
             if(submitData.hasOwnProperty('result')) {
                 let score = submitData.result.score;
-                let comment = submitData.result.feedback;
+                let feedback = submitData.result.feedback;
                 this.setState({
                     type,
                     submission,
                     score, 
-                    comment,
+                    feedback,
                 });
             } else {
                 this.setState({
@@ -48,7 +48,7 @@ class Submission extends Component {
     //   }
 
     render() {
-        const { type, submission, score, comment} = this.state;
+        const { type, submission, score, feedback} = this.state;
 
         let ac = this.props.match.params.eventId;
         let email = this.props.match.params.memberId;
@@ -57,7 +57,10 @@ class Submission extends Component {
         return ( 
             <div>
                 <h3>Submission Review</h3>
-                <div>Score: {score}/1</div>
+                <div>
+                    <div>Score: {score}/1</div>
+                    {feedback && <p>{feedback}</p>}
+                </div>
                 {type==='image' && 
                     <div>
                         <img src={submission} alt='submission' />

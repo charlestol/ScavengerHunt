@@ -42,6 +42,7 @@ class CreateEvent extends Component {
             dateEnd: this.props.firebase.time.fromDate(new Date(`${dateEnd}`)),
             closed,
             description,
+            numOfTasks: 0,
         };
 
         this.props.firebase.scavengerHunt(accessCode).set(eventData)
