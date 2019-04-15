@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
+import { AuthUserContext } from '../Session';
 import Submit from './submit';
+import TaskResult from './taskResult';
 
 class TaskItem extends Component {
     state = {
@@ -26,14 +28,19 @@ class TaskItem extends Component {
     render() {
         const {task} = this.state;
         return (
-            <div>
-                <h3>Task: {task.name}</h3>
-                <p>instructions: {task.instructions}</p>
-                <br />
-                <div>Submission Type: {task.entryType}</div>
-                <br />
-                <Submit task={task} />
-            </div>
+            <AuthUserContext.Consumer>
+                {authUser => (
+                    <div>
+                        <h3>Task: {task.name}</h3>
+                        <p>instructions: {task.instructions}</p>
+                        <br />
+                        <div>Submission Type: {task.entryType}</div>
+                        <br />
+                        <Submit task={task} />
+                        <TaskResult email={authUser.email} />
+                    </div>
+                )}
+            </AuthUserContext.Consumer>
         );
     }
 }

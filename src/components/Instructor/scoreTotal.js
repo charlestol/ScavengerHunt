@@ -73,7 +73,7 @@ class TotalScore extends Component {
         let email = this.props.email;
 
         let data = {
-            results: {
+            result: {
                 score: `${totalScore}/${numOfTasks}`,
                 feedback
             }
