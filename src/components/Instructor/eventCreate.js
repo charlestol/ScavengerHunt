@@ -148,7 +148,7 @@ class CreateEvent extends Component {
                                 value={courses}
                                 onChange={this.onChange}
                                 type="text"
-                                placeholder="Enter course(s) participating"
+                                placeholder="Course(s) participating"
                             />
                             <br />
                             <button disabled={isInvalid} type="submit">
