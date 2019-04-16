@@ -115,7 +115,12 @@ class TotalScore extends Component {
 
         return (
             <div>
-                <h3>Total Score: {`${totalScore}/${numOfTasks}`}</h3>
+                {totalScore === null && numOfTasks === null &&
+                    <h3>Total Score: -/-</h3>
+                }
+                {totalScore !== null && numOfTasks !== null &&
+                    <h3>Total Score: {`${totalScore}/${numOfTasks}`}</h3>
+                }
                 <div>
                     <h3>Overall Feedback</h3>
                     <input

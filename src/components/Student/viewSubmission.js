@@ -53,7 +53,7 @@ class ViewSubmission extends Component {
                         <h3>Submission</h3>
                         {type==='image' && 
                             <div>
-                                <img src={submission} alt='submission' />
+                                <img src={submission} alt='submission' height="300" width="400" />
                             </div>
                         }
                         {type==='text' && 
