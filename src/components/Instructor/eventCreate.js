@@ -13,8 +13,13 @@ const INITIAL_STATE = {
     dateStart: null,
     dateEnd: null,
     description: '',
-    error: null
+    courses: '',
+    error: null,
+    dateError: null
 }
+
+const ERROR_START_DATE = "Your start date can't be greater than your end date, please confirm that your start and end dates are correct.";
+const ERROR_END_DATE = "Your end date can't be less than your start date, please confirm that your start and end dates are correct.";
 
 class CreateEvent extends Component {
     constructor(props) {
@@ -31,6 +36,7 @@ class CreateEvent extends Component {
             dateStart, 
             dateEnd,
             description,
+            courses,
         } = this.state;        
         
         var eventData = {
@@ -43,6 +49,7 @@ class CreateEvent extends Component {
             closed,
             description,
             numOfTasks: 0,
+            courses,
         };
 
         this.props.firebase.scavengerHunt(accessCode).set(eventData)
@@ -62,12 +69,34 @@ class CreateEvent extends Component {
     this.setState({ [event.target.name]: event.target.value });
     };
 
-    onStartDateSelect = (date) => {
-        this.setState({ dateStart: date})
+    handleChangeStart = (date) => {
+        let { dateEnd } = this.state; 
+        if(dateEnd !== null && dateEnd < date) {
+            this.setState({ 
+                dateStart: dateEnd,
+                dateError: ERROR_START_DATE
+            });
+        } else {
+            this.setState({ 
+                dateStart: date,
+                dateError: null 
+            })
+        }
     }
 
-    onEndDateSelect = (date) => {
-        this.setState({ dateEnd: date})
+    handleChangeEnd = (date) => {
+        let { dateStart } = this.state; 
+        if(dateStart !== null && dateStart > date) {
+            this.setState({ 
+                dateEnd: dateStart,
+                dateError: ERROR_END_DATE
+            });
+        } else {
+            this.setState({ 
+                dateEnd: date,
+                dateError: null
+            });
+        }
     }  
 
     render() {
@@ -77,15 +106,21 @@ class CreateEvent extends Component {
             dateStart,
             dateEnd,
             description,
-            error
+            courses,
+            error,
+            dateError
         } = this.state;
 
         const isInvalid = 
             name === '' ||
             accessCode === '' ||
             description === '' ||
+            courses === '' ||
             dateStart === null ||
-            dateEnd === null;
+            dateEnd === null ||
+            dateError !== null;
+
+        console.log(dateStart)
 
         return (
             <AuthUserContext.Consumer>
@@ -110,24 +145,32 @@ class CreateEvent extends Component {
                             <br />
                             <DatePicker
                                 selected={dateStart}
-                                onChange={this.onStartDateSelect}
+                                onChange={this.handleChangeStart}
+                                selectsStart
+                                startDate={dateStart}
+                                endDate={dateEnd}
                                 showTimeSelect
                                 timeFormat="HH:mm"
                                 timeIntervals={60}
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 timeCaption="Time"
                                 placeholderText="Click to set Start time"
+                                shouldCloseOnSelect={false}
                             />
                             <br />
                             <DatePicker
                                 selected={dateEnd}
-                                onChange={this.onEndDateSelect}
+                                onChange={this.handleChangeEnd}
+                                selectsEnd
+                                startDate={dateStart}
+                                endDate={dateEnd}
                                 showTimeSelect
                                 timeFormat="HH:mm"
                                 timeIntervals={60}
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 timeCaption="Time"
                                 placeholderText="Click to set End time"
+                                shouldCloseOnSelect={false}
                             />
                             <br />
                             <input
@@ -138,32 +181,19 @@ class CreateEvent extends Component {
                                 placeholder="Type event description here"
                             />
                             <br />
-                            {/* <div>
-                                <label>
-                                    <input
-                                        name="submissionType"
-                                        value="Image"
-                                        checked={submissionType === "Image"}
-                                        onChange={this.onChange}
-                                        type="radio"
-                                    />
-                                    Image
-                                </label>
-                                <label>
-                                    <input
-                                        name="submissionType"
-                                        value="Text"
-                                        checked={submissionType === "Text"}
-                                        onChange={this.onChange}
-                                        type="radio"
-                                    />
-                                    Text
-                                </label>
-                            </div> */}
+                            <input
+                                name="courses"
+                                value={courses}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Course(s) participating"
+                            />
+                            <br />
                             <button disabled={isInvalid} type="submit">
                                 Create
                             </button>
                             <br />
+                            {dateError && <p>{dateError}</p>}
                             {error && <p>{error}</p>}
                         </form>
                     </div>

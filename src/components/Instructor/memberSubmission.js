@@ -63,7 +63,7 @@ class Submission extends Component {
                 </div>
                 {type==='image' && 
                     <div>
-                        <img src={submission} alt='submission' />
+                        <img src={submission} alt='submission' height="300" width="400" />
                     </div>
                 }
                 {type==='text' && 
