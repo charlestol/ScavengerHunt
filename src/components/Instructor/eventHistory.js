@@ -3,57 +3,48 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
 
-class ActiveEvents extends Component {
+class EventHistory extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       loading: false,
-      activeEvents: []
+      scavengerHunts: []
     };
   }
 
   componentDidMount() {
     this.setState({ loading: true });
-    let email = this.props.email;
-    // converting from millisec to sec to compare to endDate
-    const today = new Date();
-
-    // console.log(today)
-
-    this.props.firebase
-      .userHistory(email).where("dateEnd", ">", today)
+    let user = this.props.user;
+    this.unsubscribe = this.props.firebase
+      .scavengerHunts().where("email", "==", user.email)
       .onSnapshot(snapshot => {
-        let activeEvents = [];
+        let scavengerHunts = [];
 
         snapshot.forEach(doc => {
           let data = doc.data();
-          const closed = data.closed;
-          // console.log(data.dateEnd)
-          if(!closed) {
-            activeEvents.push(data);
-          }
+          scavengerHunts.push(data);
         });
 
         this.setState({
-          activeEvents,
+          scavengerHunts,
           loading: false,
         });
       });
   }
 
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   render() {
-    const { activeEvents, loading } = this.state;
+    const { scavengerHunts, loading } = this.state;
     const URL = this.props.match.url;
     return (
       <div>
-        <h2>On-Going Hunt Events</h2>
+        <h2>Event History</h2>
         {loading && <div>Loading ...</div>}
-        {activeEvents.map(scavengerHunt => (
+        {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
               <Link to={`${URL}/${scavengerHunt.accessCode}`}>
                 {scavengerHunt.name}
@@ -65,4 +56,4 @@ class ActiveEvents extends Component {
   }
 }
 
-export default withRouter(withFirebase(ActiveEvents));
+export default withRouter(withFirebase(EventHistory));

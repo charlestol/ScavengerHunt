@@ -1,5 +1,5 @@
 import InstructorEventItem from './eventItem';
-import InstructorEventList from './eventList';
+import InstructorEventList from './eventHistory';
 import InstructorTaskItem from './taskItem';
 import InstructorTaskList from './taskList';
 import InstructorDash from './dashboard';
