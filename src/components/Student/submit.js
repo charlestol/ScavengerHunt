@@ -31,6 +31,7 @@ class Submit extends Component {
             const sh = doc.data();
             const closed = sh.closed;
             const endDate = sh.dateEnd.seconds;
+            // converting from millisec to sec to compare to endDate
             const today = (Date.now() / 1000).toFixed(0);
 
             if(today > endDate || closed) {
