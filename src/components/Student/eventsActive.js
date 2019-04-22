@@ -18,7 +18,7 @@ class ActiveEvents extends Component {
     let email = this.props.email;
     let today = new Date();
 
-    console.log(today)
+    // console.log(today)
 
     this.props.firebase
       .userHistory(email).where("dateEnd", ">", today)
@@ -27,7 +27,7 @@ class ActiveEvents extends Component {
 
         snapshot.forEach(doc => {
           let data = doc.data();
-          console.log(data.dateEnd)
+          // console.log(data.dateEnd)
           activeEvents.push(data);
         });
 

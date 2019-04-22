@@ -34,18 +34,22 @@ class SearchScavengerHunt extends Component {
                     // console.log("Document data:", doc.data());
                     const sh = doc.data();
                     const closed = sh.closed;
+                    const endDate = sh.dateEnd.seconds;
+                    const today = (Date.now() / 1000).toFixed(0);
 
-                    if(!closed) {
-                        this.setState({
-                            scavengerHunt: sh,
-                            closed: false,
-                            loading: false,
-                            error: null
-                        })
-                    } else {
+                    console.log("e",endDate)
+                    console.log("today", today)
+                    if(today > endDate || closed) {
                         this.setState({
                             scavengerHunt: null,
                             closed: true,
+                            loading: false,
+                            error: ERROR_DOES_NOT_EXIST
+                        })
+                    } else {
+                        this.setState({
+                            scavengerHunt: sh,
+                            closed: false,
                             loading: false,
                             error: null
                         })
