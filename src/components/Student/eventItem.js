@@ -9,7 +9,8 @@ class EventItem extends Component {
   state = { 
     loading: false,
     sh: {},
-    closed: false
+    closed: false,
+    notStarted: false,
   }
 
   componentDidMount() {
@@ -20,25 +21,37 @@ class EventItem extends Component {
 
     this.props.firebase.scavengerHunt(ac).get()
     .then(doc => {
-        const data = doc.data();
-        const endDate = data.dateEnd.seconds;
-        // converting from millisec to sec to compare to endDate
-        const today = (Date.now() / 1000).toFixed(0);
-        const closed = data.closed;
+      const data = doc.data();
+      const startDate = data.dateStart.seconds;
+      const endDate = data.dateEnd.seconds;
+      // converting from millisec to sec to compare to endDate
+      const today = (Date.now() / 1000).toFixed(0);
 
-        if(today > endDate || closed) {
-          this.setState({
-            sh: data,
-            loading: false,
-            closed: true
-          });
-        } else {
-          this.setState({
-            sh: data,
-            loading: false,
-            closed: false
-          });
-        }
+      let sh = data;
+      let loading = false;
+      let notStarted = false;
+      let closed = false;
+      const eventClosed = data.closed;
+
+
+      if(today > endDate || eventClosed) {
+        closed = true;
+      } else {
+        closed = false
+      }
+
+      if(startDate > today) {
+        notStarted = true;
+      } else {
+        notStarted = false;
+      }
+
+      this.setState({
+        sh,
+        loading,
+        closed,
+        notStarted,
+      });
     })
   }
 
@@ -47,7 +60,7 @@ class EventItem extends Component {
   // }
 
   render() {
-    const { loading, sh, closed } = this.state;
+    const { loading, sh, closed, notStarted } = this.state;
     return (
       <AuthUserContext.Consumer>
         {authUser => (  
@@ -60,7 +73,8 @@ class EventItem extends Component {
                   <p>This event has ended</p>
                 }
                 <EventResults email={authUser.email} />
-                <ListTasks email={authUser.email} />
+                {notStarted && <p>The event has not started</p>}
+                {!notStarted && <ListTasks email={authUser.email} />}
               </div>
             }
           </div>
