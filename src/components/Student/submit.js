@@ -17,7 +17,40 @@ class Submit extends Component {
        image: null, 
        imageURL: '', 
        progress: 0, 
-       submitted: false 
+       submitted: false,
+       closed: false 
+    }
+
+    componentDidMount() {
+        let accessCode = this.props.match.params.eventId;
+
+        // on componentDidMount, if the event has ended, close submissions by no rendering the submission elements
+        this.props.firebase.scavengerHunt(accessCode).get()
+        .then(doc => {
+            // console.log("Document data:", doc.data());
+            const sh = doc.data();
+            const closed = sh.closed;
+            const endDate = sh.dateEnd.seconds;
+            const today = (Date.now() / 1000).toFixed(0);
+
+            if(today > endDate || closed) {
+                this.setState({
+                    closed: true,
+                })
+            } else {
+                this.setState({
+                    closed: false,
+                })
+            }
+        }).catch(error => {
+            this.setState({
+                error: error,
+                loading: false,
+                scavengerHunt: null
+            })
+            console.log("Error getting document:", error);
+        });
+
     }
 
     onSubmitText = (user) => {
@@ -122,7 +155,7 @@ class Submit extends Component {
 
     render() {
         const {
-            message, textEntry, image, progress, imageURL, submitted
+            message, textEntry, image, progress, imageURL, submitted, closed
         } = this.state;
 
         const noImage = image === null;
@@ -132,7 +165,7 @@ class Submit extends Component {
             <AuthUserContext.Consumer>
                 {authUser => (
                     <div>
-                        {this.props.task.entryType==="text" &&
+                        {this.props.task.entryType==="text" && !closed &&
                             <div> 
                                 <input
                                     name="textEntry"
@@ -156,7 +189,7 @@ class Submit extends Component {
                                 }
                             </div>
                         }
-                        {this.props.task.entryType==="image" &&
+                        {this.props.task.entryType==="image" && !closed &&
                             <div> 
                                 <progress value={progress} max="100" />
                                 <input

@@ -35,10 +35,11 @@ class SearchScavengerHunt extends Component {
                     const sh = doc.data();
                     const closed = sh.closed;
                     const endDate = sh.dateEnd.seconds;
+                    // convert millisec to sec
                     const today = (Date.now() / 1000).toFixed(0);
 
-                    console.log("e",endDate)
-                    console.log("today", today)
+                    // console.log("e",endDate)
+                    // console.log("today", today)
                     if(today > endDate || closed) {
                         this.setState({
                             scavengerHunt: null,
