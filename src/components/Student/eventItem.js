@@ -8,7 +8,8 @@ import { AuthUserContext } from '../Session';
 class EventItem extends Component {
   state = { 
     loading: false,
-    sh: {}
+    sh: {},
+    closed: false
   }
 
   componentDidMount() {
@@ -19,13 +20,25 @@ class EventItem extends Component {
 
     this.props.firebase.scavengerHunt(ac).get()
     .then(doc => {
-      if(doc.exists) {
         const data = doc.data();
-        this.setState({
-          sh: data,
-          loading: false
-        });
-      }
+        const endDate = data.dateEnd.seconds;
+        // converting from millisec to sec to compare to endDate
+        const today = (Date.now() / 1000).toFixed(0);
+        const closed = data.closed;
+
+        if(today > endDate || closed) {
+          this.setState({
+            sh: data,
+            loading: false,
+            closed: true
+          });
+        } else {
+          this.setState({
+            sh: data,
+            loading: false,
+            closed: false
+          });
+        }
     })
   }
 
@@ -34,7 +47,7 @@ class EventItem extends Component {
   // }
 
   render() {
-    const { loading, sh } = this.state;
+    const { loading, sh, closed } = this.state;
     return (
       <AuthUserContext.Consumer>
         {authUser => (  
@@ -43,6 +56,9 @@ class EventItem extends Component {
             {sh.accessCode && 
               <div>
                 {sh.name}
+                {closed && 
+                  <p>This event has ended</p>
+                }
                 <EventResults email={authUser.email} />
                 <ListTasks email={authUser.email} />
               </div>

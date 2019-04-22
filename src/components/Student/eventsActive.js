@@ -16,13 +16,18 @@ class ActiveEvents extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     let email = this.props.email;
+    let today = new Date();
+
+    // console.log(today)
+
     this.props.firebase
-      .userHistory(email).where("closed", "==", false)
+      .userHistory(email).where("dateEnd", ">", today)
       .onSnapshot(snapshot => {
         let activeEvents = [];
 
         snapshot.forEach(doc => {
           let data = doc.data();
+          // console.log(data.dateEnd)
           activeEvents.push(data);
         });
 
