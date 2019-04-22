@@ -16,7 +16,8 @@ class ActiveEvents extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     let email = this.props.email;
-    let today = new Date();
+    // converting from millisec to sec to compare to endDate
+    const today = new Date();
 
     // console.log(today)
 
@@ -27,8 +28,11 @@ class ActiveEvents extends Component {
 
         snapshot.forEach(doc => {
           let data = doc.data();
+          const closed = data.closed;
           // console.log(data.dateEnd)
-          activeEvents.push(data);
+          if(!closed) {
+            activeEvents.push(data);
+          }
         });
 
         this.setState({
