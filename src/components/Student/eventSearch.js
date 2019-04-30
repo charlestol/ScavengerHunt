@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from "reactstrap"
+import { Button, Form, FormGroup, Label, Input, FormText, Col, Container, Row } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 
 import JoinEvent from './eventJoin';
@@ -93,33 +93,45 @@ class SearchScavengerHunt extends Component {
         const isInvalid = accessCode === '';
 
         return (
-                <form onSubmit={this.onSearch}>
-                    <input
-                        name="accessCode"
-                        value={accessCode}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Access Code"
-                    />
-                    <Button color="danger" disabled={isInvalid} type="submit">
-                        Search
-                    </Button>
-                    {loading && <div>Loading ...</div>}
-                    {scavengerHunt && !closed &&
+            <Container>
+                <Form onSubmit={this.onSearch}>
+                    <FormGroup>
+                        <Label 
+                            className="my-2" 
+                            for="accessCode" 
+                        >
+                            Look up an Event with an Access Code!
+                        </Label>
+                        <Input
+                            id="accessCode"
+                            name="accessCode"
+                            value={accessCode}
+                            onChange={this.onChange}
+                            type="text"
+                            placeholder="Access Code"
+                            className="my-2"
+                        />
+                        <Button color="danger" disabled={isInvalid} type="submit" className="my-2">
+                            Search
+                        </Button>
+                    </FormGroup>
+                </Form>
+                {loading && <div>Loading ...</div>}
+                {scavengerHunt && !closed &&
+                    <div>
                         <div>
-                            <div>
-                                {scavengerHunt.name}
-                            </div>
-                            <br />
-                            <div>
-                                {scavengerHunt.instructions}
-                            </div>
-                            <br />
-                            <JoinEvent scavengerHunt={scavengerHunt} />
+                            {scavengerHunt.name}
                         </div>
-                    }
-                    {error && <p>{error}</p>}
-                </form>
+                        <br />
+                        <div>
+                            {scavengerHunt.instructions}
+                        </div>
+                        <br />
+                        <JoinEvent scavengerHunt={scavengerHunt} />
+                    </div>
+                }
+                {error && <p>{error}</p>}
+            </Container>
         );
     }
 }

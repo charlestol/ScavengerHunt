@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Button, Container } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 import DatePicker from "react-datepicker";
@@ -125,7 +125,7 @@ class CreateEvent extends Component {
         return (
             <AuthUserContext.Consumer>
                 {authUser => (
-                    <div>
+                    <Container>
                         <form onSubmit={event => this.onCreateEvent(event, authUser)}>
                             <input
                                 name="name"
@@ -196,7 +196,7 @@ class CreateEvent extends Component {
                             {dateError && <p>{dateError}</p>}
                             {error && <p>{error}</p>}
                         </form>
-                    </div>
+                    </Container>
                 )}
             </AuthUserContext.Consumer>
         );
