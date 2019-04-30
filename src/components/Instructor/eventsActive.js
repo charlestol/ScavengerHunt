@@ -17,7 +17,6 @@ class ActiveEvents extends Component {
     this.setState({ loading: true });
     let user = this.props.user;
     // converting from millisec to sec to compare to endDate
-    const today = new Date();
 
     // console.log(today)
 

@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 
 import { SignUpLink } from './signUp';
 import { PasswordForgetLink } from './passwordForget';
-
+import { Button } from "reactstrap"
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { withAuthorization } from '../Session';
@@ -73,9 +73,9 @@ class SignInFormBase extends Component {
           type="password"
           placeholder="Password"
         />
-        <button disabled={isInvalid} type="submit">
+        <Button color="danger" disabled={isInvalid} type="submit">
           Sign In
-        </button>
+        </Button>
 
         {error && <p>{error.message}</p>}
       </form>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from "reactstrap"
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
@@ -59,9 +60,9 @@ class JoinScavengerHunt extends Component {
                 {authUser => (
                     <div>
                         {authUser &&
-                        <button onClick={() => this.onJoin(authUser)}>
+                        <Button color="danger" onClick={() => this.onJoin(authUser)}>
                             Join
-                        </button>
+                        </Button>
                         }
                         {message && <div>{message}</div>}
                     </div>

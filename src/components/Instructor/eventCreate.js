@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Button } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 import DatePicker from "react-datepicker";
@@ -189,9 +189,9 @@ class CreateEvent extends Component {
                                 placeholder="Course(s) participating"
                             />
                             <br />
-                            <button disabled={isInvalid} type="submit">
+                            <Button color="danger" disabled={isInvalid} type="submit">
                                 Create
-                            </button>
+                            </Button>
                             <br />
                             {dateError && <p>{dateError}</p>}
                             {error && <p>{error}</p>}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Button } from "reactstrap"
 import { withFirebase } from '../Firebase';
 
 import JoinEvent from './eventJoin';
@@ -101,9 +101,9 @@ class SearchScavengerHunt extends Component {
                         type="text"
                         placeholder="Access Code"
                     />
-                    <button disabled={isInvalid} type="submit">
+                    <Button color="danger" disabled={isInvalid} type="submit">
                         Search
-                    </button>
+                    </Button>
                     {loading && <div>Loading ...</div>}
                     {scavengerHunt && !closed &&
                         <div>

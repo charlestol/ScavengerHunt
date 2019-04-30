@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Button } from "reactstrap"
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
@@ -176,9 +176,9 @@ class Submit extends Component {
                                     placeholder="Type Here"
                                 />
                                 <br />
-                                <button disabled={noText} onClick={() => this.onSubmitText(authUser)}>
+                                <Button color="danger" disabled={noText} onClick={() => this.onSubmitText(authUser)}>
                                     Submit
-                                </button>
+                                </Button>
                                 <br />
                                 {message && <div>{message}</div>}
                                 <br />
@@ -198,9 +198,9 @@ class Submit extends Component {
                                     type="file"
                                 />
                                 <br />
-                                <button disabled={noImage} onClick={() => this.onSubmitImage(authUser)}>
+                                <Button color="danger" disabled={noImage} onClick={() => this.onSubmitImage(authUser)}>
                                     Submit
-                                </button>
+                                </Button>
                                 <br />
                                 {message && <div>{message}</div>}
                                 <br />

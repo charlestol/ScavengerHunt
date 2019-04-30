@@ -6,14 +6,14 @@ const DashboardNav = props => {
     let accessCode = props.match.params.eventId;
 
     return (
-        <ul>
-            <li>
+        <div>
+            <div>
                 <Link to={`${ROUTES.ADMIN}/${accessCode}/members/`}>Members</Link>
-            </li>
-            <li>
+            </div>
+            <div>
                 <Link to={`${ROUTES.ADMIN}/${accessCode}/tasks/`}>Tasks</Link>
-            </li>
-        </ul>
+            </div>
+        </div>
     );
 }
 
