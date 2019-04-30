@@ -43,11 +43,11 @@ class ScavengerHuntHistory extends Component {
 
     return (
       <div>
-        <h2>Event History</h2>
+        <h4>Event History</h4>
         {loading && <div>Loading ...</div>}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-               <Link to={`${URL}/${scavengerHunt.accessCode}`}>
+               <Link to={`${URL}/${scavengerHunt.accessCode}`} className="text-danger">
                 {scavengerHunt.name}
               </Link>
             </div>

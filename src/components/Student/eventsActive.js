@@ -51,11 +51,11 @@ class ActiveEvents extends Component {
     const URL = this.props.match.url;
     return (
       <div>
-        <h2>On-Going Hunt Events</h2>
+        <h4>On-Going Hunt Events</h4>
         {loading && <div>Loading ...</div>}
         {activeEvents.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <Link to={`${URL}/${scavengerHunt.accessCode}`}>
+              <Link to={`${URL}/${scavengerHunt.accessCode}`} className="text-danger">
                 {scavengerHunt.name}
               </Link>
             </div>

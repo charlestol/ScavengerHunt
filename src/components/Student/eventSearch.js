@@ -119,14 +119,9 @@ class SearchScavengerHunt extends Component {
                 {loading && <div>Loading ...</div>}
                 {scavengerHunt && !closed &&
                     <div>
-                        <div>
-                            {scavengerHunt.name}
-                        </div>
-                        <br />
-                        <div>
-                            {scavengerHunt.instructions}
-                        </div>
-                        <br />
+                        <h5>Event: {scavengerHunt.name}</h5>
+                        <p><strong>Courses:</strong> {scavengerHunt.courses}</p>
+                        <p><strong>Description:</strong> {scavengerHunt.description}</p>
                         <JoinEvent scavengerHunt={scavengerHunt} />
                     </div>
                 }
