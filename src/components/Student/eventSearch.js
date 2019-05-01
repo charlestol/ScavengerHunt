@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Button, Form, FormGroup, Label, Input, FormText, Col, Container, Row, Spinner } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 
 import JoinEvent from './eventJoin';
@@ -93,33 +93,40 @@ class SearchScavengerHunt extends Component {
         const isInvalid = accessCode === '';
 
         return (
-                <form onSubmit={this.onSearch}>
-                    <input
-                        name="accessCode"
-                        value={accessCode}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Access Code"
-                    />
-                    <button disabled={isInvalid} type="submit">
-                        Search
-                    </button>
-                    {loading && <div>Loading ...</div>}
-                    {scavengerHunt && !closed &&
-                        <div>
-                            <div>
-                                {scavengerHunt.name}
-                            </div>
-                            <br />
-                            <div>
-                                {scavengerHunt.instructions}
-                            </div>
-                            <br />
-                            <JoinEvent scavengerHunt={scavengerHunt} />
-                        </div>
-                    }
-                    {error && <p>{error}</p>}
-                </form>
+            <Container>
+                <Form onSubmit={this.onSearch}>
+                    <FormGroup>
+                        <Label 
+                            className="my-2" 
+                            for="accessCode" 
+                        >
+                            Join an Event with an Access Code!
+                        </Label>
+                        <Input
+                            id="accessCode"
+                            name="accessCode"
+                            value={accessCode}
+                            onChange={this.onChange}
+                            type="text"
+                            placeholder="Access Code"
+                            className="my-2"
+                        />
+                        <Button color="danger" disabled={isInvalid} type="submit" className="my-2">
+                            Search
+                        </Button>
+                    </FormGroup>
+                </Form>
+                {loading && <Spinner color="danger" />}
+                {scavengerHunt && !closed &&
+                    <div>
+                        <h5>Event: {scavengerHunt.name}</h5>
+                        <p><strong>Courses:</strong> {scavengerHunt.courses}</p>
+                        <p><strong>Description:</strong> {scavengerHunt.description}</p>
+                        <JoinEvent scavengerHunt={scavengerHunt} />
+                    </div>
+                }
+                {error && <p>{error}</p>}
+            </Container>
         );
     }
 }

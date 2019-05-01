@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button, Alert } from "reactstrap"
 
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
@@ -6,11 +7,12 @@ import { AuthUserContext } from '../Session';
 
 const INITIAL_STATE = {
     loading: false,
-    message: null
+    message: null,
+    joined: false
 }
 
 const SUCCESS_MSG = "You're in. Enjoy your hunt!"
-// const ERROR_MSG = "This scavenger hunt event is closed. Contact the instructor for more information."
+const ERROR_MSG = "Error Joining. Try again or contact the instructor for more information."
 
 class JoinScavengerHunt extends Component {
     constructor(props) {
@@ -37,14 +39,17 @@ class JoinScavengerHunt extends Component {
             console.log("User Successfully joined!");
             self.setState({
                 loading: false,
-                message: SUCCESS_MSG
+                message: SUCCESS_MSG,
+                joined: true
             });
             })
         })
         .catch(function(error) {
             console.error("Error writing document: ", error);
             this.setState({
-                error
+                loading: false,
+                message: ERROR_MSG,
+                joined: false
             })
         });
     }
@@ -59,11 +64,11 @@ class JoinScavengerHunt extends Component {
                 {authUser => (
                     <div>
                         {authUser &&
-                        <button onClick={() => this.onJoin(authUser)}>
+                        <Button className="my-2" color="danger" onClick={() => this.onJoin(authUser)}>
                             Join
-                        </button>
+                        </Button>
                         }
-                        {message && <div>{message}</div>}
+                        {message && <Alert color="success">{message}</Alert>}
                     </div>
                 )}
             </AuthUserContext.Consumer>

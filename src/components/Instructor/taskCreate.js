@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Button } from "reactstrap"
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 const INITIAL_STATE = {
@@ -111,9 +111,9 @@ class CreateTask extends Component {
                             Text
                         </label>
                     </div>
-                    <button disabled={isInvalid} type="submit">
+                    <Button color="danger" disabled={isInvalid} type="submit">
                         Add Task
-                    </button>
+                    </Button>
                     <br />
                     {error && <p>{error}</p>}
                 </form>

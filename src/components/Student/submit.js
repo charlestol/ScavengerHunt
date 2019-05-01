@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Button, Form, FormGroup, Label, Input, FormText, Progress, Alert, Container, Col } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
@@ -163,55 +163,52 @@ class Submit extends Component {
         const noText = textEntry === '';
 
         return (
+            <Container>
             <AuthUserContext.Consumer>
                 {authUser => (
                     <div>
                         {this.props.task.entryType==="text" && !closed &&
-                            <div> 
-                                <input
-                                    name="textEntry"
-                                    value={textEntry}
-                                    onChange={this.onChangeText}
-                                    type="text"
-                                    placeholder="Type Here"
-                                />
-                                <br />
-                                <button disabled={noText} onClick={() => this.onSubmitText(authUser)}>
+                            <Form> 
+                                <FormGroup>
+                                <Col sm="12" md={{ size: 6, offset: 3 }}>
+                                    <Input
+                                        name="textEntry"
+                                        value={textEntry}
+                                        onChange={this.onChangeText}
+                                        type="textarea"
+                                        placeholder="Type Here"
+                                        rows="5"
+                                        className="my-2"
+                                    />
+                                </Col>
+                                <Button className="my-2" color="danger" disabled={noText} onClick={() => this.onSubmitText(authUser)}>
                                     Submit
-                                </button>
-                                <br />
-                                {message && <div>{message}</div>}
-                                <br />
-                                {submitted && 
-                                    <div>
-                                        <h5>Submitted Text: </h5>
-                                        <p>{textEntry}</p>
-                                    </div>    
-                                }
-                            </div>
+                                </Button>
+                                {message && <Alert className="my-2" color="success">{message}</Alert>}
+                                </FormGroup>
+                            </Form>
                         }
                         {this.props.task.entryType==="image" && !closed &&
-                            <div> 
-                                <progress value={progress} max="100" />
-                                <input
-                                    onChange={this.onChangeImage}
-                                    type="file"
-                                />
-                                <br />
-                                <button disabled={noImage} onClick={() => this.onSubmitImage(authUser)}>
+                            <Form> 
+                                <Progress className="my-2" color="danger" value={progress} max="100" />
+                                <Col sm="12" md={{ size: 8, offset: 4 }}>
+                                    <Input
+                                        onChange={this.onChangeImage}
+                                        type="file"
+                                        className="my-2"
+                                    />
+                                </Col>
+                                <Button color="danger"  className="my-2" disabled={noImage} onClick={() => this.onSubmitImage(authUser)}>
                                     Submit
-                                </button>
-                                <br />
-                                {message && <div>{message}</div>}
-                                <br />
-                                {/* Preview the image that was just uploaded */}
-                                {submitted && <img src={imageURL} alt="Uploaded Images" height="300" width="400" />}
-                            </div>
+                                </Button>
+                                {message && <Alert className="my-2" color="success">{message}</Alert>}
+                            </Form>
                         }
                         <ViewSubmission email={authUser.email} />
                     </div>
                 )}
             </AuthUserContext.Consumer>
+            </Container>
         );
     }
 }

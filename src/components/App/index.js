@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-
 import Navigation from '../Navigation';
 import Landing from '../Landing';
 import {SignUp, SignIn, PasswordForget, Account} from '../Authentication';
@@ -8,12 +7,13 @@ import {StudentEventItem, StudentTaskItem, StudentDash} from '../Student';
 import { InstructorEventItem, InstructorTaskList, InstructorTaskItem, InstructorDash, MemberList, MemberInfo, Submission} from '../Instructor'
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
+import './index.css';
 
 const App = () => (
   <Router>
-    <div>
+    <div className="app" >
       <Navigation />
-      <hr />
+
       <Route exact path={ROUTES.LANDING} component={Landing} />
       <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
       <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
@@ -40,3 +40,4 @@ const App = () => (
 );
 
 export default withAuthentication(App);
+

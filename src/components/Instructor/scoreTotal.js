@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
+import { Button } from "reactstrap"
 
 const SUCCESS_MSG = 'Student Review Submitted!';
 const ERROR_MSG = 'Error submitting Review';
@@ -131,7 +132,7 @@ class TotalScore extends Component {
                         placeholder="Type Feedback here"
                     />
                 </div>
-                <button onClick={this.onSubmit}>Submit Result</button>
+                <Button color="danger" onClick={this.onSubmit}>Submit Result</Button>
                 {loading && <div>Submitting...</div>}
                 {submitMsg && <div>{submitMsg}</div>}
             </div>

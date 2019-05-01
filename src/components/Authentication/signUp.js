@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-
+import { Button } from "reactstrap"
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
@@ -123,8 +123,8 @@ class SignUpFormBase extends Component {
 
       return (
         <div>
-          <button onClick={this.onClickStudent}>Student</button>
-          <button onClick={this.onClickInstructor}>Instructor</button>
+          <Button color="danger" onClick={this.onClickStudent}>Student</Button>
+          <Button color="danger" onClick={this.onClickInstructor}>Instructor</Button>
           <form onSubmit={this.onSubmit}>
             <input
               name="email"
@@ -179,9 +179,9 @@ class SignUpFormBase extends Component {
               placeholder="Confirm Password"
             />
             <br />
-            <button disabled={isInvalid} type="submit">
+            <Button disabled={isInvalid} type="submit">
               Sign Up
-            </button>
+            </Button>
             <br />
             {error && <p>{error.message}</p>}
           </form>
