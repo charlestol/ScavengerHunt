@@ -12,32 +12,28 @@ class ViewSubmission extends Component {
 
         // console.log(ac, email, task)
         this.setState({ loading: true })
-       this.props.firebase.scavengerHuntSubmission(ac, email, task).get()
-       .then(doc => {
-            let submitData = doc.data();
-            let submission = '';
-            let type = '';
-        //    console.log('sub ',doc.data())
-            if(submitData.hasOwnProperty('textEntry')) {
-                type = 'text';
-                submission = submitData.textEntry;
-            } else if(submitData.hasOwnProperty('imageURL')) {
-                type = 'image';
-                submission = submitData.imageURL;
-            } 
-           
-            this.setState({
-                type,
-                submission,
-                loading: false
-            });
-        
+       this.props.firebase.scavengerHuntSubmission(ac, email, task)
+       .onSnapshot(doc => {
+           if(doc.exists) {
+                let submitData = doc.data();
+                let submission = '';
+                let type = '';
+            //    console.log('sub ',doc.data())
+                if(submitData.hasOwnProperty('textEntry')) {
+                    type = 'text';
+                    submission = submitData.textEntry;
+                } else if(submitData.hasOwnProperty('imageURL')) {
+                    type = 'image';
+                    submission = submitData.imageURL;
+                } 
+            
+                this.setState({
+                    type,
+                    submission,
+                    loading: false
+                });
+            }
         })
-        .catch(error => {
-            this.setState({
-                loading: false
-            });
-        });
     }
     //   componentWillUnmount() {
     //       this.unsubscribe();
@@ -53,7 +49,7 @@ class ViewSubmission extends Component {
                         <h3>Submission</h3>
                         {type==='image' && 
                             <div>
-                                <img src={submission} alt='submission' height="300" width="400" />
+                                <img src={submission} className="img-fluid" alt='submission' />
                             </div>
                         }
                         {type==='text' && 

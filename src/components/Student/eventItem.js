@@ -88,7 +88,7 @@ class EventItem extends Component {
       let day = dateTS.getDate()
       let year = dateTS.getFullYear()
 
-      dueDate = `${month} ${day}, ${year} at `
+      dueDate = `${month} ${day}, ${year} at `;
 
       let hours = dateTS.getHours()
       let minutes = dateTS.getMinutes()
@@ -97,7 +97,7 @@ class EventItem extends Component {
         dueDate += hours;
       } else if (hours > 12) {
         dueDate += "" + (hours - 12);
-      } else if (hours == 0) {
+      } else if (hours === 0) {
         dueDate += "12";
       }
       dueDate += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
@@ -111,7 +111,7 @@ class EventItem extends Component {
             {loading && <Spinner color="danger" />}
             {sh.accessCode && 
               <div>
-                <h5>Event: {sh.name}</h5>
+                <h4>Event: {sh.name}</h4>
                 <p><strong>Courses:</strong> {sh.courses}</p>
                 <p><strong>Description:</strong> {sh.description}</p>            
                 <p><strong>Due:</strong> {dueDate}</p>

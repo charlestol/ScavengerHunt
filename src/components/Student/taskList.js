@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Spinner } from 'reactstrap'
 import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
 
@@ -57,17 +57,17 @@ class EventList extends Component {
 
     return (
       <div>
-        {loading && <div>Loading ...</div>}
-        {tasks.length !== 0 && <h2>Tasks In-Progress</h2>}
+        {loading && <Spinner color="danger" />}
+        {tasks.length !== 0 && <h4>Tasks In-Progress</h4>}
         {tasks.length !== 0 && tasks.map(task => (
             <div key={task}>
-                <Link to={`${URL}/${task}`}>{task}</Link>
+                <Link to={`${URL}/${task}`} className="text-danger">{task}</Link>
             </div>
         ))}
-        {completed.length !== 0 && <h2>Tasks Completed</h2>}
+        {completed.length !== 0 && <h4>Tasks Completed</h4>}
         {completed.length !== 0 && completed.map(task => (
             <div key={task}>
-                <Link to={`${URL}/${task}`}>{task}</Link>
+                <Link to={`${URL}/${task}`} className="text-danger">{task}</Link>
             </div>
         ))}
       </div>

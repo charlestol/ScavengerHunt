@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Spinner } from 'reactstrap'
 // import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
@@ -44,7 +44,7 @@ class ScavengerHuntHistory extends Component {
     return (
       <div>
         <h4>Event History</h4>
-        {loading && <div>Loading ...</div>}
+        {loading && <Spinner color="danger" />}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
                <Link to={`${URL}/${scavengerHunt.accessCode}`} className="text-danger">

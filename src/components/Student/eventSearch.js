@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText, Col, Container, Row } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText, Col, Container, Row, Spinner } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 
 import JoinEvent from './eventJoin';
@@ -100,7 +100,7 @@ class SearchScavengerHunt extends Component {
                             className="my-2" 
                             for="accessCode" 
                         >
-                            Look up an Event with an Access Code!
+                            Join an Event with an Access Code!
                         </Label>
                         <Input
                             id="accessCode"
@@ -116,7 +116,7 @@ class SearchScavengerHunt extends Component {
                         </Button>
                     </FormGroup>
                 </Form>
-                {loading && <div>Loading ...</div>}
+                {loading && <Spinner color="danger" />}
                 {scavengerHunt && !closed &&
                     <div>
                         <h5>Event: {scavengerHunt.name}</h5>

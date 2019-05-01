@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Container, Col } from 'reactstrap'
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
@@ -30,15 +31,13 @@ class TaskItem extends Component {
         return (
             <AuthUserContext.Consumer>
                 {authUser => (
-                    <div>
-                        <h3>Task: {task.name}</h3>
+                    <Container>
+                        <h4>Task: {task.name}</h4>
                         <p>instructions: {task.instructions}</p>
-                        <br />
                         <div>Submission Type: {task.entryType}</div>
-                        <br />
                         <Submit task={task} />
                         <TaskResult email={authUser.email} />
-                    </div>
+                    </Container>
                 )}
             </AuthUserContext.Consumer>
         );
