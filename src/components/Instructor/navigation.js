@@ -8,10 +8,10 @@ const DashboardNav = props => {
     return (
         <div>
             <div>
-                <Link to={`${ROUTES.ADMIN}/${accessCode}/members/`}>Members</Link>
+                <Link to={`${ROUTES.ADMIN}/${accessCode}/members/`} className="text-danger">Members</Link>
             </div>
             <div>
-                <Link to={`${ROUTES.ADMIN}/${accessCode}/tasks/`}>Tasks</Link>
+                <Link to={`${ROUTES.ADMIN}/${accessCode}/tasks/`} className="text-danger">Tasks</Link>
             </div>
         </div>
     );

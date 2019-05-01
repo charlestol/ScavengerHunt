@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Spinner } from 'reactstrap'
 import { withFirebase } from '../Firebase';
 import { withRouter, Link } from 'react-router-dom';
 
@@ -38,12 +38,12 @@ class EventMembers extends Component {
     const URL = this.props.match.url;
     console.log(URL)
     return (
-      <div>
-        <h2>Members</h2>
-        {loading && <div>Loading ...</div>}
+      <div className="my-4">
+        <h4>Members</h4>
+        {loading && <Spinner color="danger" />}
         {members.map(member => (
             <div key={member.email}>
-                <Link to={`${URL}${member.email}`}>{member.name}</Link>
+                <Link to={`${URL}${member.email}`} className="text-danger">{member.name}</Link>
             </div>
         ))}
       </div>

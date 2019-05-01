@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Spinner } from 'reactstrap' 
 import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
 
@@ -53,11 +53,11 @@ class ActiveEvents extends Component {
     const URL = this.props.match.url;
     return (
       <div>
-        <h2>On-Going Hunt Events</h2>
-        {loading && <div>Loading ...</div>}
+        <h4>On-Going Hunt Events</h4>
+        {loading && <Spinner color="danger" />}
         {activeEvents.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
-              <Link to={`${URL}/${scavengerHunt.accessCode}`}>
+              <Link to={`${URL}/${scavengerHunt.accessCode}`} className="text-danger">
                 {scavengerHunt.name}
               </Link>
             </div>

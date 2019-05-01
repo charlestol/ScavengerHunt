@@ -15,7 +15,7 @@ class TaskResults extends Component {
         this.props.firebase.scavengerHuntMember(ac, email).get()
         .then(doc => {
              let eventData = doc.data();
-            // console.log(eventData)
+            console.log(eventData)
              if(eventData.hasOwnProperty('result')) {
                 this.props.firebase.scavengerHuntSubmission(ac, email, task).get()
                 .then(doc => {

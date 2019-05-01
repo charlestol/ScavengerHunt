@@ -25,10 +25,12 @@ class MemberInfo extends Component {
         return (
             <div>
                 {memberInfo &&
-                <div>
-                    <h4>{memberInfo.name}</h4>
-                    <h5>{memberInfo.email}</h5>
+                <div className="my-4">
+                    <h4>Student Name: {memberInfo.name}</h4>
+                    <h4>Student Email: {memberInfo.email}</h4>
+                    <hr />
                     <TotalScore ac={ac} email={email} />
+                    <br />
                     <MemTaskList />
                 </div>
                 }

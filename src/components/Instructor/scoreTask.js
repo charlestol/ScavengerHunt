@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
-import { Button } from "reactstrap"
+import { Button, Spinner, Form, FormGroup, Label, Alert } from "reactstrap"
 
 const INITIAL_STATE = {
     score: '',
@@ -65,8 +65,8 @@ class GiveScore extends Component {
         const isInvalid = score === '';
 
         return (
-            <div>
-                <form onSubmit={this.onSubmit}>
+            <div className="my-4">
+                <Form onSubmit={this.onSubmit}>
                     <div>
                         <label>
                             <input
@@ -104,9 +104,9 @@ class GiveScore extends Component {
                     <Button color="danger" disabled={isInvalid} type="submit">
                         Submit
                     </Button>
-                </form>
-                {loading && <div>Submitting...</div>}
-                {submitMsg && <div>{submitMsg}</div>}
+                    {loading && <Spinner color="danger" />}
+                    {submitMsg && <Alert color="success">{submitMsg}</Alert>}
+                </Form>
             </div>
         );
     }

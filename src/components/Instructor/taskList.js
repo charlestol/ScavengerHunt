@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Spinner } from 'reactstrap'
 import { withFirebase } from '../Firebase';
 import { Link, withRouter } from 'react-router-dom';
 import TaskCreate from './taskCreate';
@@ -39,13 +39,13 @@ class EventList extends Component {
     const URL = this.props.match.url;
 
     return (
-      <div>
-        <h2>Tasks</h2>
+      <div className="my-4">
+        <h4>Tasks</h4>
         <TaskCreate />
-        {loading && <div>Loading ...</div>}
+        {loading && <Spinner color="danger" />}
         {tasks.map(task => (
             <div key={task.name}>
-                <Link to={`${URL}${task.name}`}>{task.name}</Link>
+                <Link to={`${URL}${task.name}`} className="text-danger">{task.name}</Link>
             </div>
         ))}
       </div>

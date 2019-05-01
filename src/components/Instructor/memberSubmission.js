@@ -58,12 +58,12 @@ class Submission extends Component {
             <div>
                 <h3>Submission Review</h3>
                 <div>
-                    <div>Score: {score}/1</div>
+                    <h4>Score: {score}/1</h4>
                     {feedback && <p>{feedback}</p>}
                 </div>
                 {type==='image' && 
                     <div>
-                        <img src={submission} alt='submission' height="300" width="400" />
+                        <img src={submission} className="img-fluid" alt='submission' />
                     </div>
                 }
                 {type==='text' && 

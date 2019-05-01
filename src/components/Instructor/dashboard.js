@@ -8,7 +8,7 @@ import ActiveEvents from './eventsActive';
 const AdminPage = () => (
   <AuthUserContext.Consumer>
     {authUser => (
-      <div className="dashboard">
+      <div className="dashboard my-4">
         <CreateEvent />
         <ActiveEvents user={authUser} />
         <EventHistory user={authUser} />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container } from 'reactstrap';
+import { Button, Container, Input, Form, FormGroup, Label } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 import DatePicker from "react-datepicker";
@@ -20,7 +20,7 @@ const INITIAL_STATE = {
 
 const ERROR_START_DATE = "Your start date can't be greater than your end date, please confirm that your start and end dates are correct.";
 const ERROR_END_DATE = "Your end date can't be less than your start date, please confirm that your start and end dates are correct.";
-
+const ERROR_AC_TAKEN = "This access code is already in use. Please try another."
 class CreateEvent extends Component {
     constructor(props) {
         super(props);
@@ -51,17 +51,22 @@ class CreateEvent extends Component {
             numOfTasks: 0,
             courses,
         };
-
-        this.props.firebase.scavengerHunt(accessCode).set(eventData)
-            .then(() => {
-                console.log("Document successfully written!");
-                this.setState({ ...INITIAL_STATE });
-            })
-            .catch(function(error) {
-                console.error("Error writing document: ", error);
-                this.setState({error})
-            });
-
+        this.props.firebase.scavengerHunt(accessCode).get()
+        .then(doc => {
+            if(doc.exists) {
+                this.setState({ error: ERROR_AC_TAKEN })
+            } else {
+                this.props.firebase.scavengerHunt(accessCode).set(eventData)
+                .then(() => {
+                    console.log("Document successfully written!");
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                    this.setState({error})
+                });
+            }
+         })
         event.preventDefault();
     };
 
@@ -126,7 +131,9 @@ class CreateEvent extends Component {
             <AuthUserContext.Consumer>
                 {authUser => (
                     <Container>
-                        <form onSubmit={event => this.onCreateEvent(event, authUser)}>
+                        <Form onSubmit={event => this.onCreateEvent(event, authUser)}>
+                            <h4>Create a Scavenger Hunt Event!</h4>
+                            <br />
                             <input
                                 name="name"
                                 value={name}
@@ -174,19 +181,19 @@ class CreateEvent extends Component {
                             />
                             <br />
                             <input
-                                name="description"
-                                value={description}
-                                onChange={this.onChange}
-                                type="text"
-                                placeholder="Type event description here"
-                            />
-                            <br />
-                            <input
                                 name="courses"
                                 value={courses}
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Course(s) participating"
+                            />
+                            <br />
+                            <input
+                                name="description"
+                                value={description}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Type event description here"
                             />
                             <br />
                             <Button color="danger" disabled={isInvalid} type="submit">
@@ -195,7 +202,7 @@ class CreateEvent extends Component {
                             <br />
                             {dateError && <p>{dateError}</p>}
                             {error && <p>{error}</p>}
-                        </form>
+                        </Form>
                     </Container>
                 )}
             </AuthUserContext.Consumer>

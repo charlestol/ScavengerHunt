@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
-import { Button } from "reactstrap"
+import { Button, Spinner, Alert, Form, FormGroup, Col, Input, Label } from "reactstrap"
 
 const SUCCESS_MSG = 'Student Review Submitted!';
 const ERROR_MSG = 'Error submitting Review';
@@ -100,7 +100,7 @@ class TotalScore extends Component {
     }
 
     onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({ feedback: event.target.value });
     }
 
     render() {
@@ -117,24 +117,33 @@ class TotalScore extends Component {
         return (
             <div>
                 {totalScore === null && numOfTasks === null &&
-                    <h3>Total Score: -/-</h3>
+                    <h4>Total Score: -/-</h4>
                 }
                 {totalScore !== null && numOfTasks !== null &&
-                    <h3>Total Score: {`${totalScore}/${numOfTasks}`}</h3>
+                    <h4>Total Score: {`${totalScore}/${numOfTasks}`}</h4>
                 }
                 <div>
-                    <h3>Overall Feedback</h3>
-                    <input
-                        type="text"
-                        name="feedback"
-                        value={feedback}
-                        onChange={this.onChange}
-                        placeholder="Type Feedback here"
-                    />
+                    <Form> 
+                        <FormGroup>
+                            <Col sm="12" md={{ size: 6, offset: 3 }}>
+                                <Label for="Feedback">Event Feedback</Label>
+                                <Input
+                                    name="textEntry"
+                                    id="Feedback"
+                                    value={feedback}
+                                    onChange={this.onChange}
+                                    type="textarea"
+                                    placeholder="Type Here"
+                                    rows="5"
+                                    className="my-2"
+                                />
+                            </Col>
+                            <Button color="danger" onClick={this.onSubmit}>Submit Result</Button>
+                        </FormGroup>
+                    </Form>
                 </div>
-                <Button color="danger" onClick={this.onSubmit}>Submit Result</Button>
-                {loading && <div>Submitting...</div>}
-                {submitMsg && <div>{submitMsg}</div>}
+                {loading && <Spinner color="danger" />}
+                {submitMsg && <Alert color="success">{submitMsg}</Alert>}
             </div>
         );
     }

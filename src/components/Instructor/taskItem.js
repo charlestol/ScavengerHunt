@@ -27,7 +27,7 @@ class TaskItem extends Component {
     render() {
         const {task} = this.state;
         return (
-            <div>
+            <div className="my-4">
                 {task.name}
                 <br />
                 {task.instructions}
