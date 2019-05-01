@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from "reactstrap"
+import { Button, Alert } from "reactstrap"
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 const INITIAL_STATE = {
@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     entryType: '',
     error: null
 }
+const ERROR_TASK_EXISTS = "A task with this name already exists. Please try a different name."
 
 class CreateTask extends Component {
     constructor(props) {
@@ -30,26 +31,31 @@ class CreateTask extends Component {
         };
 
         const accessCode = this.props.match.params.eventId;
-
-        this.props.firebase.scavengerHuntTask(accessCode,name).set(taskData)
-            .then(() => {
-                this.props.firebase.scavengerHunt(accessCode).update({
-                    numOfTasks: this.props.firebase.fieldValue.increment(1)
-                })
+        this.props.firebase.scavengerHuntTask(accessCode,name).get()
+        .then(doc => {
+            if(doc.exists) {
+                this.setState({error: ERROR_TASK_EXISTS})
+            } else {
+                this.props.firebase.scavengerHuntTask(accessCode,name).set(taskData)
                 .then(() => {
-                    console.log("Document successfully written!");
-                    this.setState({ ...INITIAL_STATE });
+                    this.props.firebase.scavengerHunt(accessCode).update({
+                        numOfTasks: this.props.firebase.fieldValue.increment(1)
+                    })
+                    .then(() => {
+                        console.log("Document successfully written!");
+                        this.setState({ ...INITIAL_STATE });
+                    })
+                    .catch(error => {
+                        console.error("Error writing document: ", error);
+                        this.setState({error})
+                    });
                 })
                 .catch(error => {
                     console.error("Error writing document: ", error);
                     this.setState({error})
                 });
-            })
-            .catch(error => {
-                console.error("Error writing document: ", error);
-                this.setState({error})
-            });
-
+            }
+        })
         event.preventDefault();
     };
 
@@ -115,7 +121,7 @@ class CreateTask extends Component {
                         Add Task
                     </Button>
                     <br />
-                    {error && <p>{error}</p>}
+                    {error && <Alert color="danger">{error}</Alert>}
                 </form>
             </div>
         );

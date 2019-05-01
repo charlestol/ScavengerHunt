@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container, Input, Form, FormGroup, Label } from 'reactstrap';
+import { Button, Container, Input, Form, FormGroup, Label, Alert } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 import DatePicker from "react-datepicker";
@@ -201,7 +201,7 @@ class CreateEvent extends Component {
                             </Button>
                             <br />
                             {dateError && <p>{dateError}</p>}
-                            {error && <p>{error}</p>}
+                            {error && <Alert color="danger">{error}</Alert>}
                         </Form>
                     </Container>
                 )}
