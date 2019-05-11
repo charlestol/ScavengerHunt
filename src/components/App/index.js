@@ -1,4 +1,5 @@
 import React from 'react';
+import {Container, Col } from 'reactstrap'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Landing from '../Landing';
@@ -13,28 +14,31 @@ const App = () => (
   <Router>
     <div className="app" >
       <Navigation />
+      <Col sm="12" md={{ size: 6, offset: 3 }}>
+        <div className="p-5">
+          <Route exact path={ROUTES.LANDING} component={Landing} />
+          <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
+          <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
+          <Route
+            exact
+            path={ROUTES.PASSWORD_FORGET}
+            component={PasswordForget}
+          />
+          <Route exact path={ROUTES.HOME} component={StudentDash} />
+          <Route exact path={`${ROUTES.HOME}/:eventId`} component={StudentEventItem} />
+          <Route exact path={`${ROUTES.HOME}/:eventId/:taskId`} component={StudentTaskItem} />
 
-      <Route exact path={ROUTES.LANDING} component={Landing} />
-      <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
-      <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
-      <Route
-        exact
-        path={ROUTES.PASSWORD_FORGET}
-        component={PasswordForget}
-      />
-      <Route exact path={ROUTES.HOME} component={StudentDash} />
-      <Route exact path={`${ROUTES.HOME}/:eventId`} component={StudentEventItem} />
-      <Route exact path={`${ROUTES.HOME}/:eventId/:taskId`} component={StudentTaskItem} />
+          <Route exact path={ROUTES.ACCOUNT} component={Account} />
 
-      <Route exact path={ROUTES.ACCOUNT} component={Account} />
-
-      <Route exact path={ROUTES.ADMIN} component={InstructorDash} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={InstructorEventItem} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/`} component={InstructorTaskList} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/:taskId`} component={InstructorTaskItem} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/members/`} component={MemberList} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId`} component={MemberInfo} />
-      <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId/:taskId`} component={Submission} />
+          <Route exact path={ROUTES.ADMIN} component={InstructorDash} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={InstructorEventItem} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/`} component={InstructorTaskList} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/:taskId`} component={InstructorTaskItem} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/members/`} component={MemberList} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId`} component={MemberInfo} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId/:taskId`} component={Submission} />
+        </div>
+      </Col>
     </div>
   </Router>
 );

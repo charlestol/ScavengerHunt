@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Button } from "reactstrap"
+import { Container, Button, Form, FormGroup, Label, Input, FormText, Alert, Col } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
@@ -119,74 +119,78 @@ class SignUpFormBase extends Component {
       firstName === '' ||
       lastName === '';
 
+    let isStudent = role===ROLES.STUDENT;
+
     console.log(role);
 
       return (
-        <div>
-          <Button color="danger" onClick={this.onClickStudent}>Student</Button>
-          <Button color="danger" onClick={this.onClickInstructor}>Instructor</Button>
-          <form onSubmit={this.onSubmit}>
-            <input
-              name="email"
-              value={email}
-              onChange={this.onChange}
-              type="text"
-              placeholder="Email Address"
-            />
-            <br />
-            <input
-              name="firstName"
-              value={firstName}
-              onChange={this.onChange}
-              type="text"
-              placeholder="First Name"
-            />
-            <br />
-            <input
-              name="lastName"
-              value={lastName}
-              onChange={this.onChange}
-              type="text"
-              placeholder="Last Name"
-            />
-            <br />          
-            {
-              role===ROLES.STUDENT &&
-              <div>
-                <input
-                  name="studentID"
-                  value={studentID}
-                  onChange={this.onChange}
-                  type="text"
-                  placeholder="Student ID"
-                />
-                <br />
-              </div>
-            }
-            <input
-              name="passwordOne"
-              value={passwordOne}
-              onChange={this.onChange}
-              type="password"
-              placeholder="Password"
-            />
-            <br />
-            <input
-              name="passwordTwo"
-              value={passwordTwo}
-              onChange={this.onChange}
-              type="password"
-              placeholder="Confirm Password"
-            />
-            <br />
-            <Button disabled={isInvalid} type="submit">
-              Sign Up
-            </Button>
-            <br />
-            {error && <p>{error.message}</p>}
-          </form>
-          <SignInLink />
-        </div>
+        <Container>
+          <Col sm="12" md={{ size: 6, offset: 3 }}>
+            <Button outline color="danger" onClick={this.onClickStudent} active={isStudent} className="mb-3 mx-1 rounded-sm">Student</Button>
+            <Button outline color="danger" onClick={this.onClickInstructor} active={!isStudent} className="mb-3 mx-1 rounded-sm">Instructor</Button>
+            <Form onSubmit={this.onSubmit}>
+              <Input
+                name="email"
+                value={email}
+                onChange={this.onChange}
+                type="text"
+                placeholder="Email Address"
+                className="mb-3 rounded-sm"
+              />
+              <Input
+                name="firstName"
+                value={firstName}
+                onChange={this.onChange}
+                type="text"
+                placeholder="First Name"
+                className="mb-3 rounded-sm"
+              />
+              <Input
+                name="lastName"
+                value={lastName}
+                onChange={this.onChange}
+                type="text"
+                placeholder="Last Name"
+                className="mb-3 rounded-sm"
+              />
+              {
+                role===ROLES.STUDENT &&
+                <div>
+                  <Input
+                    name="studentID"
+                    value={studentID}
+                    onChange={this.onChange}
+                    type="text"
+                    placeholder="Student ID"
+                    className="mb-3 rounded-sm"
+                  />
+                </div>
+              }
+              <Input
+                name="passwordOne"
+                value={passwordOne}
+                onChange={this.onChange}
+                type="password"
+                placeholder="Password"
+                className="mb-3 rounded-sm"
+              />
+              <Input
+                name="passwordTwo"
+                value={passwordTwo}
+                onChange={this.onChange}
+                type="password"
+                placeholder="Confirm Password"
+                className="mb-3 rounded-sm"
+              />
+              <Button disabled={isInvalid} color="danger" type="submit" className="mb-3 rounded-sm">
+                Sign Up
+              </Button>
+              <br />
+              {error && <Alert color="danger">{error.message}</Alert>}
+            </Form>
+            <SignInLink />
+          </Col>
+        </Container>
       );
     }
   }

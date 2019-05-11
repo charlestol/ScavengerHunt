@@ -40,7 +40,7 @@ export default class Navigation extends Component {
         <AuthUserContext.Consumer>
           {authUser => (
             <Navbar color="light" light expand="md">
-              <NavbarBrand href="/">HuntSeekers</NavbarBrand>
+              <NavbarBrand href="/"><h3>SeekIt</h3></NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>             
               {authUser && authUser.role === ROLES.STUDENT &&
