@@ -11,8 +11,8 @@ import SH from '../../assets/appfavi.png'
 
 const SignInPage = () => (
   <div>
-    <Media style={imgStyle} src={SH} className="my-3" />
-    <h4>SignIn</h4>
+    <Media style={imgStyle} src={SH} className="mb-3" />
+    <h4 className="mb-3">SignIn</h4>
     <SignInForm />
     <PasswordForgetLink />
     <SignUpLink />

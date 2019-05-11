@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Container, Button, Form, FormGroup, Label, Input, FormText, Alert, Col } from 'reactstrap';
+import { Media, Container, Button, Form, FormGroup, Label, Input, FormText, Alert, Col } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import { compose } from 'recompose';
-// import { withAuthorization } from '../Session';
+import SH from '../../assets/appfavi.png'
 
 const SignUpPage = () => (
   <div>
-    <h1>SignUp</h1>
+    <Media style={imgStyle} src={SH} className="mb-3" />
+    <h4 className="mb-3">SignUp</h4>
     <SignUpForm />
   </div>
 );
@@ -24,6 +25,13 @@ const INITIAL_STATE = {
   role: ROLES.STUDENT,
   error: null
 }
+
+const imgStyle = {
+  maxWidth: 256,
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+};
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
 
