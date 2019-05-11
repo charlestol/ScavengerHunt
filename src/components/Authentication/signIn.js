@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
+import { Container, Button, Form, FormGroup, Label, Input, FormText, Alert, Col } from 'reactstrap';
 import { SignUpLink } from './signUp';
 import { PasswordForgetLink } from './passwordForget';
-import { Button } from "reactstrap"
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { withAuthorization } from '../Session';
 
 const SignInPage = () => (
   <div>
-    <h1>SignIn</h1>
+    <h4>SignIn</h4>
     <SignInForm />
     <PasswordForgetLink />
     <SignUpLink />
@@ -58,27 +57,33 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <Button color="danger" disabled={isInvalid} type="submit">
-          Sign In
-        </Button>
+      <Container >
+        <Col sm="12" md={{ size: 6, offset: 3 }}>
+          <Form onSubmit={this.onSubmit}>
+            <Input
+              name="email"
+              value={email}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Email Address"
+              className="mb-3 rounded-sm"
+            />
+            <Input
+              name="password"
+              value={password}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Password"
+              className="mb-3 rounded-sm"
+            />
+            <Button color="danger" disabled={isInvalid} type="submit" className="mb-3">
+              Sign In
+            </Button>
 
-        {error && <p>{error.message}</p>}
-      </form>
+            {error && <Alert color="danger" >{error.message}</Alert>}
+          </Form>
+        </Col>
+      </Container>
     );
   }
 }
