@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Container, Button, Form, FormGroup, Label, Input, FormText, Alert, Col } from 'reactstrap';
+import { Media, Container, Button, Form, FormGroup, Label, Input, FormText, Alert, Col } from 'reactstrap';
 import { SignUpLink } from './signUp';
 import { PasswordForgetLink } from './passwordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { withAuthorization } from '../Session';
+import SH from '../../assets/appfavi.png'
 
 const SignInPage = () => (
   <div>
+    <Media style={imgStyle} src={SH} className="my-3" />
     <h4>SignIn</h4>
     <SignInForm />
     <PasswordForgetLink />
@@ -21,6 +23,13 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
+};
+
+const imgStyle = {
+  maxWidth: 256,
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto',
 };
 
 class SignInFormBase extends Component {

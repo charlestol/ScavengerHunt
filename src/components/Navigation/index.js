@@ -49,6 +49,9 @@ export default class Navigation extends Component {
               {authUser && authUser.role === ROLES.INSTRUCTOR &&
                 <NavigationAuthInstructor />
               }
+              {!authUser &&
+                <NavigationNoAuth />
+              }
               </Collapse>
             </Navbar>
           )}
@@ -57,6 +60,14 @@ export default class Navigation extends Component {
     );
   }
 }
+
+const NavigationNoAuth = () => (
+  <Nav className="ml-auto" navbar>
+    <NavItem>
+      <NavLink href={ROUTES.LANDING}>Home</NavLink>
+    </NavItem>
+  </Nav>
+);
 
 const NavigationAuthStudent = () => (
   <Nav className="ml-auto" navbar>
