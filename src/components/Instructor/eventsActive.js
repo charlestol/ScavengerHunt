@@ -20,7 +20,7 @@ class ActiveEvents extends Component {
 
     // console.log(today)
 
-    this.props.firebase
+   this.unsubscribe = this.props.firebase
       .scavengerHunts().where("email", "==", user.email)
       .onSnapshot(snapshot => {
         let activeEvents = [];
@@ -44,9 +44,9 @@ class ActiveEvents extends Component {
       });
   }
 
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   render() {
     const { activeEvents, loading } = this.state;

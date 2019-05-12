@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { Button, Container, Input, Form, FormGroup, Label, Alert } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
-import DatePicker from "react-datepicker";
- 
-import "react-datepicker/dist/react-datepicker.css";
+import Moment from 'moment'
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import 'react-widgets/dist/css/react-widgets.css';
+
+Moment.locale('en')
+momentLocalizer()
 
 const INITIAL_STATE = {
     name: '',
@@ -21,6 +25,7 @@ const INITIAL_STATE = {
 const ERROR_START_DATE = "Your start date can't be greater than your end date, please confirm that your start and end dates are correct.";
 const ERROR_END_DATE = "Your end date can't be less than your start date, please confirm that your start and end dates are correct.";
 const ERROR_AC_TAKEN = "This access code is already in use. Please try another."
+
 class CreateEvent extends Component {
     constructor(props) {
         super(props);
@@ -133,74 +138,48 @@ class CreateEvent extends Component {
                     <Container>
                         <Form onSubmit={event => this.onCreateEvent(event, authUser)}>
                             <h4>Create a Scavenger Hunt Event!</h4>
-                            <br />
-                            <input
+                            <Input
                                 name="name"
                                 value={name}
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Event Name"
                             />
-                            <br />
-                            <input
+                            <Input
                                 name="accessCode"
                                 value={accessCode}
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Access Code"
                             />
-                            <br />
-                            <DatePicker
-                                selected={dateStart}
-                                onChange={this.handleChangeStart}
-                                selectsStart
-                                startDate={dateStart}
-                                endDate={dateEnd}
-                                showTimeSelect
-                                timeFormat="HH:mm"
-                                timeIntervals={60}
-                                dateFormat="MMMM d, yyyy h:mm aa"
-                                timeCaption="Time"
-                                placeholderText="Click to set Start time"
-                                shouldCloseOnSelect={false}
+                            <DateTimePicker
+                                value={dateStart}
+                                onChange={dateStart => this.handleChangeStart(dateStart)}
+                                placeholder="Click calendar and clock to set Start time"
                             />
-                            <br />
-                            <DatePicker
-                                selected={dateEnd}
-                                onChange={this.handleChangeEnd}
-                                selectsEnd
-                                startDate={dateStart}
-                                endDate={dateEnd}
-                                showTimeSelect
-                                timeFormat="HH:mm"
-                                timeIntervals={60}
-                                dateFormat="MMMM d, yyyy h:mm aa"
-                                timeCaption="Time"
-                                placeholderText="Click to set End time"
-                                shouldCloseOnSelect={false}
+                            <DateTimePicker 
+                                value={dateEnd}
+                                onChange={dateEnd => this.handleChangeEnd(dateEnd)}
+                                placeholder="Click calendar and clock to set End time"
                             />
-                            <br />
-                            <input
+                            <Input
                                 name="courses"
                                 value={courses}
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Course(s) participating"
                             />
-                            <br />
-                            <input
+                            <Input
                                 name="description"
                                 value={description}
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Type event description here"
                             />
-                            <br />
                             <Button color="danger" disabled={isInvalid} type="submit">
                                 Create
                             </Button>
-                            <br />
-                            {dateError && <p>{dateError}</p>}
+                            {dateError && <Alert color="danger">{dateError}</Alert>}
                             {error && <Alert color="danger">{error}</Alert>}
                         </Form>
                     </Container>
