@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Alert } from "reactstrap"
+import { Button, Alert, Form, Input } from "reactstrap"
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 const INITIAL_STATE = {
@@ -8,6 +8,8 @@ const INITIAL_STATE = {
     entryType: '',
     error: null
 }
+
+const SUCCESS_CREATE = "Task successfully added!";
 const ERROR_TASK_EXISTS = "A task with this name already exists. Please try a different name."
 
 class CreateTask extends Component {
@@ -78,51 +80,54 @@ class CreateTask extends Component {
 
         return (
             <div>
-                <form onSubmit={this.onCreateTask}>
-                    <input
+                <Form onSubmit={this.onCreateTask}>
+                    <h4>Create a Task!</h4>
+                    <Input
                         name="name"
                         value={name}
                         onChange={this.onChange}
                         type="text"
                         placeholder="Task Name"
+                        className="mb-3 rounded-sm"
                     />
-                    <br />
-                    <input
+                    <Input
                         name="instructions"
                         value={instructions}
                         onChange={this.onChange}
                         type="text"
                         placeholder="Task Instructions"
+                        className="mb-3 rounded-sm"
                     />
-                    <br />
                     <div>
-                        <label>
+                        <p><strong>Select the submission type:</strong></p>
+                        <label className="mx-2">
                             <input
                                 name="entryType"
                                 value="image"
                                 checked={entryType === "image"}
                                 onChange={this.onChange}
                                 type="radio"
+                                className="mb-3 rounded-sm"
                             />
                             Image
                         </label>
-                        <label>
+                        <label className="mx-2">
                             <input
                                 name="entryType"
                                 value="text"
                                 checked={entryType === "text"}
                                 onChange={this.onChange}
                                 type="radio"
+                                className="mb-3 rounded-sm"
                             />
                             Text
                         </label>
                     </div>
-                    <Button color="danger" disabled={isInvalid} type="submit">
+                    <Button color="danger" disabled={isInvalid} type="submit" className="mb-3 rounded-sm">
                         Add Task
                     </Button>
-                    <br />
                     {error && <Alert color="danger">{error}</Alert>}
-                </form>
+                </Form>
             </div>
         );
     }

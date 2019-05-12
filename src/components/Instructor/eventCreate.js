@@ -18,10 +18,11 @@ const INITIAL_STATE = {
     dateEnd: null,
     description: '',
     courses: '',
+    msg: null,
     error: null,
     dateError: null
 }
-
+const SUCCESS_CREATE = "Event successfully created!";
 const ERROR_START_DATE = "Your start date can't be greater than your end date, please confirm that your start and end dates are correct.";
 const ERROR_END_DATE = "Your end date can't be less than your start date, please confirm that your start and end dates are correct.";
 const ERROR_AC_TAKEN = "This access code is already in use. Please try another."
@@ -144,6 +145,7 @@ class CreateEvent extends Component {
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Event Name"
+                                className="mb-3 rounded-sm"
                             />
                             <Input
                                 name="accessCode"
@@ -151,16 +153,19 @@ class CreateEvent extends Component {
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Access Code"
+                                className="mb-3 rounded-sm"
                             />
                             <DateTimePicker
                                 value={dateStart}
                                 onChange={dateStart => this.handleChangeStart(dateStart)}
                                 placeholder="Click calendar and clock to set Start time"
+                                className="mb-3 rounded-sm"
                             />
                             <DateTimePicker 
                                 value={dateEnd}
                                 onChange={dateEnd => this.handleChangeEnd(dateEnd)}
                                 placeholder="Click calendar and clock to set End time"
+                                className="mb-3 rounded-sm"
                             />
                             <Input
                                 name="courses"
@@ -168,6 +173,7 @@ class CreateEvent extends Component {
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Course(s) participating"
+                                className="mb-3 rounded-sm"
                             />
                             <Input
                                 name="description"
@@ -175,8 +181,9 @@ class CreateEvent extends Component {
                                 onChange={this.onChange}
                                 type="text"
                                 placeholder="Type event description here"
+                                className="mb-3 rounded-sm"
                             />
-                            <Button color="danger" disabled={isInvalid} type="submit">
+                            <Button color="danger" disabled={isInvalid} type="submit" className="mb-3 rounded-sm">
                                 Create
                             </Button>
                             {dateError && <Alert color="danger">{dateError}</Alert>}

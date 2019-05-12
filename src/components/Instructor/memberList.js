@@ -38,9 +38,10 @@ class EventMembers extends Component {
     const URL = this.props.match.url;
     console.log(URL)
     return (
-      <div className="my-4">
+      <div>
         <h4>Members</h4>
         {loading && <Spinner color="danger" />}
+        {!loading && members.length===0 && <p>No participants have joined this event yet.</p>}
         {members.map(member => (
             <div key={member.email}>
                 <Link to={`${URL}${member.email}`} className="text-danger">{member.name}</Link>

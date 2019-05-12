@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
-// import CreateTask from './createTask';
-// import ListTasks from './taskList';
-// import EventMembers from './eventMembers';
-import { Spinner } from 'reactstrap'
-import DashNav from './navigation'
+import { Container, Col, Row, Button, Spinner } from 'reactstrap'
+// import DashNav from './navigation'
+import TaskCreate from './taskCreate';
+import TaskList from './taskList';
+import MemberList from './memberList';
+
+const layout = {
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+};
+
 
 class EventItem extends Component {
   state = { 
     loading: false,
-    sh: {}
+    sh: {},
+    activeTab: 1
   }
 
   componentDidMount() {
@@ -35,8 +43,33 @@ class EventItem extends Component {
   //   this.unsubscribe();
   // }
 
+
+  toggleTasks = () => {
+    if (this.state.activeTab !== 1) {
+      this.setState({
+        activeTab: 1
+      });
+    }
+  }
+
+  toggleCreate = () => {
+    if (this.state.activeTab !== 2) {
+      this.setState({
+        activeTab: 2
+      });
+    }
+  }
+
+  toggleMembers = () => {
+    if (this.state.activeTab !== 3) {
+      this.setState({
+        activeTab: 3
+      });
+    }
+  }
+
   render() {
-    const { loading, sh } = this.state;
+    const { loading, sh, activeTab } = this.state;
 
 
     let dueDate = '';
@@ -79,19 +112,27 @@ class EventItem extends Component {
       dueDate += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
     }
     return (
-      <div className="my-4">
-        {loading && <Spinner color="danger" />}
-        {sh.accessCode && 
-          <div>
-            <h4>Event: {sh.name}</h4>
-            <p><strong>Courses:</strong> {sh.courses}</p>
-            <p><strong>Description:</strong> {sh.description}</p>            
-            <p><strong>Due:</strong> {dueDate}</p>
-
-            <DashNav />
-          </div>
-        }
-      </div>
+      <Container>
+        <Col md="12" lg={{ size: 6}} style={layout}>
+          {loading && <Spinner color="danger" />}
+          {sh.accessCode && 
+            <div>
+              <h4>Event: {sh.name}</h4>
+              <p><strong>Courses:</strong> {sh.courses}</p>
+              <p><strong>Description:</strong> {sh.description}</p>            
+              <p><strong>Due:</strong> {dueDate}</p>
+              <Row style={layout}>
+                <Button outline color="danger" onClick={this.toggleTasks} active={activeTab===1} className="mb-3 mx-1 rounded-sm">Task List</Button>
+                <Button outline color="danger" onClick={this.toggleCreate} active={activeTab===2} className="mb-3 mx-1 rounded-sm">Create Task</Button>
+                <Button outline color="danger" onClick={this.toggleMembers} active={activeTab===3} className="mb-3 mx-1 rounded-sm">Members</Button>
+              </Row>
+              {activeTab===1 && <TaskList/>}
+              {activeTab===2 && <TaskCreate />}
+              {activeTab===3 && <MemberList />}                
+            </div> 
+          }
+        </Col>
+      </Container>
     )
   }
 }
