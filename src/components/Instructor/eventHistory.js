@@ -44,6 +44,7 @@ class EventHistory extends Component {
       <div>
         <h4>Event History</h4>
         {loading && <Spinner color="danger" />}
+        {!loading && scavengerHunts.length===0 && <p>You have not created any scavenger hunt events yet.</p>}
         {scavengerHunts.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
               <Link to={`${URL}/${scavengerHunt.accessCode}`} className="text-danger">
