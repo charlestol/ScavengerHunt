@@ -40,7 +40,6 @@ class TaskList extends Component {
     const { tasks, loading } = this.state;
     // console.log('list', tasks)
     const URL = this.props.match.url;
-
     return (
       <div>
         <h4>Tasks</h4>
@@ -48,7 +47,7 @@ class TaskList extends Component {
         {!loading && tasks.length===0 && <p>You have not created any scavenger hunt tasks yet.<br />Create tasks for your participants to complete!</p>}
         {tasks.map(task => (
             <div key={task.name}>
-                <Link to={`${URL}${task.name}`} className="text-danger">{task.name}</Link>
+                <Link to={`${URL}/${task.name}`} className="text-danger">{task.name}</Link>
             </div>
         ))}
       </div>

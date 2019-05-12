@@ -32,11 +32,9 @@ const App = () => (
 
           <Route exact path={ROUTES.ADMIN} component={InstructorDash} />
           <Route exact path={`${ROUTES.ADMIN}/:eventId`} component={InstructorEventItem} />
-          <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/`} component={InstructorTaskList} />
-          <Route exact path={`${ROUTES.ADMIN}/:eventId/tasks/:taskId`} component={InstructorTaskItem} />
-          <Route exact path={`${ROUTES.ADMIN}/:eventId/members/`} component={MemberList} />
-          <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId`} component={MemberInfo} />
-          <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId/:taskId`} component={Submission} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/:taskId`} component={InstructorTaskItem} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/:memberId`} component={MemberInfo} />
+          <Route exact path={`${ROUTES.ADMIN}/:eventId/:memberId/:taskId`} component={Submission} />
         </div>
     </div>
   </Router>

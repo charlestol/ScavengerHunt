@@ -6,7 +6,7 @@ const INITIAL_STATE = {
     name: '',
     instructions: '',
     entryType: '',
-    error: null
+    error: null,
 }
 
 const SUCCESS_CREATE = "Task successfully added!";
@@ -16,7 +16,7 @@ class CreateTask extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { ...INITIAL_STATE };
+        this.state = { ...INITIAL_STATE, msg: null};
     }
 
     onCreateTask = event => {
@@ -45,7 +45,7 @@ class CreateTask extends Component {
                     })
                     .then(() => {
                         console.log("Document successfully written!");
-                        this.setState({ ...INITIAL_STATE });
+                        this.setState({ ...INITIAL_STATE, msg: SUCCESS_CREATE });
                     })
                     .catch(error => {
                         console.error("Error writing document: ", error);
@@ -70,7 +70,8 @@ class CreateTask extends Component {
             name,
             instructions,
             entryType,
-            error
+            error,
+            msg
         } = this.state;
 
         const isInvalid = 
@@ -126,6 +127,7 @@ class CreateTask extends Component {
                     <Button color="danger" disabled={isInvalid} type="submit" className="mb-3 rounded-sm">
                         Add Task
                     </Button>
+                    {msg && <Alert color="success">{msg}</Alert>}
                     {error && <Alert color="danger">{error}</Alert>}
                 </Form>
             </div>

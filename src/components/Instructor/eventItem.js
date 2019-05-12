@@ -118,6 +118,7 @@ class EventItem extends Component {
           {sh.accessCode && 
             <div>
               <h4>Event: {sh.name}</h4>
+              <p><strong>Access Code:</strong> {sh.accessCode}</p>
               <p><strong>Courses:</strong> {sh.courses}</p>
               <p><strong>Description:</strong> {sh.description}</p>            
               <p><strong>Due:</strong> {dueDate}</p>

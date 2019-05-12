@@ -18,7 +18,6 @@ const INITIAL_STATE = {
     dateEnd: null,
     description: '',
     courses: '',
-    msg: null,
     error: null,
     dateError: null
 }
@@ -31,7 +30,7 @@ class CreateEvent extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { ...INITIAL_STATE };
+        this.state = { ...INITIAL_STATE, msg: null };
     }
 
     onCreateEvent = (event, authUser) => {
@@ -65,7 +64,7 @@ class CreateEvent extends Component {
                 this.props.firebase.scavengerHunt(accessCode).set(eventData)
                 .then(() => {
                     console.log("Document successfully written!");
-                    this.setState({ ...INITIAL_STATE });
+                    this.setState({ ...INITIAL_STATE, msg: SUCCESS_CREATE });
                 })
                 .catch(function(error) {
                     console.error("Error writing document: ", error);
@@ -119,7 +118,8 @@ class CreateEvent extends Component {
             description,
             courses,
             error,
-            dateError
+            dateError,
+            msg
         } = this.state;
 
         const isInvalid = 
@@ -186,6 +186,7 @@ class CreateEvent extends Component {
                             <Button color="danger" disabled={isInvalid} type="submit" className="mb-3 rounded-sm">
                                 Create
                             </Button>
+                            {msg && <Alert color="success">{msg}</Alert>}
                             {dateError && <Alert color="danger">{dateError}</Alert>}
                             {error && <Alert color="danger">{error}</Alert>}
                         </Form>
