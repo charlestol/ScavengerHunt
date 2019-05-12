@@ -1,7 +1,7 @@
 import React from 'react';
 import * as ROUTES from '../../constants/routes';
 import { Link } from 'react-router-dom';
-import SH from '../../assets/appfavi.png'
+import SH from '../../assets/czilogodetailedmap.png'
 import { Media, Container, Col } from 'reactstrap';
 
 const imgStyle = {
