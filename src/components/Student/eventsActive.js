@@ -53,6 +53,7 @@ class ActiveEvents extends Component {
       <div>
         <h4>On-Going Hunt Events</h4>
         {loading && <Spinner color="danger" />}
+        {!loading && activeEvents.length===0 && <p>You have not joined any scavenger hunt events yet.<br />Join an event with an access code provided by your instructor!</p>}
         {activeEvents.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
               <Link to={`${URL}/${scavengerHunt.accessCode}`} className="text-danger">
