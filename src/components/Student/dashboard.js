@@ -47,7 +47,7 @@ class HomePage extends Component {
       <AuthUserContext.Consumer>
         {authUser => (
           <Container>
-            <Col sm="12" md={{ size: 8}} style={layout}>
+            <Col md="12" lg={{ size: 6}} style={layout}>
                 <Row style={layout}>
                   <Button outline color="danger" onClick={this.toggleActive} active={activeTab===1} className="mb-3 mx-1 rounded-sm">Active Events</Button>
                   <Button outline color="danger" onClick={this.toggleJoin} active={activeTab===2} className="mb-3 mx-1 rounded-sm">Join Event</Button>

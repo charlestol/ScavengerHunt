@@ -9,12 +9,12 @@ import { InstructorEventItem, InstructorTaskList, InstructorTaskItem, Instructor
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 import './index.css';
-
+import Path from '../../assets/splashpath2.png'
 const App = () => (
   <Router>
-    <div className="app" >
+    {/* <div className="app" style={{background: `url(${Path})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat'}}> */}
+    <div className="app">
       <Navigation />
-      <Col sm="12" md={{ size: 6, offset: 3 }}>
         <div className="p-5">
           <Route exact path={ROUTES.LANDING} component={Landing} />
           <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
@@ -38,7 +38,6 @@ const App = () => (
           <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId`} component={MemberInfo} />
           <Route exact path={`${ROUTES.ADMIN}/:eventId/members/:memberId/:taskId`} component={Submission} />
         </div>
-      </Col>
     </div>
   </Router>
 );

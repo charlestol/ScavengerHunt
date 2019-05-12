@@ -64,7 +64,7 @@ export default class Navigation extends Component {
 const NavigationNoAuth = () => (
   <Nav className="ml-auto" navbar>
     <NavItem>
-      <NavLink href={ROUTES.LANDING}>Home</NavLink>
+      <NavLink href={ROUTES.LANDING} className="text-uppercase">Home</NavLink>
     </NavItem>
   </Nav>
 );
@@ -72,10 +72,10 @@ const NavigationNoAuth = () => (
 const NavigationAuthStudent = () => (
   <Nav className="ml-auto" navbar>
     <NavItem>
-      <NavLink href={ROUTES.HOME}>Home</NavLink>
+      <NavLink href={ROUTES.HOME} className="text-uppercase">Home</NavLink>
     </NavItem>
     <UncontrolledDropdown nav inNavbar>
-      <DropdownToggle nav caret>
+      <DropdownToggle nav caret className="text-uppercase">
         Account
       </DropdownToggle>
       <DropdownMenu right>
@@ -93,10 +93,10 @@ const NavigationAuthStudent = () => (
 const NavigationAuthInstructor = () => (
   <Nav className="ml-auto" navbar>
     <NavItem>
-      <NavLink href={ROUTES.ADMIN}>Home</NavLink>
+      <NavLink href={ROUTES.ADMIN} className="text-uppercase">Home</NavLink>
     </NavItem>
     <UncontrolledDropdown nav inNavbar>
-      <DropdownToggle nav caret>
+      <DropdownToggle nav caret className="text-uppercase">
         Account
       </DropdownToggle>
       <DropdownMenu right>
