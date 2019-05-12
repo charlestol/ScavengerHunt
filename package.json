@@ -18,6 +18,7 @@
     "react-router": "^4.4.0",
     "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.8",
+    "react-transition-group": "1.x",
     "reactstrap": "^8.0.0",
     "recompose": "^0.30.0"
   },

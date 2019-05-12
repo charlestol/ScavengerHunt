@@ -97,10 +97,11 @@ class SearchScavengerHunt extends Component {
                 <Form onSubmit={this.onSearch}>
                     <FormGroup>
                         <Label 
-                            className="my-2" 
+                            className="mt-2" 
                             for="accessCode" 
                         >
-                            Join an Event with an Access Code!
+                            <h4>Search a Scavenger Hunt Event with an Access Code!</h4>
+                            <p>Access codes are usually provided by your instructor.</p>
                         </Label>
                         <Input
                             id="accessCode"
