@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
-
+import {Spinner} from 'reactstrap';
 class TaskItem extends Component {
     state = {
-        task: {}
+        task: {},
+        loading: false
     }
     componentDidMount() {
         let name = this.props.match.params.taskId;
         let ac = this.props.match.params.eventId;
-        console.log(name, ac)
         this.setState({
             loading: true
         });
@@ -19,19 +19,24 @@ class TaskItem extends Component {
             if(doc.exists) {
                 const data = doc.data();
                 this.setState({
-                    task: data
+                    task: data,
+                    loading: false
                 });
             }
         });
     }
 
     render() {
-        const {task} = this.state;
+        const {task, loading} = this.state;
         return (
-            <div className="my-4">
-                {task.name}
-                <br />
-                {task.instructions}
+            <div>
+                {loading && <Spinner color="danger" />}
+                {!loading &&
+                    <div>
+                        <h4>Task: {task.name}</h4>
+                        <p><b>Instructions</b>: {task.instructions}</p>
+                    </div>
+                }
             </div>
         );
     }

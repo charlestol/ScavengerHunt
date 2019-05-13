@@ -27,7 +27,7 @@ class EventItem extends Component {
       loading: true
     });
 
-    this.props.firebase.scavengerHunt(ac).get()
+    this.unsubscribe = this.props.firebase.scavengerHunt(ac).get()
     .then(doc => {
       if(doc.exists) {
         const data = doc.data();
@@ -68,12 +68,19 @@ class EventItem extends Component {
     }
   }
 
+  toggleInfo = () => {
+    if (this.state.activeTab !== 4) {
+      this.setState({
+        activeTab: 4
+      });
+    }
+  }
+
   render() {
     const { loading, sh, activeTab } = this.state;
 
-
     let dueDate = '';
-
+    
     if(sh.hasOwnProperty('dateEnd')) {
       let dateTS = new Date(sh.dateEnd.seconds*1000);
 
@@ -117,19 +124,24 @@ class EventItem extends Component {
           {loading && <Spinner color="danger" />}
           {sh.accessCode && 
             <div>
-              <h4>Event: {sh.name}</h4>
-              <p><strong>Access Code:</strong> {sh.accessCode}</p>
-              <p><strong>Courses:</strong> {sh.courses}</p>
-              <p><strong>Description:</strong> {sh.description}</p>            
-              <p><strong>Due:</strong> {dueDate}</p>
+              <h4 className="mb-3">Event: {sh.name}</h4>
               <Row style={layout}>
                 <Button outline color="danger" onClick={this.toggleTasks} active={activeTab===1} className="mb-3 mx-1 rounded-sm">Task List</Button>
                 <Button outline color="danger" onClick={this.toggleCreate} active={activeTab===2} className="mb-3 mx-1 rounded-sm">Create Task</Button>
                 <Button outline color="danger" onClick={this.toggleMembers} active={activeTab===3} className="mb-3 mx-1 rounded-sm">Members</Button>
+                <Button outline color="danger" onClick={this.toggleInfo} active={activeTab===4} className="mb-3 mx-1 rounded-sm">Event Info</Button>
               </Row>
               {activeTab===1 && <TaskList/>}
               {activeTab===2 && <TaskCreate />}
-              {activeTab===3 && <MemberList />}                
+              {activeTab===3 && <MemberList />}        
+              {activeTab===4 && 
+                <div>
+                  <p><strong>Access Code:</strong> {sh.accessCode}</p>
+                  <p><strong>Courses:</strong> {sh.courses}</p>
+                  <p><strong>Description:</strong> {sh.description}</p>            
+                  <p><strong>Due:</strong> {dueDate}</p>
+                </div>
+              }        
             </div> 
           }
         </Col>

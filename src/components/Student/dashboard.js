@@ -48,6 +48,7 @@ class HomePage extends Component {
         {authUser => (
           <Container>
             <Col md="12" lg={{ size: 6}} style={layout}>
+              <h4 className="mb-3">Dashboard</h4>
                 <Row style={layout}>
                   <Button outline color="danger" onClick={this.toggleActive} active={activeTab===1} className="mb-3 mx-1 rounded-sm">Active Events</Button>
                   <Button outline color="danger" onClick={this.toggleJoin} active={activeTab===2} className="mb-3 mx-1 rounded-sm">Join Event</Button>

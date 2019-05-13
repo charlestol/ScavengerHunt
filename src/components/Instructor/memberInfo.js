@@ -25,7 +25,7 @@ class MemberInfo extends Component {
         return (
             <div>
                 {memberInfo &&
-                <div className="my-4">
+                <div>
                     <h4>Student Name: {memberInfo.name}</h4>
                     <h4>Student Email: {memberInfo.email}</h4>
                     <hr />
