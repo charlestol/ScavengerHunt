@@ -7,7 +7,7 @@ import { PasswordForgetLink } from './passwordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { withAuthorization } from '../Session';
-import SH from '../../assets/appfavi.png'
+import SH from '../../assets/czilogodetailedmap.png'
 
 const SignInPage = () => (
   <div>
