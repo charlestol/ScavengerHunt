@@ -82,7 +82,7 @@ class CreateTask extends Component {
         return (
             <div>
                 <Form onSubmit={this.onCreateTask}>
-                    <h4>Create a Task!</h4>
+                    <h4 className="mb-3">Create a Task!</h4>
                     <Input
                         name="name"
                         value={name}
@@ -100,7 +100,7 @@ class CreateTask extends Component {
                         className="mb-3 rounded-sm"
                     />
                     <div>
-                        <p><strong>Select the submission type:</strong></p>
+                        <h5>Select the submission type:</h5>
                         <label className="mx-2">
                             <input
                                 name="entryType"
@@ -110,7 +110,7 @@ class CreateTask extends Component {
                                 type="radio"
                                 className="mb-3 rounded-sm"
                             />
-                            Image
+                            {" Image"}
                         </label>
                         <label className="mx-2">
                             <input
@@ -121,7 +121,7 @@ class CreateTask extends Component {
                                 type="radio"
                                 className="mb-3 rounded-sm"
                             />
-                            Text
+                            {" Text"}
                         </label>
                     </div>
                     <Button color="danger" disabled={isInvalid} type="submit" className="mb-3 rounded-sm">

@@ -70,7 +70,7 @@ class CompletionList extends Component {
             {tasksCompleted.map(task => (
                 <div key={task}>
                   <Link to={`${URL}/${task}`} className="text-danger">
-                    {task}
+                  <h5 className="my-3">{task}</h5>
                   </Link>
                 </div>
             ))}
@@ -81,7 +81,7 @@ class CompletionList extends Component {
             <h4>Tasks In-Progress</h4>
             {tasksInProgess.map(task => (
                 <div key={task}>
-                    {task}
+                    <h5 className="my-3">{task}</h5>
                 </div>
               ))}
           </div>

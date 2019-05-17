@@ -138,7 +138,7 @@ class CreateEvent extends Component {
                 {authUser => (
                     <Container>
                         <Form onSubmit={event => this.onCreateEvent(event, authUser)}>
-                            <h4>Create a Scavenger Hunt Event!</h4>
+                            <h4 className="mb-3">Create a Scavenger Hunt Event!</h4>
                             <Input
                                 name="name"
                                 value={name}

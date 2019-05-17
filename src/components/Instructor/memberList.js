@@ -44,7 +44,7 @@ class EventMembers extends Component {
         {!loading && members.length===0 && <p>No participants have joined this event yet.</p>}
         {members.map(member => (
             <div key={member.email}>
-                <Link to={`${URL}/member/${member.email}`} className="text-danger">{member.name}</Link>
+                <Link to={`${URL}/member/${member.email}`} className="text-danger"><h5 className="my-3">{member.name}</h5></Link>
             </div>
         ))}
       </div>

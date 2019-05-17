@@ -59,7 +59,7 @@ class ActiveEvents extends Component {
         {activeEvents.map(scavengerHunt => (
             <div key={scavengerHunt.accessCode}>
               <Link to={`${URL}/${scavengerHunt.accessCode}`} className="text-danger">
-                {scavengerHunt.name}
+                <h5 className="my-3">{scavengerHunt.name}</h5>
               </Link>
             </div>
         ))}

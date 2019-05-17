@@ -136,10 +136,11 @@ class EventItem extends Component {
               {activeTab===3 && <MemberList />}        
               {activeTab===4 && 
                 <div>
-                  <p><strong>Access Code:</strong> {sh.accessCode}</p>
-                  <p><strong>Courses:</strong> {sh.courses}</p>
-                  <p><strong>Description:</strong> {sh.description}</p>            
-                  <p><strong>Due:</strong> {dueDate}</p>
+                  <h4>Event Information</h4>
+                  <p className="my-3"><strong>Access Code:</strong> {sh.accessCode}</p>
+                  <p className="my-3"><strong>Courses:</strong> {sh.courses}</p>
+                  <p className="my-3"><strong>Description:</strong> {sh.description}</p>            
+                  <p className="my-3"><strong>Due:</strong> {dueDate}</p>
                 </div>
               }        
             </div> 

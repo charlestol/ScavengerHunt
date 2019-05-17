@@ -61,13 +61,13 @@ class EventList extends Component {
         {tasks.length !== 0 && <h4>Tasks In-Progress</h4>}
         {tasks.length !== 0 && tasks.map(task => (
             <div key={task}>
-                <Link to={`${URL}/${task}`} className="text-danger">{task}</Link>
+                <Link to={`${URL}/${task}`} className="text-danger"><h5 className="my-3">{task}</h5></Link>
             </div>
         ))}
         {completed.length !== 0 && <h4>Tasks Completed</h4>}
         {completed.length !== 0 && completed.map(task => (
             <div key={task}>
-                <Link to={`${URL}/${task}`} className="text-danger">{task}</Link>
+                <Link to={`${URL}/${task}`} className="text-danger"><h5 className="my-3">{task}</h5></Link>
             </div>
         ))}
       </div>

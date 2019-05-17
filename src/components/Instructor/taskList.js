@@ -47,7 +47,7 @@ class TaskList extends Component {
         {!loading && tasks.length===0 && <p>You have not created any scavenger hunt tasks yet.<br />Create tasks for your participants to complete!</p>}
         {tasks.map(task => (
             <div key={task.name}>
-                <Link to={`${URL}/${task.name}`} className="text-danger">{task.name}</Link>
+              <Link to={`${URL}/${task.name}`} className="text-danger"><h5 className="my-3">{task.name}</h5></Link>
             </div>
         ))}
       </div>
